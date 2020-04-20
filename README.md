@@ -28,4 +28,5 @@ Vertex aims to be a lightweight and powerful game engine. We plan on supporting 
 See [CONTRIBUTING](https://github.com/VertexEngine/VertexEngine/blob/master/.github/CONTRIBUTING.md).
 
 ## Authors
-Initial work - [Sachin Sushil](https://github.com/schctl)
+* [schctl](https://github.com/schctl) - Initial work
+* [NonNullDinu](https://github.com/NonNullDinu)
