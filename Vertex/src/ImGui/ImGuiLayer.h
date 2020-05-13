@@ -2,13 +2,8 @@
 
 #include <imgui.h>
 
-#include <examples/imgui_impl_glfw.h> // imgui
-
-#if defined(VX_RENDER_API_OPENGL)
-    #include <examples/imgui_impl_opengl3.h> // imgui
-#elif defined(VX_RENDER_API_VULKAN)
-    #include <examples/imgui_impl_vulkan.h> // imgui
-#endif
+#include <examples/imgui_impl_glfw.h>
+#include <examples/imgui_impl_opengl3.h>
 
 #include "Core/Core.h"
 

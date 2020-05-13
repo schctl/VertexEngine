@@ -1,8 +1,6 @@
 #include "Renderer.h"
 
-#if defined(VX_RENDER_API_OPENGL)
-    #include "GL/OpenGL/OpenGLShader.h"
-#endif
+#include "GL/OpenGL/OpenGLShader.h"
 
 namespace Vertex
 {
@@ -10,28 +8,21 @@ namespace Vertex
     GraphicsAPI* Renderer::s_GraphicsAPI = GraphicsAPI::Create();
     Scene*       Renderer::s_Scene = nullptr;
 
-    void Renderer::BeginScene(Camera& camera)
-    {
-        s_Scene = new Scene(camera);
-    }
+    void Renderer::BeginScene(Camera& camera) { s_Scene = new Scene(camera); }
 
     void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader)
     {
         shader->Bind();
-#if defined(VX_RENDER_API_OPENGL)
-        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"] = s_Scene->camera.GetProjectionViewMatrix();
-#endif
+
+        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"]
+            = s_Scene->camera.GetProjectionViewMatrix();
+
         vertex_array->Bind();
-#if defined(VX_RENDER_API_OPENGL)
+
         s_GraphicsAPI->DrawIndexed(vertex_array);
-#else
-        s_GraphicsAPI->Queue<DrawIndexed>(vertex_array);
-#endif
     }
 
-    void Renderer::EndScene()
-    {
-    }
+    void Renderer::EndScene() { }
 
     RenderAPI Renderer::GetAPI()
     {

@@ -1,10 +1,7 @@
 #include "GraphicsAPI.h"
 
-#if defined(VX_RENDER_API_OPENGL)
-    #include "OpenGL/OpenGLGraphicsAPI.h"
-#elif defined(VX_RENDER_API_VULKAN)
-    #include "Vulkan/VulkanGraphicsAPI.h"
-#endif
+#include "OpenGL/OpenGLGraphicsAPI.h"
+// ... per rendering API
 
 namespace Vertex
 {
@@ -28,5 +25,6 @@ namespace Vertex
         }
     }
 
-    template void GraphicsAPI::Queue<DrawIndexed, std::shared_ptr<VertexArray>>(std::shared_ptr<VertexArray> vertex_array);
+    template void GraphicsAPI::Queue<DrawIndexed, std::shared_ptr<VertexArray>>(
+        std::shared_ptr<VertexArray> vertex_array);
 }

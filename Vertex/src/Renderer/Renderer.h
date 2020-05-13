@@ -16,37 +16,24 @@ namespace Vertex
     enum class RenderAPI
     {
         OpenGL,
-        Vulkan,
-        DirectX12
+        Vulkan
     };
 
     struct Scene
     {
         Camera& camera;
 
-        Scene(Camera& _camera)
-            : camera(_camera)
-        {
-        }
+        Scene(Camera& _camera) : camera(_camera) { }
     };
 
     class VX_PUBLIC_API Renderer
     {
     public:
-        static void Clear()
-        {
-            s_GraphicsAPI->Clear();
-        }
+        static void Clear() { s_GraphicsAPI->Clear(); }
 
-        static void Clear(const glm::vec3& color)
-        {
-            s_GraphicsAPI->Clear(color);
-        }
+        static void Clear(const glm::vec3& color) { s_GraphicsAPI->Clear(color); }
 
-        static void Clear(const glm::vec4& color)
-        {
-            s_GraphicsAPI->Clear(color);
-        }
+        static void Clear(const glm::vec4& color) { s_GraphicsAPI->Clear(color); }
 
         static void BeginScene(Camera& camera);
         static void EndScene();

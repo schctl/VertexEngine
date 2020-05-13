@@ -2,21 +2,12 @@
 
 #include "Core/Event/Event.h"
 
-#if defined(VX_RENDER_API_VULKAN)
-    #include "GL/Vulkan/VulkanContext.h"
-#endif
-
 namespace Vertex
 {
 
-    ImGuiLayer::ImGuiLayer()
-        : Layer("ImGuiLayer")
-    {
-    }
+    ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") { }
 
-    ImGuiLayer::~ImGuiLayer()
-    {
-    }
+    ImGuiLayer::~ImGuiLayer() { }
 
     void ImGuiLayer::OnAttach()
     {
@@ -38,70 +29,20 @@ namespace Vertex
 
         GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
-#if defined(VX_RENDER_API_OPENGL)
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init("#version 410");
-#elif defined(VX_RENDER_API_VULKAN)
-        VulkanContext* context = VulkanContext::GetContext();
-        ImGui_ImplGlfw_InitForVulkan(window, true);
-        ImGui_ImplVulkan_InitInfo init_info = {};
-        init_info.Instance = context->GetInstance();
-        init_info.PhysicalDevice = context->GetPhysicalDevice();
-        init_info.Device = context->GetDevice();
-        init_info.QueueFamily = context->GetQueueFamily();
-        init_info.Queue = context->GetQueue();
-        init_info.PipelineCache = VK_NULL_HANDLE;
-        init_info.DescriptorPool = context->GetDescriptorPool();
-        init_info.Allocator = nullptr;
-        init_info.MinImageCount = context->GetSwapChainImages().size();
-        init_info.ImageCount = context->GetSwapChainImages().size();
-        init_info.CheckVkResultFn = [](VkResult result) -> void {
-            if (result != VK_SUCCESS)
-            {
-                CoreLogger::Get()->error("Something went wrong in dear imgui");
-            }
-        };
-        ImGui_ImplVulkan_Init(&init_info, context->GetRenderPass());
-
-        VkCommandBuffer command_buffer = VulkanContext::GetContext()->GetLoadCommandBuffer();
-
-        VkCommandBufferBeginInfo begin_info = {};
-        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        begin_info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-        vkBeginCommandBuffer(command_buffer, &begin_info);
-
-        ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
-
-        VkSubmitInfo end_info = {};
-        end_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        end_info.commandBufferCount = 1;
-        end_info.pCommandBuffers = &command_buffer;
-        vkEndCommandBuffer(command_buffer);
-        vkQueueSubmit(VulkanContext::GetContext()->GetQueue(), 1, &end_info, VK_NULL_HANDLE);
-
-        vkDeviceWaitIdle(VulkanContext::GetContext()->GetDevice());
-        ImGui_ImplVulkan_DestroyFontUploadObjects();
-#endif
     }
 
     void ImGuiLayer::OnDetach()
     {
-#if defined(VX_RENDER_API_OPENGL)
         ImGui_ImplOpenGL3_Shutdown();
-#elif defined(VX_RENDER_API_VULKAN)
-        ImGui_ImplVulkan_Shutdown();
-#endif
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
 
     void ImGuiLayer::Begin()
     {
-#if defined(VX_RENDER_API_OPENGL)
         ImGui_ImplOpenGL3_NewFrame();
-#elif defined(VX_RENDER_API_VULKAN)
-        ImGui_ImplVulkan_NewFrame();
-#endif
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
     }
@@ -113,21 +54,14 @@ namespace Vertex
         io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
         // Rendering
         ImGui::Render();
-#if defined(VX_RENDER_API_OPENGL)
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-#elif defined(VX_RENDER_API_VULKAN)
-        ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), VulkanContext::GetContext()->GetCurrentCommandBuffer());
-#endif
+
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
-#ifdef VX_RENDER_API_OPENGL
             GLFWwindow* backup_current_context = glfwGetCurrentContext();
-#endif
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
-#ifdef VX_RENDER_API_OPENGL
             glfwMakeContextCurrent(backup_current_context);
-#endif
         }
     }
 

@@ -1,10 +1,6 @@
 #include "Buffer.h"
 
-#if defined(VX_RENDER_API_OPENGL)
-    #include "OpenGL/OpenGLBuffer.h"
-#elif defined(VX_RENDER_API_VULKAN)
-    #include "Vulkan/VulkanBuffer.h"
-#endif
+#include "OpenGL/OpenGLBuffer.h"
 // ... per rendering API
 
 namespace Vertex

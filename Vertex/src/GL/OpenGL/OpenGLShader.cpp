@@ -35,19 +35,15 @@ namespace Vertex
         return 0;
     }
 
-    OpenGLShader::OpenGLShader(const std::vector<unsigned char>& vertex_src, const std::vector<unsigned char>& fragment_src)
-        : m_UniformPack(&m_ID)
+    OpenGLShader::OpenGLShader(const char* vertex_src, const char* fragment_src) : m_UniformPack(&m_ID)
     {
         // from khronos.org
 
         // Create an empty vertex shader handle
         GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
-        // Send the vertex shader source code to GL
-        {
-            const char* const vertex_src_data = reinterpret_cast<const char* const>(vertex_src.data());
-            glShaderSource(vertex_shader, 1, &vertex_src_data, 0);
-        }
+        glShaderSource(vertex_shader, 1, &vertex_src, 0);
+
         // Compile the vertex shader
         glCompileShader(vertex_shader);
 
@@ -73,11 +69,7 @@ namespace Vertex
         // Create an empty fragment shader handle
         GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-        // Send the fragment shader source code to GL
-        {
-            const char* const fragment_src_data = reinterpret_cast<const char* const>(fragment_src.data());
-            glShaderSource(fragment_shader, 1, &fragment_src_data, 0);
-        }
+        glShaderSource(fragment_shader, 1, &fragment_src, 0);
 
         // Compile the fragment shader
         glCompileShader(fragment_shader);
@@ -141,29 +133,17 @@ namespace Vertex
         glDetachShader(m_ID, fragment_shader);
     }
 
-    OpenGLShader::~OpenGLShader()
-    {
-        glDeleteProgram(m_ID);
-    }
+    OpenGLShader::~OpenGLShader() { glDeleteProgram(m_ID); }
 
-    void OpenGLShader::Bind() const
-    {
-        glUseProgram(m_ID);
-    }
+    void OpenGLShader::Bind() const { glUseProgram(m_ID); }
 
-    void OpenGLShader::Unbind() const
-    {
-        glUseProgram(0);
-    }
+    void OpenGLShader::Unbind() const { glUseProgram(0); }
 
     void OpenGLShader::LoadUniform(const char* uniform_var_name)
     {
         m_UniformPack.LoadUniformLocation(uniform_var_name);
     }
 
-    OpenGLUniform& OpenGLShader::operator[](const char* name)
-    {
-        return m_UniformPack[name];
-    }
+    OpenGLUniform& OpenGLShader::operator[](const char* name) { return m_UniformPack[name]; }
 
 }
