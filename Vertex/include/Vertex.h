@@ -1,4 +1,4 @@
-/** 
+/**
  *                  Copyright 2020 schctl
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,3 +33,5 @@
 #include "Core/Application.h"
 
 #include "Core/Logger.h"
+
+#include "ImGui/ImGuiLayer.h"

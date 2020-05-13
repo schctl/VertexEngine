@@ -45,6 +45,9 @@ namespace Vertex
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+
+        bool show = true;
+        ShowDockSpace(&show);
     }
 
     void ImGuiLayer::End()
@@ -63,14 +66,6 @@ namespace Vertex
             ImGui::RenderPlatformWindowsDefault();
             glfwMakeContextCurrent(backup_current_context);
         }
-    }
-
-    void ImGuiLayer::OnImguiRender()
-    {
-        bool show = true;
-        ShowDockSpace(&show);
-        ImGui::Begin("Test win");
-        ImGui::End();
     }
 
     void ImGuiLayer::ShowDockSpace(bool* p_open)
@@ -96,6 +91,13 @@ namespace Vertex
         ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 
+        ImGui::End();
+    }
+
+    void ImGuiLayer::ShowRendererInfo()
+    {
+        ImGui::Begin("Renderer");
+        ImGui::Text(Renderer::GetRendererInfo().c_str());
         ImGui::End();
     }
 

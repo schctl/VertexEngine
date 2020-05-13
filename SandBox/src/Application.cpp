@@ -3,37 +3,27 @@
 class TestLayer : public Vertex::Layer
 {
 public:
-	TestLayer(const char* name = "TestLayer")
-		: Layer(name)
-	{
-		Vertex::ClientLogger::Info("Initialized test layer");
-	}
+    TestLayer(const char* name = "TestLayer") : Layer(name) { Vertex::ClientLogger::Info("Initialized test layer"); }
 
-	void OnUpdate() override
-	{
-		// Vertex::Logger::GetClientLogger()->info("{0} update", GetName()); // <- eyes hurt
-	}
+    void OnUpdate() override
+    {
+        // Vertex::Logger::GetClientLogger()->info("{0} update", GetName()); // <- eyes hurt
+    }
 
-	void OnEvent(Vertex::Event& event) override
-	{
-		// Vertex::Logger::GetClientLogger()->debug("{0} event : {1}", GetName(), event.GetDetails());
-	}
+    void OnEvent(Vertex::Event& event) override
+    {
+        // Vertex::Logger::GetClientLogger()->debug("{0} event : {1}", GetName(), event.GetDetails());
+    }
+
+    void OnImguiRender() override { Vertex::ImGuiLayer::ShowRendererInfo(); }
 };
 
 class SandBoxApp : public Vertex::Application
 {
 public:
-	SandBoxApp()
-	{
-		PushLayer(new TestLayer());
-	}
+    SandBoxApp() { PushLayer(new TestLayer()); }
 
-	~SandBoxApp()
-	{
-	}
+    ~SandBoxApp() { }
 };
 
-Vertex::Application* Vertex::CreateApplication()
-{
-	return new SandBoxApp();
-}
+Vertex::Application* Vertex::CreateApplication() { return new SandBoxApp(); }

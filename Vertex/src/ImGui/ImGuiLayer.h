@@ -11,6 +11,8 @@
 
 #include "Core/Application.h"
 
+#include "Renderer/Renderer.h"
+
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/MouseEvent.h"
 #include "Core/Event/WindowEvent.h"
@@ -18,7 +20,7 @@
 namespace Vertex
 {
 
-    class ImGuiLayer : public Layer
+    class VX_PUBLIC_API ImGuiLayer : public Layer
     {
     public:
         ImGuiLayer();
@@ -27,12 +29,13 @@ namespace Vertex
         void OnAttach() override;
         void OnDetach() override;
 
-        void OnImguiRender() override;
+        void OnImguiRender() override {};
 
         void Begin();
         void End();
 
         static void ShowDockSpace(bool* p_open);
+        static void ShowRendererInfo();
 
     private:
         float m_Time;

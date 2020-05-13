@@ -25,11 +25,10 @@ namespace Vertex
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
-        inline const char* GetRendererInfo() const override
+        inline std::string GetRendererInfo() const override
         {
-            return fmt::format("\nRenderer Info:\n\tRendering API: OpenGL {0}\n\tRenderer: {1}\n\tVendored by: {2}",
-                glGetString(GL_VERSION), glGetString(GL_RENDERER), glGetString(GL_VENDOR))
-                .c_str();
+            return fmt::format("Rendering API: OpenGL {0}\nRenderer: {1}\nVendored by: {2}", glGetString(GL_VERSION),
+                glGetString(GL_RENDERER), glGetString(GL_VENDOR));
         }
 
         inline void DrawIndexed(std::shared_ptr<VertexArray> vertex_array) override
