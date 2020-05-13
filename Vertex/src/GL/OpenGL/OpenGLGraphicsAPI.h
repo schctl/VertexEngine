@@ -25,11 +25,16 @@ namespace Vertex
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
+        inline const char* GetRendererInfo() const override
+        {
+            return fmt::format("\nRenderer Info:\n\tRendering API: OpenGL {0}\n\tRenderer: {1}\n\tVendored by: {2}",
+                glGetString(GL_VERSION), glGetString(GL_RENDERER), glGetString(GL_VENDOR))
+                .c_str();
+        }
+
         inline void DrawIndexed(std::shared_ptr<VertexArray> vertex_array) override
         {
-            glDrawElements(GL_TRIANGLES,
-                vertex_array->GetIndexBuffer()->GetCount(),
-                GL_UNSIGNED_INT,
+            glDrawElements(GL_TRIANGLES, vertex_array->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT,
                 nullptr); // for now
         }
     };

@@ -35,6 +35,8 @@ namespace Vertex
 
         static void Clear(const glm::vec4& color) { s_GraphicsAPI->Clear(color); }
 
+        static const char* GetRendererInfo() { return s_GraphicsAPI->GetRendererInfo(); }
+
         static void BeginScene(Camera& camera);
         static void EndScene();
 

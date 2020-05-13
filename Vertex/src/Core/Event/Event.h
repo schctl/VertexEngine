@@ -2,8 +2,6 @@
 
 #include "Core/Core.h"
 
-#include "spdlog/fmt/fmt.h"
-
 namespace Vertex
 {
 

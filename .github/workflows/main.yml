@@ -20,6 +20,3 @@ jobs:
 
       - name: build-opengl
         run: cd scripts && bash build.sh
-
-      - name: build-vulkan
-        run: cd scripts && bash build-vk.sh

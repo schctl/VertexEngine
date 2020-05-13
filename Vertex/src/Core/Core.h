@@ -1,5 +1,7 @@
 #pragma once
 
+#include "vx_pch.h"
+
 #ifndef NDEBUG
     #define VX_CONFIGURATION_DEBUG
 #else
