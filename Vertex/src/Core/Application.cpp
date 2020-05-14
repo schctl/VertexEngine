@@ -125,29 +125,15 @@ namespace Vertex
         {
             Renderer::Clear({ 0.1f, 0.1f, 0.1f, 1.0f });
 
-            m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
-            m_Camera.SetRotation(45.0f);
-
-            Renderer::BeginScene(m_Camera);
-
-            Renderer::Submit(m_VertexArray, m_Shader);
-            Renderer::Submit(m_VertexArray2, m_Shader);
-
-            Renderer::EndScene();
-
             for (Layer* layer : m_LayerStack)
                 layer->OnUpdate();
-
-            // ---------------- ImGui ----------------
 
             m_ImGuiLayer->Begin();
 
             for (Layer* layer : m_LayerStack)
-                layer->OnImguiRender();
+                layer->OnGUIRender();
 
             m_ImGuiLayer->End();
-
-            // ---------------------------------------
 
             m_Window->OnUpdate();
         }

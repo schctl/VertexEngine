@@ -7,15 +7,22 @@ public:
 
     void OnUpdate() override
     {
-        // Vertex::Logger::GetClientLogger()->info("{0} update", GetName()); // <- eyes hurt
+        /*
+        m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
+        m_Camera.SetRotation(45.0f);
+
+        Renderer::BeginScene(m_Camera);
+
+        Renderer::Submit(m_VertexArray, m_Shader);
+        Renderer::Submit(m_VertexArray2, m_Shader);
+
+        Renderer::EndScene();
+        */
     }
 
-    void OnEvent(Vertex::Event& event) override
-    {
-        // Vertex::Logger::GetClientLogger()->debug("{0} event : {1}", GetName(), event.GetDetails());
-    }
+    void OnEvent(Vertex::Event& event) override { }
 
-    void OnImguiRender() override { Vertex::ImGuiLayer::ShowRendererInfo(); }
+    void OnGUIRender() override { Vertex::ImGuiLayer::ShowRendererInfo(); }
 };
 
 class SandBoxApp : public Vertex::Application

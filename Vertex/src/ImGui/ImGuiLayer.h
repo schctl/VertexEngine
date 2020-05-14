@@ -29,8 +29,6 @@ namespace Vertex
         void OnAttach() override;
         void OnDetach() override;
 
-        void OnImguiRender() override {};
-
         void Begin();
         void End();
 
