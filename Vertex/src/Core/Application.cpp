@@ -123,14 +123,6 @@ namespace Vertex
     {
         while (m_Running)
         {
-            // --------------------------------------
-            // ----------- Render Related -----------
-            // --------------------------------------
-
-            m_ImGuiLayer->Begin();
-
-            // ------------- Temporary --------------
-
             Renderer::Clear({ 0.1f, 0.1f, 0.1f, 1.0f });
 
             m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
@@ -143,25 +135,22 @@ namespace Vertex
 
             Renderer::EndScene();
 
-            // --------------------------------------
+            for (Layer* layer : m_LayerStack)
+                layer->OnUpdate();
+
+            // ---------------- ImGui ----------------
+
+            m_ImGuiLayer->Begin();
 
             for (Layer* layer : m_LayerStack)
                 layer->OnImguiRender();
 
             m_ImGuiLayer->End();
 
-            // --------------------------------------
-            // --------------------------------------
-            // --------------------------------------
+            // ---------------------------------------
 
             m_Window->OnUpdate();
-
-            for (Layer* layer : m_LayerStack)
-                layer->OnUpdate();
         }
-
-        for (Layer* layer : m_LayerStack)
-            layer->OnDetach();
     }
 
     // Application specific event callbacks

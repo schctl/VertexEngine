@@ -38,14 +38,24 @@ namespace Vertex
             m_LayerStack.PushLayer(layer);
             layer->OnAttach();
         }
-        inline void PopLayer(Layer* layer) { m_LayerStack.PopLayer(layer); }
+
+        inline void PopLayer(Layer* layer)
+        {
+            m_LayerStack.PopLayer(layer);
+            layer->OnDetach();
+        }
 
         inline void PushOverlay(Layer* overlay)
         {
             m_LayerStack.PushOverlay(overlay);
             overlay->OnAttach();
         }
-        inline void PopOverlay(Layer* overlay) { m_LayerStack.PopOverlay(overlay); }
+
+        inline void PopOverlay(Layer* overlay)
+        {
+            m_LayerStack.PopOverlay(overlay);
+            overlay->OnDetach();
+        }
 
         void OnEvent(Event& event);
 
