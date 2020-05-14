@@ -64,33 +64,15 @@ namespace Vertex
     private:
         std::shared_ptr<Window> m_Window;
 
+        /// We want this variable since the application might close for multiple reasons
         bool m_Running;
-        // we want this ^ variable since the application might close for multiple reasons
+
         LayerStack m_LayerStack;
 
         ImGuiLayer* m_ImGuiLayer;
 
+        /// Application is a singleton class
         static Application* s_AppInstance;
-        // ^ application is a singleton class
-
-        // ------------- Temporary --------------
-
-        std::shared_ptr<Shader> m_Shader;
-
-        std::shared_ptr<VertexArray>  m_VertexArray;
-        std::shared_ptr<VertexBuffer> m_VertexBuffer;
-        std::shared_ptr<IndexBuffer>  m_IndexBuffer;
-
-        std::shared_ptr<VertexArray>  m_VertexArray2;
-        std::shared_ptr<VertexBuffer> m_VertexBuffer2;
-        std::shared_ptr<IndexBuffer>  m_IndexBuffer2;
-
-        OrthographicCamera2D m_Camera;
-
-        // --------------------------------------
-
-        void PrepareForRender(GraphicsContext* context);
-        void Render(GraphicsContext* context);
 
     private:
         // Application specific event callbacks

@@ -32,6 +32,14 @@
 // -------------------------------------
 #include "Core/Application.h"
 
+#include "Core/Input.h"
+
 #include "Core/Logger.h"
 
+#include <imgui.h>
+
 #include "ImGui/ImGuiLayer.h"
+
+#include "Renderer/Renderer.h"
+
+#include "GL/OpenGL/OpenGLShader.h" // very temporary
