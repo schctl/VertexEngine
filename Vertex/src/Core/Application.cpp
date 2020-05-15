@@ -19,12 +19,6 @@ namespace Vertex
 
         m_ImGuiLayer = new ImGuiLayer();
         PushOverlay(m_ImGuiLayer);
-
-        /**
-         * @todo
-         * stop propogating events when they are handled.
-         * reverse order of addition to layerstack
-         */
     }
 
     Application::~Application()
@@ -43,6 +37,9 @@ namespace Vertex
         for (std::vector<Layer*>::iterator it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {
             (*--it)->OnEvent(event);
+
+            if (event.IsHandled())
+                break;
         }
     }
 

@@ -6,8 +6,15 @@ namespace SandBox
     ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */)
         : Layer(name), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
-        float vertices[21] = { -0.5f, -0.5f, 0.0f, 0.4f, 0.8f, 0.4f, 1.0f, 0.5f, -0.5f, 0.0f, 0.4f, 0.8f, 0.4f, 1.0f,
-            -0.5f, 0.5f, 0.0f, 0.4f, 0.8f, 0.4f, 1.0f };
+        // clang-format off
+
+        float vertices[21] = {
+            -0.5f, -0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f,
+             0.5f, -0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f,
+            -0.5f,  0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f
+        };
+
+        // clang-format on
 
         uint32_t indices[3] = { 0, 1, 2 };
 
@@ -24,8 +31,15 @@ namespace SandBox
 
         // --------------------------------------
 
-        float vertices2[21] = { 0.5f, -0.5f, 0.0f, 0.8f, 0.4f, 0.4f, 1.0f, 0.5f, 0.5f, 0.0f, 0.8f, 0.4f, 0.4f, 1.0f,
-            -0.5f, 0.5f, 0.0f, 0.8f, 0.4f, 0.4f, 1.0f };
+        // clang-format off
+
+        float vertices2[21] = {
+             0.5f, -0.5f, 0.0f,  0.8f, 0.4f, 0.4f, 1.0f,
+             0.5f,  0.5f, 0.0f,  0.8f, 0.4f, 0.4f, 1.0f, 
+            -0.5f,  0.5f, 0.0f,  0.8f, 0.4f, 0.4f, 1.0f
+        };
+
+        // clang-format on
 
         uint32_t indices2[3] = { 0, 1, 2 };
 
