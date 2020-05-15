@@ -21,10 +21,7 @@ namespace Vertex
         void AddVertexBuffer(const std::shared_ptr<VertexBuffer> vbo) override;
         void SetIndexBuffer(const std::shared_ptr<IndexBuffer> ibo) override;
 
-        inline const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const override
-        {
-            return m_IBO;
-        }
+        inline const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const override { return m_IBO; }
 
     private:
         uint32_t m_ID;

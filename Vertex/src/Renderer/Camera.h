@@ -8,10 +8,10 @@ namespace Vertex
     class Camera
     {
     public:
-        virtual const glm::vec3& GetPosition() const = 0;
+        virtual const glm::vec3& GetPosition() const                    = 0;
         virtual void             SetPosition(const glm::vec3& position) = 0;
 
-        virtual const glm::mat4& GetViewMatrix() const = 0;
+        virtual const glm::mat4& GetViewMatrix() const       = 0;
         virtual const glm::mat4& GetProjectionMatrix() const = 0;
 
         virtual const glm::mat4& GetProjectionViewMatrix() const = 0;
@@ -20,7 +20,7 @@ namespace Vertex
     class Camera2D : public Camera
     {
     public:
-        virtual const float& GetRotation() const = 0;
+        virtual const float& GetRotation() const               = 0;
         virtual void         SetRotation(const float rotation) = 0;
     };
 
@@ -30,39 +30,24 @@ namespace Vertex
         OrthographicCamera2D(float left, float right, float top, float bottom);
         ~OrthographicCamera2D();
 
-        inline const glm::vec3& GetPosition() const override
-        {
-            return m_Position;
-        }
-        inline void SetPosition(const glm::vec3& position) override
+        inline const glm::vec3& GetPosition() const override { return m_Position; }
+        inline void             SetPosition(const glm::vec3& position) override
         {
             m_Position = position;
             UpdateViewMatrix();
         }
 
-        inline const float& GetRotation() const override
-        {
-            return m_Rotation;
-        }
-        inline void SetRotation(const float rotation) override
+        inline const float& GetRotation() const override { return m_Rotation; }
+        inline void         SetRotation(const float rotation) override
         {
             m_Rotation = rotation;
             UpdateViewMatrix();
         }
 
-        inline const glm::mat4& GetViewMatrix() const override
-        {
-            return m_ViewMatrix;
-        }
-        inline const glm::mat4& GetProjectionMatrix() const override
-        {
-            return m_ProjectionMatrix;
-        }
+        inline const glm::mat4& GetViewMatrix() const override { return m_ViewMatrix; }
+        inline const glm::mat4& GetProjectionMatrix() const override { return m_ProjectionMatrix; }
 
-        inline const glm::mat4& GetProjectionViewMatrix() const override
-        {
-            return m_ProjectionViewMatrix;
-        }
+        inline const glm::mat4& GetProjectionViewMatrix() const override { return m_ProjectionViewMatrix; }
 
     private:
         glm::vec3 m_Position = glm::vec3(0.0f, 0.0f, 0.0f);

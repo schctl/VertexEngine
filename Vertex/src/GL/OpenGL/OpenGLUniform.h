@@ -14,10 +14,7 @@ namespace Vertex
 
         friend bool operator<(OpenGLUniform, OpenGLUniform);
 
-        inline const char* GetName() const
-        {
-            return m_UniformName;
-        }
+        inline const char* GetName() const { return m_UniformName; }
 
         void operator=(OpenGLUniformValue value);
 
@@ -25,8 +22,7 @@ namespace Vertex
         int         m_Location;
         const char* m_UniformName;
 
-        template <typename T>
-        void operator()(T value);
+        template <typename T> void operator()(T value);
     };
 
     // ----------------------------------
@@ -34,10 +30,7 @@ namespace Vertex
     // ----------------------------------
     struct OpenGLUniformPackMapKeyCompFunctor
     {
-        bool operator()(const char* a, const char* b) const
-        {
-            return strcmp(a, b) < 0;
-        }
+        bool operator()(const char* a, const char* b) const { return strcmp(a, b) < 0; }
     };
 
     class OpenGLUniformPack

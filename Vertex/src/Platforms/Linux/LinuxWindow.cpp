@@ -21,7 +21,7 @@ namespace Vertex
         {
             WindowProperties* properties = (WindowProperties*)glfwGetWindowUserPointer(window);
 
-            properties->width = width;
+            properties->width  = width;
             properties->height = height;
 
             WindowResizeEvent e(width, height);

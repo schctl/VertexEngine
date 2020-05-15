@@ -12,17 +12,17 @@ namespace Vertex
     class Window
     {
     public:
-        virtual ~Window() = default;
-        virtual void OnUpdate() = 0;
+        virtual ~Window()                  = default;
+        virtual void OnUpdate()            = 0;
         virtual void OnEvent(Event& event) = 0;
 
-        virtual unsigned int GetWidth() const = 0;
+        virtual unsigned int GetWidth() const  = 0;
         virtual unsigned int GetHeight() const = 0;
 
         virtual void SetEventCallback(std::function<void(Event&)> func) = 0;
 
         virtual void SetVSync(bool conf) = 0;
-        virtual bool IsVSync() const = 0;
+        virtual bool IsVSync() const     = 0;
 
         virtual void* GetNativeWindow() const = 0;
 
@@ -42,10 +42,8 @@ namespace Vertex
 
         std::function<void(Event&)> event_callback;
 
-        WindowProperties(const char* _title = "Vertex",
-            unsigned int             _width = 1024,
-            unsigned int             _height = 576,
-            bool                     _v_sync = true)
+        WindowProperties(const char* _title = "Vertex", unsigned int _width = 1024, unsigned int _height = 576,
+                         bool _v_sync = true)
             : title(_title), width(_width), height(_height), v_sync(_v_sync)
         {
         }

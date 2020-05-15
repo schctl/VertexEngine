@@ -28,13 +28,13 @@ namespace Vertex
         inline std::string GetRendererInfo() const override
         {
             return fmt::format("Rendering API: OpenGL {0}\nRenderer: {1}\nVendored by: {2}", glGetString(GL_VERSION),
-                glGetString(GL_RENDERER), glGetString(GL_VENDOR));
+                               glGetString(GL_RENDERER), glGetString(GL_VENDOR));
         }
 
         inline void DrawIndexed(std::shared_ptr<VertexArray> vertex_array) override
         {
             glDrawElements(GL_TRIANGLES, vertex_array->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT,
-                nullptr); // for now
+                           nullptr); // for now
         }
     };
 

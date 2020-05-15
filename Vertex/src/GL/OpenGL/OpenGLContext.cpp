@@ -24,8 +24,8 @@ namespace Vertex
 
     void OpenGLContext::NotifyResize(int new_width, int new_height)
     {
-        m_CurrentWidth = new_width;
-        m_CurrentHeight = new_height;
+        m_CurrentWidth       = new_width;
+        m_CurrentHeight      = new_height;
         m_NeedViewportUpdate = true;
     }
 
