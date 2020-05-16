@@ -6,6 +6,8 @@ namespace SandBox
     ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */)
         : Layer(name), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
+        m_CameraPosition = m_Camera.GetPosition();
+
         // clang-format off
 
         float vertices[21] = {
@@ -96,8 +98,17 @@ namespace SandBox
 
     void ExampleLayer::OnUpdate()
     {
-        m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
-        m_Camera.SetRotation(45.0f);
+        if (Vertex::Input::IsKeyPressed(VX_KEY_W))
+            m_CameraPosition.y -= m_CameraSpeed;
+        if (Vertex::Input::IsKeyPressed(VX_KEY_S))
+            m_CameraPosition.y += m_CameraSpeed;
+        if (Vertex::Input::IsKeyPressed(VX_KEY_A))
+            m_CameraPosition.x -= m_CameraSpeed;
+        if (Vertex::Input::IsKeyPressed(VX_KEY_D))
+            m_CameraPosition.x += m_CameraSpeed;
+
+        m_Camera.SetPosition(m_CameraPosition);
+        m_Camera.SetRotation(0.0f);
 
         Vertex::Renderer::BeginScene(m_Camera);
 
@@ -107,13 +118,7 @@ namespace SandBox
         Vertex::Renderer::EndScene();
     }
 
-    void ExampleLayer::OnEvent(Vertex::Event& event)
-    {
-        Vertex::EventHandler handler(event);
-
-        handler.Dispatch<Vertex::EventTypes::KeyPress, Vertex::KeyPressEvent>(
-            VX_BIND_FUNC_1(ExampleLayer::OnKeyPressEvent));
-    }
+    void ExampleLayer::OnEvent(Vertex::Event& event) { }
 
     bool ExampleLayer::OnKeyPressEvent(Vertex::KeyPressEvent& event) { return false; }
 }

@@ -29,6 +29,10 @@ namespace SandBox
 
         Vertex::OrthographicCamera2D m_Camera;
 
+        glm::vec3 m_CameraPosition;
+
+        const float m_CameraSpeed = 0.01f;
+
     private:
         // event callbacks
         bool OnKeyPressEvent(Vertex::KeyPressEvent& event);
