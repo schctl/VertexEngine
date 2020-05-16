@@ -28,6 +28,10 @@ namespace SandBox
         std::shared_ptr<Vertex::IndexBuffer>  m_IndexBuffer2;
 
         Vertex::OrthographicCamera2D m_Camera;
+
+    private:
+        // event callbacks
+        bool OnKeyPressEvent(Vertex::KeyPressEvent& event);
     };
 
     class SandBoxApp : public Vertex::Application

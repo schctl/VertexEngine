@@ -49,6 +49,9 @@ namespace Vertex
         style.Colors[ImGuiCol_Tab]                  = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
         style.Colors[ImGuiCol_TabHovered]           = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
         style.Colors[ImGuiCol_TabActive]            = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
+        style.Colors[ImGuiCol_TabUnfocused]         = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
+        style.Colors[ImGuiCol_TabUnfocusedActive]   = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
+        style.Colors[ImGuiCol_DockingPreview]       = ImVec4(0.20f, 0.20f, 0.21f, 1.00f);
         style.Colors[ImGuiCol_MenuBarBg]            = ImVec4(0.01f, 0.01f, 0.02f, 0.80f);
         style.Colors[ImGuiCol_ScrollbarBg]          = ImVec4(0.20f, 0.25f, 0.30f, 0.60f);
         style.Colors[ImGuiCol_ScrollbarGrab]        = ImVec4(0.55f, 0.53f, 0.55f, 0.51f);

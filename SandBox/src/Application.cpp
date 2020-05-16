@@ -107,8 +107,15 @@ namespace SandBox
         Vertex::Renderer::EndScene();
     }
 
-    void ExampleLayer::OnEvent(Vertex::Event& event) { }
+    void ExampleLayer::OnEvent(Vertex::Event& event)
+    {
+        Vertex::EventHandler handler(event);
 
+        handler.Dispatch<Vertex::EventTypes::KeyPress, Vertex::KeyPressEvent>(
+            VX_BIND_FUNC_1(ExampleLayer::OnKeyPressEvent));
+    }
+
+    bool ExampleLayer::OnKeyPressEvent(Vertex::KeyPressEvent& event) { return false; }
 }
 
 Vertex::Application* Vertex::CreateApplication()

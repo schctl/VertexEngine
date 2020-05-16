@@ -64,7 +64,7 @@ namespace Vertex
     }
 
     // Application specific event callbacks
-    bool Application::OnWindowCloseEvent(Event& event)
+    bool Application::OnWindowCloseEvent(WindowCloseEvent& event)
     {
         m_Running = false;
         return true;
