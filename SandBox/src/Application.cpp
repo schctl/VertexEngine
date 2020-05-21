@@ -7,6 +7,7 @@ namespace SandBox
         : Layer(name), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
         m_CameraPosition = m_Camera.GetPosition();
+        m_CameraRotation = m_Camera.GetRotation();
 
         // clang-format off
 
@@ -107,8 +108,15 @@ namespace SandBox
         if (Vertex::Input::IsKeyPressed(VX_KEY_D))
             m_CameraPosition.x += m_CameraSpeed;
 
+        if (Vertex::Input::IsKeyPressed(VX_KEY_Q))
+            m_CameraRotation += m_CameraRotationSpeed;
+        if (Vertex::Input::IsKeyPressed(VX_KEY_E))
+            m_CameraRotation -= m_CameraRotationSpeed;
+
         m_Camera.SetPosition(m_CameraPosition);
-        m_Camera.SetRotation(0.0f);
+        m_Camera.SetRotation(m_CameraRotation);
+
+        Vertex::Renderer::Clear({ 0.1f, 0.1f, 0.1f, 1.0f });
 
         Vertex::Renderer::BeginScene(m_Camera);
 

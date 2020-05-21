@@ -33,7 +33,7 @@ namespace Vertex
         void End();
 
         static void ShowDockSpace(bool* p_open);
-        static void ShowRendererInfo();
+        static void ShowRendererInfo(bool* p_open);
 
     private:
         float m_Time;

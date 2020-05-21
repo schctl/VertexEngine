@@ -4,6 +4,7 @@
 
 namespace Vertex
 {
+    static bool show_dockspace = true;
 
     ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") { }
 
@@ -97,8 +98,7 @@ namespace Vertex
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        bool show = true;
-        ShowDockSpace(&show);
+        ShowDockSpace(&show_dockspace);
     }
 
     void ImGuiLayer::End()
@@ -145,11 +145,19 @@ namespace Vertex
         ImGui::End();
     }
 
-    void ImGuiLayer::ShowRendererInfo()
+    void ImGuiLayer::ShowRendererInfo(bool* p_open)
     {
-        ImGui::Begin("Renderer");
-        ImGui::Text(Renderer::GetRendererInfo().c_str());
-        ImGui::End();
+        if (!ImGui::Begin("Renderer", p_open))
+        {
+            ImGui::End();
+        }
+        else
+        {
+            ImGui::Text(Renderer::GetRendererInfo().c_str());
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+                        ImGui::GetIO().Framerate);
+            ImGui::End();
+        }
     }
 
 }

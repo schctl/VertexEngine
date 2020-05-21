@@ -47,8 +47,6 @@ namespace Vertex
     {
         while (m_Running)
         {
-            Renderer::Clear({ 0.1f, 0.1f, 0.1f, 1.0f });
-
             for (Layer* layer : m_LayerStack)
                 layer->OnUpdate();
 

@@ -14,7 +14,7 @@ namespace SandBox
 
         void OnUpdate() override;
         void OnEvent(Vertex::Event& event) override;
-        void OnGUIRender() override { Vertex::ImGuiLayer::ShowRendererInfo(); }
+        void OnGUIRender() override { Vertex::ImGuiLayer::ShowRendererInfo(&m_ShowRendererInfo); }
 
     private:
         std::shared_ptr<Vertex::Shader> m_Shader;
@@ -30,8 +30,12 @@ namespace SandBox
         Vertex::OrthographicCamera2D m_Camera;
 
         glm::vec3 m_CameraPosition;
+        float     m_CameraRotation;
 
-        const float m_CameraSpeed = 0.01f;
+        const float m_CameraSpeed         = 0.01f;
+        const float m_CameraRotationSpeed = 0.10f;
+
+        bool m_ShowRendererInfo = true;
 
     private:
         // event callbacks
