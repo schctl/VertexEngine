@@ -11,6 +11,8 @@ class ImGuiLayer; // <- forward declare it to be accessible from application
 
 #include "ImGui/ImGuiLayer.h"
 
+#include "Platforms/Common/GLFW/Time/Time.h"
+
 #include "Window.h"
 
 #include "GL/Buffer.h"

@@ -37,8 +37,8 @@
 #include "Core/Event/MouseEvent.h"
 #include "Core/Event/WindowEvent.h"
 
-
 #include "Core/Input.h"
+#include "Platforms/Common/GLFW/Time/Time.h"
 
 #include "Core/Logger.h"
 
