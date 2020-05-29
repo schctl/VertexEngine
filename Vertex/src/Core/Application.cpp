@@ -48,6 +48,7 @@ namespace Vertex
         while (m_Running)
         {
             m_DeltaTime = Time::GetTime() - m_LastFrameTime;
+            m_LastFrameTime += m_DeltaTime.GetSeconds();
 
             for (Layer* layer : m_LayerStack)
                 layer->OnUpdate(m_DeltaTime);
@@ -60,8 +61,6 @@ namespace Vertex
             m_ImGuiLayer->End();
 
             m_Window->OnUpdate(m_DeltaTime);
-
-            m_LastFrameTime = Time::GetTime();
         }
     }
 
