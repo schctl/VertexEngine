@@ -6,15 +6,17 @@
 
 #include "GL/GraphicsContext.h"
 
+#include "Platforms/Common/GLFW/Time/Time.h"
+
 namespace Vertex
 {
 
     class Window
     {
     public:
-        virtual ~Window()                  = default;
-        virtual void OnUpdate()            = 0;
-        virtual void OnEvent(Event& event) = 0;
+        virtual ~Window()                           = default;
+        virtual void OnUpdate(TimeDelta delta_time) = 0;
+        virtual void OnEvent(Event& event)          = 0;
 
         virtual unsigned int GetWidth() const  = 0;
         virtual unsigned int GetHeight() const = 0;

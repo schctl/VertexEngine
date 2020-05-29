@@ -97,21 +97,21 @@ namespace SandBox
         Vertex::ClientLogger::Info("Initialized test layer");
     }
 
-    void ExampleLayer::OnUpdate()
+    void ExampleLayer::OnUpdate(Vertex::TimeDelta delta_time)
     {
         if (Vertex::Input::IsKeyPressed(VX_KEY_W))
-            m_CameraPosition.y -= m_CameraSpeed;
+            m_CameraPosition.y -= m_CameraSpeed * delta_time.GetSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_S))
-            m_CameraPosition.y += m_CameraSpeed;
+            m_CameraPosition.y += m_CameraSpeed * delta_time.GetSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_A))
-            m_CameraPosition.x -= m_CameraSpeed;
+            m_CameraPosition.x -= m_CameraSpeed * delta_time.GetSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_D))
-            m_CameraPosition.x += m_CameraSpeed;
+            m_CameraPosition.x += m_CameraSpeed * delta_time.GetSeconds();
 
         if (Vertex::Input::IsKeyPressed(VX_KEY_Q))
-            m_CameraRotation += m_CameraRotationSpeed;
+            m_CameraRotation += m_CameraRotationSpeed * delta_time.GetSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_E))
-            m_CameraRotation -= m_CameraRotationSpeed;
+            m_CameraRotation -= m_CameraRotationSpeed * delta_time.GetSeconds();
 
         m_Camera.SetPosition(m_CameraPosition);
         m_Camera.SetRotation(m_CameraRotation);

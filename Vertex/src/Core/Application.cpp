@@ -47,8 +47,10 @@ namespace Vertex
     {
         while (m_Running)
         {
+            m_DeltaTime = Time::GetTime() - m_LastFrameTime;
+
             for (Layer* layer : m_LayerStack)
-                layer->OnUpdate();
+                layer->OnUpdate(m_DeltaTime);
 
             m_ImGuiLayer->Begin();
 
@@ -57,7 +59,9 @@ namespace Vertex
 
             m_ImGuiLayer->End();
 
-            m_Window->OnUpdate();
+            m_Window->OnUpdate(m_DeltaTime);
+
+            m_LastFrameTime = Time::GetTime();
         }
     }
 

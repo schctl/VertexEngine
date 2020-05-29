@@ -3,6 +3,8 @@
 #include "Core/Core.h"
 #include "Core/Event/Event.h"
 
+#include "Platforms/Common/GLFW/Time/Time.h"
+
 namespace Vertex
 {
 
@@ -15,7 +17,7 @@ namespace Vertex
         virtual void OnAttach() { }
         virtual void OnDetach() { }
 
-        virtual void OnUpdate() { }
+        virtual void OnUpdate(TimeDelta delta_time) { }
         virtual void OnEvent(Event& event) { }
 
         virtual void OnGUIRender() { }

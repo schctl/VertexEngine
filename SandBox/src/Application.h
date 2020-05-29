@@ -12,7 +12,7 @@ namespace SandBox
     public:
         ExampleLayer(const char* name = "Example Layer");
 
-        void OnUpdate() override;
+        void OnUpdate(Vertex::TimeDelta delta_time) override;
         void OnEvent(Vertex::Event& event) override;
         void OnGUIRender() override { Vertex::ImGuiLayer::ShowRendererInfo(&m_ShowRendererInfo); }
 
@@ -32,8 +32,8 @@ namespace SandBox
         glm::vec3 m_CameraPosition;
         float     m_CameraRotation;
 
-        const float m_CameraSpeed         = 0.01f;
-        const float m_CameraRotationSpeed = 0.10f;
+        const float m_CameraSpeed         = 0.1f;
+        const float m_CameraRotationSpeed = 0.1f;
 
         bool m_ShowRendererInfo = true;
 

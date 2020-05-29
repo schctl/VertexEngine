@@ -73,6 +73,9 @@ namespace Vertex
 
         ImGuiLayer* m_ImGuiLayer;
 
+        TimeDelta m_DeltaTime     = 0.0f;
+        float     m_LastFrameTime = 0.0f;
+
         /// Application is a singleton class
         static Application* s_AppInstance;
 

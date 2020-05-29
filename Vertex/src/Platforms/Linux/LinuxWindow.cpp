@@ -211,7 +211,7 @@ namespace Vertex
         glfwDestroyWindow(m_Window); // we may want to shutdown before the window's scope is over
     }
 
-    void LinuxWindow::OnUpdate()
+    void LinuxWindow::OnUpdate(TimeDelta delta_time)
     {
         glfwPollEvents();
         m_Context->SwapBuffers();

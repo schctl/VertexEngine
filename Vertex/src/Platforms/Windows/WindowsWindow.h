@@ -14,7 +14,7 @@ namespace Vertex
         WindowsWindow(const WindowProperties properties = WindowProperties());
         ~WindowsWindow();
 
-        void OnUpdate() override;
+        void OnUpdate(TimeDelta delta_time) override;
         void OnEvent(Event& event) override;
 
         unsigned int GetWidth() const override { return m_Data.width; }
