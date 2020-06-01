@@ -44,7 +44,7 @@
 
 #include <imgui.h>
 
-#include "ImGui/ImGuiLayer.h"
+#include "GUI/GUILayer.h"
 
 #include "Renderer/Renderer.h"
 

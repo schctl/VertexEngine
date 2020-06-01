@@ -1,4 +1,4 @@
-#include "ImGuiLayer.h"
+#include "GUILayer.h"
 
 #include "Core/Event/Event.h"
 
@@ -6,11 +6,11 @@ namespace Vertex
 {
     static bool show_dockspace = true;
 
-    ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") { }
+    GUILayer::GUILayer() : Layer("GUILayer") { }
 
-    ImGuiLayer::~ImGuiLayer() { }
+    GUILayer::~GUILayer() { }
 
-    void ImGuiLayer::OnAttach()
+    void GUILayer::OnAttach()
     {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -85,14 +85,14 @@ namespace Vertex
         ImGui_ImplOpenGL3_Init("#version 410");
     }
 
-    void ImGuiLayer::OnDetach()
+    void GUILayer::OnDetach()
     {
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
 
-    void ImGuiLayer::Begin()
+    void GUILayer::Begin()
     {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -101,7 +101,7 @@ namespace Vertex
         ShowDockSpace(&show_dockspace);
     }
 
-    void ImGuiLayer::End()
+    void GUILayer::End()
     {
         ImGuiIO&     io  = ImGui::GetIO();
         Application& app = Application::Get();
@@ -119,7 +119,7 @@ namespace Vertex
         }
     }
 
-    void ImGuiLayer::ShowDockSpace(bool* p_open)
+    void GUILayer::ShowDockSpace(bool* p_open)
     {
         ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->Pos);
@@ -145,7 +145,7 @@ namespace Vertex
         ImGui::End();
     }
 
-    void ImGuiLayer::ShowRendererInfo(bool* p_open)
+    void GUILayer::ShowRendererInfo(bool* p_open)
     {
         if (!ImGui::Begin("Renderer", p_open))
         {

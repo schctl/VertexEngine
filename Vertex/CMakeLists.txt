@@ -6,14 +6,14 @@ file(GLOB_RECURSE VX_SOURCES
         src/Core/*.cpp
         src/Core/Layer/*.cpp
         src/Renderer/*.cpp
-        src/ImGui/*.cpp
+        src/GUI/*.cpp
         src/Platforms/Common/*.h) # for now
 
 file(GLOB_RECURSE VX_HEADERS
         src/Core/*.h
         src/Core/Layer/*.h
         src/Renderer/*.h
-        src/ImGui/*.h
+        src/GUI/*.h
         src/Platforms/Common/*.cpp # for now
 
         deps/glm/glm/*.hpp)

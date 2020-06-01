@@ -2,14 +2,14 @@
 
 #include "Core.h"
 
-class ImGuiLayer; // <- forward declare it to be accessible from application
+class GUILayer; // <- forward declare it to be accessible from application
 
 #include "Event/Event.h"
 #include "Event/WindowEvent.h"
 
 #include "Layer/LayerStack.h"
 
-#include "ImGui/ImGuiLayer.h"
+#include "GUI/GUILayer.h"
 
 #include "Platforms/Common/GLFW/Time/Time.h"
 
@@ -71,7 +71,7 @@ namespace Vertex
 
         LayerStack m_LayerStack;
 
-        ImGuiLayer* m_ImGuiLayer;
+        GUILayer* m_GUILayer;
 
         TimeDelta m_DeltaTime     = 0.0f;
         float     m_LastFrameTime = 0.0f;

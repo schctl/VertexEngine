@@ -20,11 +20,11 @@
 namespace Vertex
 {
 
-    class VX_PUBLIC_API ImGuiLayer : public Layer
+    class VX_PUBLIC_API GUILayer : public Layer
     {
     public:
-        ImGuiLayer();
-        ~ImGuiLayer();
+        GUILayer();
+        ~GUILayer();
 
         void OnAttach() override;
         void OnDetach() override;

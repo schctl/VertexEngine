@@ -17,15 +17,11 @@ namespace Vertex
 
         s_AppInstance = this;
 
-        m_ImGuiLayer = new ImGuiLayer();
-        PushOverlay(m_ImGuiLayer);
+        m_GUILayer = new GUILayer();
+        PushOverlay(m_GUILayer);
     }
 
-    Application::~Application()
-    {
-        for (Layer* layer : m_LayerStack)
-            PopLayer(layer);
-    }
+    Application::~Application() { CoreLogger::Debug("Application terminated successfully."); }
 
     void Application::OnEvent(Event& event)
     {
@@ -53,15 +49,18 @@ namespace Vertex
             for (Layer* layer : m_LayerStack)
                 layer->OnUpdate(m_DeltaTime);
 
-            m_ImGuiLayer->Begin();
+            m_GUILayer->Begin();
 
             for (Layer* layer : m_LayerStack)
                 layer->OnGUIRender();
 
-            m_ImGuiLayer->End();
+            m_GUILayer->End();
 
             m_Window->OnUpdate(m_DeltaTime);
         }
+
+        for (Layer* layer : m_LayerStack)
+            PopLayer(layer);
     }
 
     // Application specific event callbacks
