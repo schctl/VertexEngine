@@ -159,11 +159,3 @@ endif ()
 if ($ENV{CLION_IDE})
     target_compile_options(Vertex PUBLIC -include Core/vx_pch.h)
 endif ()
-
-install(TARGETS Vertex
-        CONFIGURATIONS Debug
-        LIBRARY DESTINATION Debug/bin)
-
-install(TARGETS Vertex
-        CONFIGURATIONS Release
-        LIBRARY DESTINATION Release/bin)
