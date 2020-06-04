@@ -3,7 +3,7 @@
 #include "Core/Core.h"
 #include "Core/Event/Event.h"
 
-#include "Platforms/Common/GLFW/Time/Time.h"
+#include "Core/Time/Time.h"
 
 namespace Vertex
 {

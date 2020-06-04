@@ -11,9 +11,9 @@ class GUILayer; // <- forward declare it to be accessible from application
 
 #include "GUI/GUILayer.h"
 
-#include "Platforms/Common/GLFW/Time/Time.h"
+#include "Time/Time.h"
 
-#include "Window.h"
+#include "Window/Window.h"
 
 #include "GL/Buffer.h"
 #include "GL/Shader.h"

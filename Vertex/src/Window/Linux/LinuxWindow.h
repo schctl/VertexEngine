@@ -1,18 +1,19 @@
 #pragma once
 
-#include "Core/Window.h"
+#include "Window/Window.h"
 
-#include "Core/Input.h"
-#include "WindowsInput.h"
+#include "Window/Input.h"
+
+#include "LinuxInput.h"
 
 namespace Vertex
 {
 
-    class WindowsWindow : public Window
+    class LinuxWindow : public Window
     {
     public:
-        WindowsWindow(const WindowProperties properties = WindowProperties());
-        ~WindowsWindow();
+        LinuxWindow(const WindowProperties properties = WindowProperties());
+        ~LinuxWindow();
 
         void OnUpdate(TimeDelta delta_time) override;
         void OnEvent(Event& event) override;

@@ -6,7 +6,9 @@
 
 #include "GL/GraphicsContext.h"
 
-#include "Platforms/Common/GLFW/Time/Time.h"
+#include "Core/Time/Time.h"
+
+#include "Input.h"
 
 namespace Vertex
 {

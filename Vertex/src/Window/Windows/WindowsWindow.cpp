@@ -1,4 +1,4 @@
-#include "LinuxWindow.h"
+#include "WindowsWindow.h"
 
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/MouseEvent.h"
@@ -16,7 +16,6 @@ namespace Vertex
 
     namespace GLFWInputCallbacks
     {
-
         static void WindowSizeCallback(GLFWwindow* window, int width, int height)
         {
             WindowProperties* properties = (WindowProperties*)glfwGetWindowUserPointer(window);
@@ -166,10 +165,9 @@ namespace Vertex
                 properties->event_callback(e);
             }
         }
+    } // namespace GLFWInputCallbacks
 
-    }
-
-    LinuxWindow::LinuxWindow(WindowProperties properties) : m_Data(properties)
+    WindowsWindow::WindowsWindow(WindowProperties properties) : m_Data(properties)
     {
         CoreLogger::Get()->info("Creating window {0}...", m_Data.title);
 
@@ -186,6 +184,7 @@ namespace Vertex
         glfwSetErrorCallback(GLFWErrorCallback);
 
         m_Window = glfwCreateWindow((int)m_Data.width, (int)m_Data.height, m_Data.title, nullptr, nullptr);
+
         m_Context.reset(GraphicsContext::Create(m_Window));
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -204,27 +203,28 @@ namespace Vertex
         glfwSetCursorPosCallback(m_Window, GLFWInputCallbacks::CursorPositionCallback);
     }
 
-    LinuxWindow::~LinuxWindow() { ShutDown(); }
+    WindowsWindow::~WindowsWindow() { ShutDown(); }
 
-    void LinuxWindow::ShutDown()
+    void WindowsWindow::ShutDown()
     {
         glfwDestroyWindow(m_Window); // we may want to shutdown before the window's scope is over
     }
 
-    void LinuxWindow::OnUpdate(TimeDelta delta_time)
+    void WindowsWindow::OnUpdate(TimeDelta delta_time)
     {
         glfwPollEvents();
         m_Context->SwapBuffers();
     }
 
-    void LinuxWindow::OnEvent(Event& event)
+    void WindowsWindow::OnEvent(Event& event)
     {
         EventHandler handler(event);
-        handler.Dispatch<EventTypes::WindowResize, WindowResizeEvent>(VX_BIND_FUNC_1(LinuxWindow::OnWindowResizeEvent));
+        handler.Dispatch<EventTypes::WindowResize, WindowResizeEvent>(
+            VX_BIND_FUNC_1(WindowsWindow::OnWindowResizeEvent));
     }
 
     // event callbacks
-    bool LinuxWindow::OnWindowResizeEvent(WindowResizeEvent& event)
+    bool WindowsWindow::OnWindowResizeEvent(WindowResizeEvent& event)
     {
         m_Context->NotifyResize(event.GetWidth(), event.GetHeight());
         return false; // <- for now

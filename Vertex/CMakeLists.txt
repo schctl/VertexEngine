@@ -2,42 +2,47 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Vertex CXX)
 
-file(GLOB_RECURSE VX_SOURCES
+file(GLOB VX_SOURCES
     src/Core/*.cpp
+    src/Core/Event/*.cpp
     src/Core/Layer/*.cpp
-    src/Renderer/*.cpp
+    src/Core/Renderer/*.cpp
+    src/Core/Time/*.cpp
+    src/GL/*.cpp
     src/GUI/*.cpp
-    src/Platforms/Common/*.h # for now
+    src/Window/*.cpp
 )
 
-file(GLOB_RECURSE VX_HEADERS
+file(GLOB VX_HEADERS
     src/Core/*.h
+    src/Core/Event/*.h
     src/Core/Layer/*.h
-    src/Renderer/*.h
+    src/Core/Renderer/*.h
+    src/Core/Time/*.h
+    src/GL/*.h
     src/GUI/*.h
-    src/Platforms/Common/*.cpp # for now
+    src/Window/*.h
     deps/glm/glm/*.hpp
 )
 
-file(GLOB VX_GL_SOURCES src/GL/*.cpp)
-file(GLOB VX_GL_HEADERS src/GL/*.h)
-
-file(GLOB_RECURSE VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
-file(GLOB_RECURSE VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
+file(GLOB VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
+file(GLOB VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
 
 set(IMGUI_IMPL_HEADERS
-        deps/imgui/examples/imgui_impl_glfw.h
-        deps/imgui/examples/imgui_impl_opengl3.h)
+    deps/imgui/examples/imgui_impl_glfw.h
+    deps/imgui/examples/imgui_impl_opengl3.h
+)
 set(IMGUI_IMPL_SOURCES
-        deps/imgui/examples/imgui_impl_glfw.cpp
-        deps/imgui/examples/imgui_impl_opengl3.cpp)
+    deps/imgui/examples/imgui_impl_glfw.cpp
+    deps/imgui/examples/imgui_impl_opengl3.cpp
+)
 
 add_subdirectory(deps/glad)
 add_subdirectory(deps/imgui)
 
 if (WIN32)
-    file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Platforms/Windows/*.h)
-    file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Platforms/Windows/*.cpp)
+    file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Window/Windows/*.h)
+    file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Window/Windows/*.cpp)
     
     find_package(OpenGL REQUIRED) # OpenGL
     set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
@@ -49,8 +54,8 @@ if (WIN32)
     set(PLATFORM_SPECIFIC_LIBS ${GRAPHICS_LIBS} glfw)
 
 elseif (UNIX AND NOT APPLE)
-    file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Platforms/Linux/*.h)
-    file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Platforms/Linux/*.cpp)
+    file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Window/Linux/*.h)
+    file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Window/Linux/*.cpp)
 
     find_package(OpenGL REQUIRED) # OpenGL
     set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR})
@@ -69,9 +74,6 @@ endif ()
 add_library(Vertex STATIC
     ${VX_HEADERS}
     ${VX_SOURCES}
-
-    ${VX_GL_HEADERS}
-    ${VX_GL_SOURCES}
 
     ${VX_GRAPHICS_HEADERS}
     ${VX_GRAPHICS_SOURCES}

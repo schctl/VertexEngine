@@ -11,7 +11,7 @@
 
 #include "Core/Application.h"
 
-#include "Renderer/Renderer.h"
+#include "Core/Renderer/Renderer.h"
 
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/MouseEvent.h"
@@ -30,9 +30,6 @@ namespace Vertex
 
         void Begin();
         void End();
-
-        static void ShowDockSpace(bool* p_open);
-        static void ShowRendererInfo(bool* p_open);
 
     private:
         float m_Time;
