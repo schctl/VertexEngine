@@ -6,7 +6,6 @@
 
 namespace SandBox
 {
-
     class ExampleLayer : public Vertex::Layer
     {
     public:
@@ -14,7 +13,7 @@ namespace SandBox
 
         void OnUpdate(Vertex::TimeDelta delta_time) override;
         void OnEvent(Vertex::Event& event) override;
-        void OnGUIRender() override { }
+        void OnGUIRender() override;
 
     private:
         std::shared_ptr<Vertex::Shader> m_Shader;
@@ -46,5 +45,4 @@ namespace SandBox
         SandBoxApp() { PushLayer(new ExampleLayer()); }
         ~SandBoxApp() { }
     };
-
 }

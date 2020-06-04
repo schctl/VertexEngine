@@ -15,6 +15,9 @@ namespace Vertex
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
+
+        // io.Fonts->AddFontFromFileTTF("res/Fonts/OpenSans/OpenSans-Regular.ttf", 16);
+
         (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking

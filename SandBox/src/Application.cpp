@@ -128,6 +128,13 @@ namespace SandBox
 
     void ExampleLayer::OnEvent(Vertex::Event& event) { }
 
+    void ExampleLayer::OnGUIRender()
+    {
+        ImGui::Begin("Renderer");
+        ImGui::Text(Vertex::Renderer::GetRendererInfo().c_str());
+        ImGui::End();
+    }
+
     bool ExampleLayer::OnKeyPressEvent(Vertex::KeyPressEvent& event) { return false; }
 }
 
