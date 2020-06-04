@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     class VertexArray
     {
     public:
@@ -20,5 +19,4 @@ namespace Vertex
 
         static VertexArray* Create();
     };
-
 }

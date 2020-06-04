@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     enum class EventTypes
     {
         WindowResize,
@@ -52,7 +51,8 @@ namespace Vertex
     public:
         EventHandler(Event& event) : m_Event(event) { }
 
-        template <EventTypes T, typename EventTypeName, typename F> void Dispatch(F&& func)
+        template <EventTypes T, typename EventTypeName, typename F>
+        void Dispatch(F&& func)
         {
             if (m_Event.GetEventType() == T && !m_Event.m_Handled)
             {
@@ -63,5 +63,4 @@ namespace Vertex
     private:
         Event& m_Event;
     };
-
 }

@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     // -----------------------------------
     // ---------- Vertex Buffer ----------
     // -----------------------------------
@@ -50,5 +49,4 @@ namespace Vertex
         uint32_t m_ID;
         uint32_t m_Count;
     };
-
 }

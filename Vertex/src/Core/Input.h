@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     class VX_PUBLIC_API Input
     {
     public:
@@ -28,7 +27,6 @@ namespace Vertex
     private:
         static Input* s_Instance;
     };
-
 }
 
 #include "Platforms/Linux/LinuxInput.h"

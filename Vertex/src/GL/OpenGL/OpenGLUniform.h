@@ -22,7 +22,8 @@ namespace Vertex
         int         m_Location;
         const char* m_UniformName;
 
-        template <typename T> void operator()(T value);
+        template <typename T>
+        void operator()(T value);
     };
 
     // ----------------------------------

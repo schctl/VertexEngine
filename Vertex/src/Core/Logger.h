@@ -13,7 +13,6 @@
 
 namespace Vertex
 {
-
     class CoreLogger
     {
     public:
@@ -40,29 +39,34 @@ namespace Vertex
 
         inline static void Critical(const char* message) { s_Logger->critical(message); }
 
-        template <typename First, typename... Rest> inline static void Debug(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Debug(First message, Rest... params)
         {
 #if defined(VX_CONFIGURATION_DEBUG)
             s_Logger->debug(message, params...);
 #endif
         }
 
-        template <typename First, typename... Rest> inline static void Info(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Info(First message, Rest... params)
         {
             s_Logger->info(message, params...);
         }
 
-        template <typename First, typename... Rest> inline static void Warn(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Warn(First message, Rest... params)
         {
             s_Logger->warn(message, params...);
         }
 
-        template <typename First, typename... Rest> inline static void Error(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Error(First message, Rest... params)
         {
             s_Logger->error(message, params...);
         }
 
-        template <typename First, typename... Rest> inline static void Critical(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Critical(First message, Rest... params)
         {
             s_Logger->critical(message, params...);
         }
@@ -95,27 +99,32 @@ namespace Vertex
 
         inline static void Critical(const char* message) { s_Logger->critical(message); }
 
-        template <typename First, typename... Rest> inline static void Debug(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Debug(First message, Rest... params)
         {
             s_Logger->debug(message, params...);
         }
 
-        template <typename First, typename... Rest> inline static void Info(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Info(First message, Rest... params)
         {
             s_Logger->info(message, params...);
         }
 
-        template <typename First, typename... Rest> inline static void Warn(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Warn(First message, Rest... params)
         {
             s_Logger->warn(message, params...);
         }
 
-        template <typename First, typename... Rest> inline static void Error(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Error(First message, Rest... params)
         {
             s_Logger->error(message, params...);
         }
 
-        template <typename First, typename... Rest> inline static void Critical(First message, Rest... params)
+        template <typename First, typename... Rest>
+        inline static void Critical(First message, Rest... params)
         {
             s_Logger->critical(message, params...);
         }
@@ -130,5 +139,4 @@ namespace Vertex
     private:
         static std::shared_ptr<spdlog::logger> s_Logger;
     };
-
 }

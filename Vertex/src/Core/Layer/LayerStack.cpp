@@ -2,7 +2,6 @@
 
 namespace Vertex
 {
-
     LayerStack::LayerStack() { }
 
     LayerStack::~LayerStack()
@@ -36,5 +35,4 @@ namespace Vertex
         if (it != m_Layers.end())
             m_Layers.erase(it);
     }
-
 }

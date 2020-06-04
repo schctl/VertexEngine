@@ -2,7 +2,6 @@
 
 namespace Vertex
 {
-
     CoreLogger                      CoreLogger::s_Instance;
     std::shared_ptr<spdlog::logger> CoreLogger::s_Logger;
 
@@ -20,5 +19,4 @@ namespace Vertex
         s_Logger = spdlog::stdout_color_mt("VX_CLIENT");
         s_Logger->set_level(vx_log_level_info);
     }
-
 }

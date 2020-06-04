@@ -3,16 +3,13 @@
 #include "Core/Core.h"
 
 #include "GL/GraphicsAPI.h"
-
-#include "GL/VertexArray.h"
-
 #include "GL/Shader.h"
+#include "GL/VertexArray.h"
 
 #include "Camera.h"
 
 namespace Vertex
 {
-
     enum class RenderAPI
     {
         OpenGL,
@@ -48,5 +45,4 @@ namespace Vertex
         static GraphicsAPI* s_GraphicsAPI;
         static Scene*       s_Scene;
     };
-
 }

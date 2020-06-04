@@ -1,6 +1,16 @@
+/**
+ * Core file
+ * ---------
+ *
+ * This file includes all common includes as well as important definitions.
+ * Must be included in all files.
+ */
+
 #pragma once
 
-#include "vx_pch.h"
+// --------------------------------------
+
+#define VX_PUBLIC_API
 
 #ifndef NDEBUG
     #define VX_CONFIGURATION_DEBUG
@@ -8,7 +18,34 @@
     #define VX_CONFIGURATION_RELEASE
 #endif
 
-#define VX_PUBLIC_API
+#define VX_WINDOWING_GLFW
+
+// --------------------------------------
+
+#include <any>
+#include <cassert>
+#include <chrono>
+#include <functional>
+#include <map>
+#include <memory>
+#include <set>
+#include <stdexcept>
+#include <tuple>
+#include <variant>
+#include <vector>
+
+#include <spdlog/fmt/fmt.h>
+
+#include <glad/glad.h>
+
+#include <GLFW/glfw3.h>
+
+#include <glm/ext.hpp>
+#include <glm/glm.hpp>
+
+#include "Logger.h"
+
+// --------------------------------------
 
 #define VX_BIND_FUNC_0(x) std::bind(&x, this)
 #define VX_BIND_FUNC_1(x) std::bind(&x, this, std::placeholders::_1)
@@ -17,33 +54,45 @@
     {                                                                                                                  \
         static_assert(x, __VA_ARGS__);                                                                                 \
     }
+
 #define VX_CORE_ASSERT(x, ...)                                                                                         \
     {                                                                                                                  \
         if (!(x))                                                                                                      \
         {                                                                                                              \
-            CoreLogger::Get()->error(__VA_ARGS__);                                                                     \
+            CoreLogger::Error(__VA_ARGS__);                                                                            \
             assert(false);                                                                                             \
         }                                                                                                              \
     }
 
-// Template utility defines
+// --------------------------------------
 
 #define VX_TEMPLATE_ALL(test_name, predicate)                                                                          \
-    template <typename T> constexpr bool                                   test_name() { return true; }                \
-    template <typename T, typename First, typename... Rest> constexpr bool test_name()                                 \
+    template <typename T>                                                                                              \
+    constexpr bool test_name()                                                                                         \
+    {                                                                                                                  \
+        return true;                                                                                                   \
+    }                                                                                                                  \
+    template <typename T, typename First, typename... Rest>                                                            \
+    constexpr bool test_name()                                                                                         \
     {                                                                                                                  \
         return predicate<First>::value && test_name<T, Rest...>();                                                     \
     }
+
 #define VX_TEMPLATE_ANY(test_name, predicate)                                                                          \
-    template <typename T> constexpr bool                                   test_name() { return false; }               \
-    template <typename T, typename First, typename... Rest> constexpr bool test_name()                                 \
+    template <typename T>                                                                                              \
+    constexpr bool test_name()                                                                                         \
+    {                                                                                                                  \
+        return false;                                                                                                  \
+    }                                                                                                                  \
+    template <typename T, typename First, typename... Rest>                                                            \
+    constexpr bool test_name()                                                                                         \
     {                                                                                                                  \
         return predicate<First>::value || test_name<T, Rest...>();                                                     \
     }
+
 #define VX_TEMPLATE_TCALL(test_name, arg) (test_name<std::nullptr_t, arg>())
 
-// Define a check for each platform
-#define VX_WINDOWING_GLFW
+// --------------------------------------
 
 #if defined(VX_WINDOWING_GLFW)
 // Key IDs
@@ -198,3 +247,5 @@
     #error Unsupported windowing platform
 
 #endif // VX_WINDOWING_GLFW
+
+// --------------------------------------

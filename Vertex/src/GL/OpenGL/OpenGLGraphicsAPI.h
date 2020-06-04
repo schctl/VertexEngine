@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     class OpenGLGraphicsAPI : public GraphicsAPI
     {
     public:
@@ -37,5 +36,4 @@ namespace Vertex
                            nullptr); // for now
         }
     };
-
 }

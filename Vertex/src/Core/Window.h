@@ -10,7 +10,6 @@
 
 namespace Vertex
 {
-
     class Window
     {
     public:
@@ -50,5 +49,4 @@ namespace Vertex
         {
         }
     };
-
 }

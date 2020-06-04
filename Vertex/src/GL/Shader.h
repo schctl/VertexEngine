@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     // Make definite shader types so the API is more consistent
     enum class ShaderDataType
     {
@@ -35,5 +34,4 @@ namespace Vertex
 
         static Shader* Create(const char* vertex_src, const char* fragment_src);
     };
-
 }

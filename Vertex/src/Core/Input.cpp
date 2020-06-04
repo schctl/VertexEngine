@@ -2,7 +2,6 @@
 
 namespace Vertex
 {
-
 #if defined(_WIN32)
     Input* Input::s_Instance = new WindowsInput();
 #elif defined(__linux__)
@@ -10,5 +9,4 @@ namespace Vertex
 #else
     #error Unsupported platform
 #endif
-
 }

@@ -2,7 +2,6 @@
 
 namespace Vertex
 {
-
     // -----------------------------------
     // ---------- Vertex Buffer ----------
     // -----------------------------------
@@ -44,5 +43,4 @@ namespace Vertex
     void OpenGLIndexBuffer::BeforeRender() { }
 
     void OpenGLIndexBuffer::AfterRender() { }
-
 }

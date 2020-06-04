@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     class Camera
     {
     public:
@@ -61,5 +60,4 @@ namespace Vertex
     private:
         void UpdateViewMatrix();
     };
-
 } // namespace Vertex

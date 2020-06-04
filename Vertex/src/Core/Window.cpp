@@ -8,7 +8,6 @@
 
 namespace Vertex
 {
-
     Window* Window::Create()
     {
 #if defined(_WIN32)
@@ -19,5 +18,4 @@ namespace Vertex
     #error Unsupported platform
 #endif
     }
-
 }

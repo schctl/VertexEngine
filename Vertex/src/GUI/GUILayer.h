@@ -19,7 +19,6 @@
 
 namespace Vertex
 {
-
     class VX_PUBLIC_API GUILayer : public Layer
     {
     public:
@@ -38,5 +37,4 @@ namespace Vertex
     private:
         float m_Time;
     };
-
 }

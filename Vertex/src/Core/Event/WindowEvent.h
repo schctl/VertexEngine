@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     class WindowEvent : public Event
     {
     public:

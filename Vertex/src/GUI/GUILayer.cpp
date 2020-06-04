@@ -159,5 +159,4 @@ namespace Vertex
             ImGui::End();
         }
     }
-
 }
