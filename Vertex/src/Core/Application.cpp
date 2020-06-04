@@ -20,7 +20,7 @@ namespace Vertex
         PushOverlay(m_GUILayer);
     }
 
-    Application::~Application() { CoreLogger::Debug("Application terminated successfully."); }
+    Application::~Application() { delete m_GUILayer; }
 
     void Application::OnEvent(Event& event)
     {

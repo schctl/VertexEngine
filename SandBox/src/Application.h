@@ -42,7 +42,14 @@ namespace SandBox
     class SandBoxApp : public Vertex::Application
     {
     public:
-        SandBoxApp() { PushLayer(new ExampleLayer()); }
-        ~SandBoxApp() { std::cout << "Application terminated." << std::endl; }
+        SandBoxApp()
+        {
+            m_ExampleLayer = new ExampleLayer();
+            PushLayer(m_ExampleLayer);
+        }
+        ~SandBoxApp() { Vertex::ClientLogger::Info("Terminated application."); }
+
+    private:
+        ExampleLayer* m_ExampleLayer;
     };
 }
