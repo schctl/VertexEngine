@@ -41,11 +41,9 @@
 
 #include "Core/Time/Time.h"
 
-#include "Core/Logger.h"
+#include "Logger/Logger.h"
 
 #include <imgui.h>
-
-#include "GUI/GUILayer.h"
 
 #include "Core/Renderer/Renderer.h"
 

@@ -43,6 +43,6 @@ namespace SandBox
     {
     public:
         SandBoxApp() { PushLayer(new ExampleLayer()); }
-        ~SandBoxApp() { }
+        ~SandBoxApp() { std::cout << "Application terminated." << std::endl; }
     };
 }

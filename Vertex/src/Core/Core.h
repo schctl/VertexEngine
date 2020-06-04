@@ -26,6 +26,7 @@
 #include <cassert>
 #include <chrono>
 #include <functional>
+#include <iostream>
 #include <map>
 #include <memory>
 #include <set>
@@ -33,6 +34,7 @@
 #include <tuple>
 #include <variant>
 #include <vector>
+
 
 #include <spdlog/fmt/fmt.h>
 
@@ -43,7 +45,7 @@
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 
-#include "Logger.h"
+#include "Logger/Logger.h"
 
 // --------------------------------------
 

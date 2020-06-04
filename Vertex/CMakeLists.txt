@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Vertex CXX)
 
+set(CMAKE_CXX_STANDARD 17)
+
 file(GLOB VX_SOURCES
     src/Core/*.cpp
     src/Core/Event/*.cpp
@@ -10,6 +12,7 @@ file(GLOB VX_SOURCES
     src/Core/Time/*.cpp
     src/GL/*.cpp
     src/GUI/*.cpp
+    src/Logger/*.cpp
     src/Window/*.cpp
 )
 
@@ -21,6 +24,7 @@ file(GLOB VX_HEADERS
     src/Core/Time/*.h
     src/GL/*.h
     src/GUI/*.h
+    src/Logger/*.h
     src/Window/*.h
     deps/glm/glm/*.hpp
 )
