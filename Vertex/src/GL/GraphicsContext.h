@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     class GraphicsContext
     {
         // // the this pointer from GraphicsContext::Render
@@ -20,5 +19,4 @@ namespace Vertex
 
         static GraphicsContext* Create(GLFWwindow* window_handle);
     };
-
 }

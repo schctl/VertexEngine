@@ -6,7 +6,6 @@
 
 namespace Vertex
 {
-
     class OpenGLContext : public GraphicsContext
     {
     public:
@@ -23,5 +22,4 @@ namespace Vertex
 
         bool m_NeedViewportUpdate;
     };
-
 }

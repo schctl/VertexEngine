@@ -2,7 +2,6 @@
 
 namespace Vertex
 {
-
     OpenGLContext::OpenGLContext(GLFWwindow* window) : m_WindowHandle(window)
     {
         VX_CORE_ASSERT(m_WindowHandle, "Window handle is null");
@@ -28,5 +27,4 @@ namespace Vertex
         m_CurrentHeight      = new_height;
         m_NeedViewportUpdate = true;
     }
-
 }

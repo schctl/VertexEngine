@@ -3,80 +3,45 @@ cmake_minimum_required(VERSION 3.16)
 project(Vertex CXX)
 
 file(GLOB_RECURSE VX_SOURCES
-        src/Core/*.cpp
-        src/Core/Layer/*.cpp
-        src/Renderer/*.cpp
-        src/GUI/*.cpp
-        src/Platforms/Common/*.h) # for now
+    src/Core/*.cpp
+    src/Core/Layer/*.cpp
+    src/Renderer/*.cpp
+    src/GUI/*.cpp
+    src/Platforms/Common/*.h # for now
+)
 
 file(GLOB_RECURSE VX_HEADERS
-        src/Core/*.h
-        src/Core/Layer/*.h
-        src/Renderer/*.h
-        src/GUI/*.h
-        src/Platforms/Common/*.cpp # for now
-
-        deps/glm/glm/*.hpp)
+    src/Core/*.h
+    src/Core/Layer/*.h
+    src/Renderer/*.h
+    src/GUI/*.h
+    src/Platforms/Common/*.cpp # for now
+    deps/glm/glm/*.hpp
+)
 
 file(GLOB VX_GL_SOURCES src/GL/*.cpp)
 file(GLOB VX_GL_HEADERS src/GL/*.h)
 
-# if ($ENV{USE_VK})
-#     file(GLOB_RECURSE VX_GRAPHICS_SOURCES src/GL/Vulkan/*.cpp)
-#     file(GLOB_RECURSE VX_GRAPHICS_HEADERS src/GL/Vulkan/*.h)
-# 
-#     set(IMGUI_IMPL_HEADERS
-#             deps/imgui/examples/imgui_impl_glfw.h
-#             deps/imgui/examples/imgui_impl_vulkan.h)
-#     set(IMGUI_IMPL_SOURCES
-#             deps/imgui/examples/imgui_impl_glfw.cpp
-#             deps/imgui/examples/imgui_impl_vulkan.cpp)
-# elseif ($ENV{USE_DX12})
-#     file(GLOB_RECURSE VX_GRAPHICS_SOURCES src/GL/DirectX12/*.cpp)
-#     file(GLOB_RECURSE VX_GRAPHICS_HEADERS src/GL/DirectX12/*.h)
-# 
-#     set(IMGUI_IMPL_HEADERS
-#             deps/imgui/examples/imgui_impl_glfw.h
-#             deps/imgui/examples/imgui_impl_dx12.h)
-#     set(IMGUI_IMPL_SOURCES
-#             deps/imgui/examples/imgui_impl_glfw.cpp
-#             deps/imgui/examples/imgui_impl_dx12.cpp)
-#
-# else () # OpenGL
-    file(GLOB_RECURSE VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
-    file(GLOB_RECURSE VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
+file(GLOB_RECURSE VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
+file(GLOB_RECURSE VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
 
-    set(IMGUI_IMPL_HEADERS
-            deps/imgui/examples/imgui_impl_glfw.h
-            deps/imgui/examples/imgui_impl_opengl3.h)
-    set(IMGUI_IMPL_SOURCES
-            deps/imgui/examples/imgui_impl_glfw.cpp
-            deps/imgui/examples/imgui_impl_opengl3.cpp)
-# endif ()
+set(IMGUI_IMPL_HEADERS
+        deps/imgui/examples/imgui_impl_glfw.h
+        deps/imgui/examples/imgui_impl_opengl3.h)
+set(IMGUI_IMPL_SOURCES
+        deps/imgui/examples/imgui_impl_glfw.cpp
+        deps/imgui/examples/imgui_impl_opengl3.cpp)
 
-# GLAD
 add_subdirectory(deps/glad)
-# ImGui
 add_subdirectory(deps/imgui)
 
 if (WIN32)
-    # Get all windows specific headers and sources in VX_PLATFORM_HEADERS and VX_PLATFORM_SOURCES
     file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Platforms/Windows/*.h)
     file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Platforms/Windows/*.cpp)
-
-    # add opengl/vulkan
-    # if ($ENV{USE_VK})
-    #     find_package(Vulkan REQUIRED) # Vulkan
-    #     set(GRAPHICS_LIB_INCLUDES ${Vulkan_INCLUDE_DIRS})
-    #     set(GRAPHICS_LIBS ${Vulkan_LIBRARIES})
-    # elseif ($ENV{USE_DX12})
-    #     set(GRAPHICS_LIB_INCLUDES deps/d3dx12)
-    #     set(GRAPHICS_LIBS d3d12 dxgi dxguid)
-    # else ()
-        find_package(OpenGL REQUIRED) # OpenGL
-        set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
-        set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
-    # endif ()
+    
+    find_package(OpenGL REQUIRED) # OpenGL
+    set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
+    set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
 
     add_subdirectory(deps/glfw)
 
@@ -87,16 +52,9 @@ elseif (UNIX AND NOT APPLE)
     file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Platforms/Linux/*.h)
     file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Platforms/Linux/*.cpp)
 
-    # find OpenGL and GLFW to get the include paths to use and libraries to link with
-    # if ($ENV{USE_VK})
-    #     find_package(Vulkan REQUIRED) # Vulkan
-    #     set(GRAPHICS_LIB_INCLUDES ${Vulkan_INCLUDE_DIRS})
-    #     set(GRAPHICS_LIBS ${Vulkan_LIBRARIES})
-    # else ()
-        find_package(OpenGL REQUIRED) # OpenGL
-        set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR})
-        set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
-    # endif ()
+    find_package(OpenGL REQUIRED) # OpenGL
+    set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR})
+    set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
 
     find_package(glfw3 REQUIRED)
     set(GLFW_LIBRARY glfw) # FindGLFW.cmake does not set this so we need to do it
@@ -106,32 +64,43 @@ elseif (UNIX AND NOT APPLE)
 
 else ()
     message(FATAL_ERROR Unsupported platform)
-
 endif ()
 
 add_library(Vertex STATIC
-        ${VX_HEADERS}
-        ${VX_SOURCES}
+    ${VX_HEADERS}
+    ${VX_SOURCES}
 
-        ${VX_GL_HEADERS}
-        ${VX_GL_SOURCES}
+    ${VX_GL_HEADERS}
+    ${VX_GL_SOURCES}
 
-        ${IMGUI_IMPL_HEADERS}
-        ${IMGUI_IMPL_SOURCES}
+    ${VX_GRAPHICS_HEADERS}
+    ${VX_GRAPHICS_SOURCES}
 
-        ${VX_PLATFORM_HEADERS}
-        ${VX_PLATFORM_SOURCES}
+    ${VX_PLATFORM_HEADERS}
+    ${VX_PLATFORM_SOURCES}
 
-        ${VX_GRAPHICS_HEADERS}
-        ${VX_GRAPHICS_SOURCES})
+
+    ${IMGUI_IMPL_HEADERS}
+    ${IMGUI_IMPL_SOURCES}
+)
+
+target_compile_definitions(Vertex PUBLIC VX_RENDER_API_OPENGL)
 
 # add the paths in PLATFORM_SPECIFIC_INCLUDES to Vertex's include directories
-target_include_directories(Vertex
-    PUBLIC src deps/spdlog/include deps/imgui deps/glm ${PLATFORM_SPECIFIC_INCLUDES})
+target_include_directories(Vertex PUBLIC
+    src
+    deps/spdlog/include
+    deps/imgui
+    deps/glm
+    ${PLATFORM_SPECIFIC_INCLUDES}
+)
 
 # use the libs specified above in PLATFORM_SPECIFIC_LIBS and glad
-target_link_libraries(Vertex
-    PUBLIC ${PLATFORM_SPECIFIC_LIBS} glad imgui)
+target_link_libraries(Vertex PUBLIC
+    ${PLATFORM_SPECIFIC_LIBS}
+    glad 
+    imgui
+)
 
 set_target_properties(Vertex PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(Vertex PROPERTIES PUBLIC_HEADER include/Vertex.h)
@@ -139,23 +108,17 @@ set_target_properties(Vertex PROPERTIES PUBLIC_HEADER include/Vertex.h)
 # this is going to be exported so we can use it in /CMakeLists.txt and /SandBox/CMakeLists.txt
 set(VX_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
-target_precompile_headers(Vertex PUBLIC src/Core/vx_pch.h)
+target_precompile_headers(Vertex PUBLIC src/Core/Core.h)
 
-# if ($ENV{USE_VK})
-#     target_compile_definitions(Vertex PUBLIC VX_RENDER_API_VULKAN)
-#
-# elseif ($ENV{USE_DX12})
-#     add_compile_definitions(VX_RENDER_API_DIRECTX12)
-#
-# else ()
-    target_compile_definitions(Vertex PRIVATE VX_BUILD_SHARED IMGUI_IMPL_OPENGL_LOADER_GLAD=1)
-    target_compile_definitions(Vertex PUBLIC VX_RENDER_API_OPENGL)
-# endif ()
+target_compile_definitions(Vertex PRIVATE
+    VX_BUILD_SHARED
+    IMGUI_IMPL_OPENGL_LOADER_GLAD=1
+)
 
 if ($ENV{VX_RELEASE})
     add_compile_definitions(NDEBUG)
 endif ()
 
 if ($ENV{CLION_IDE})
-    target_compile_options(Vertex PUBLIC -include Core/vx_pch.h)
+    target_compile_options(Vertex PUBLIC -include Core/Core.h)
 endif ()

@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     Application* Application::s_AppInstance = nullptr;
 
     Application::Application() : m_Running(true)
@@ -69,5 +68,4 @@ namespace Vertex
         m_Running = false;
         return true;
     }
-
 }

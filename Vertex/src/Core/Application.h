@@ -24,7 +24,6 @@ class GUILayer; // <- forward declare it to be accessible from application
 
 namespace Vertex
 {
-
     class VX_PUBLIC_API Application
     {
     public:
@@ -83,5 +82,4 @@ namespace Vertex
         // Application specific event callbacks
         bool OnWindowCloseEvent(WindowCloseEvent& event);
     };
-
 }

@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     class KeyEvent : public Event
     {
     public:
@@ -58,5 +57,4 @@ namespace Vertex
 
         inline std::string GetDetails() override { return fmt::format("EventTypes::KeyCharInput : Key<{0}>", m_Key); }
     };
-
 }

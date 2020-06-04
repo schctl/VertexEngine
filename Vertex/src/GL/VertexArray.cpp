@@ -5,7 +5,6 @@
 
 namespace Vertex
 {
-
     VertexArray* VertexArray::Create()
     {
 #if defined(VX_RENDER_API_OPENGL)
@@ -16,5 +15,4 @@ namespace Vertex
         return nullptr;
 #endif
     }
-
 }

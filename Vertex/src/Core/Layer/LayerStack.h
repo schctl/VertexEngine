@@ -6,7 +6,6 @@
 
 namespace Vertex
 {
-
     class LayerStack
     {
     public:
@@ -28,5 +27,4 @@ namespace Vertex
         std::vector<Layer*> m_Layers;
         uint16_t            m_NextLayerIndex = 0;
     };
-
 }

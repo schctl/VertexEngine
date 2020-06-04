@@ -5,7 +5,5 @@
 
 namespace Vertex
 {
-
     GraphicsAPI* GraphicsAPI::Create() { return new OpenGLGraphicsAPI(); }
-
 }

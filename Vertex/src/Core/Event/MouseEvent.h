@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     class MouseEvent : public Event
     {
     public:
@@ -82,5 +81,4 @@ namespace Vertex
     private:
         float m_PosX, m_PosY;
     };
-
 }

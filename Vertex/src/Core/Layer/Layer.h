@@ -7,7 +7,6 @@
 
 namespace Vertex
 {
-
     class VX_PUBLIC_API Layer
     {
     public:
@@ -27,5 +26,4 @@ namespace Vertex
     protected:
         const char* m_Name; // this is supposed to be used for debugging only
     };
-
 }

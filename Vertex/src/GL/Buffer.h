@@ -6,7 +6,6 @@
 
 namespace Vertex
 {
-
     // -----------------------------------
     // ---------- Buffer Layout ----------
     // -----------------------------------
@@ -97,5 +96,4 @@ namespace Vertex
 
         static IndexBuffer* Create(uint32_t* indices, size_t size);
     };
-
 }

@@ -5,7 +5,6 @@
 
 namespace Vertex
 {
-
     // helper functions
     const size_t GetSizeOfShaderDataType(ShaderDataType type)
     {
@@ -75,5 +74,4 @@ namespace Vertex
     {
         return new OpenGLShader(vertex_src, fragment_src);
     }
-
 }

@@ -9,7 +9,7 @@ Contributions are encouraged, however, discussing the proposed changes beforehan
 It is important for a healthy code base to have a consistent style through all internal code. This extends to design patterns as well as just the formatting of the code itself.
 
 ### Code formatting
-Vertex formatting is based on the [WebKit coding style](https://webkit.org/code-style-guidelines/) with a few exceptions (see `.clang-format`).
+Vertex formatting is based on a custom style, that can be described as most similar to [the WebKit coding style](https://webkit.org/code-style-guidelines/). A `clang-format` file is provided to automatically format the project files for you (clang-format should be installed in order to work).
 
 ### Patterns
 * Header files must have the `.h` extension.

@@ -25,5 +25,4 @@ namespace Vertex
 
         static GraphicsAPI* Create();
     };
-
 }
