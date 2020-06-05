@@ -54,10 +54,8 @@ namespace Vertex
         template <EventTypes T, typename EventTypeName, typename F>
         void Dispatch(F&& func)
         {
-            if (m_Event.GetEventType() == T && !m_Event.m_Handled)
-            {
+            if (m_Event.GetEventType() == T)
                 m_Event.m_Handled = func((EventTypeName&)m_Event);
-            }
         }
 
     private:

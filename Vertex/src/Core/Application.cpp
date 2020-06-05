@@ -24,8 +24,9 @@ namespace Vertex
 
     void Application::OnEvent(Event& event)
     {
-        EventHandler handler(event);
-        handler.Dispatch<EventTypes::WindowClose, WindowCloseEvent>(VX_BIND_FUNC_1(Application::OnWindowCloseEvent));
+        EventHandler<event.GetEventType()> handler(event);
+
+        handler.Dispatch<WindowCloseEvent>(VX_BIND_FUNC_1(Application::OnWindowCloseEvent));
 
         m_Window->OnEvent(event);
 
@@ -43,7 +44,7 @@ namespace Vertex
         while (m_Running)
         {
             m_DeltaTime = Time::GetTime() - m_LastFrameTime;
-            m_LastFrameTime += m_DeltaTime.GetSeconds();
+            m_LastFrameTime += m_DeltaTime.TotalSeconds();
 
             for (Layer* layer : m_LayerStack)
                 layer->OnUpdate(m_DeltaTime);

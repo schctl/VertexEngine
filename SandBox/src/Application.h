@@ -12,7 +12,6 @@ namespace SandBox
         ExampleLayer(const char* name = "Example Layer");
 
         void OnUpdate(Vertex::TimeDelta delta_time) override;
-        void OnEvent(Vertex::Event& event) override;
         void OnGUIRender() override;
 
     private:
@@ -33,10 +32,6 @@ namespace SandBox
 
         const float m_CameraSpeed         = 0.5f;
         const float m_CameraRotationSpeed = 30.0f;
-
-    private:
-        // event callbacks
-        bool OnKeyPressEvent(Vertex::KeyPressEvent& event);
     };
 
     class SandBoxApp : public Vertex::Application
@@ -47,7 +42,11 @@ namespace SandBox
             m_ExampleLayer = new ExampleLayer();
             PushLayer(m_ExampleLayer);
         }
-        ~SandBoxApp() { Vertex::ClientLogger::Info("Terminated application."); }
+        ~SandBoxApp()
+        {
+            delete m_ExampleLayer;
+            Vertex::ClientLogger::Info("Terminated application.");
+        }
 
     private:
         ExampleLayer* m_ExampleLayer;

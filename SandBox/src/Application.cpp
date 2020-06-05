@@ -2,7 +2,6 @@
 
 namespace SandBox
 {
-
     ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */)
         : Layer(name), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
@@ -100,18 +99,18 @@ namespace SandBox
     void ExampleLayer::OnUpdate(Vertex::TimeDelta delta_time)
     {
         if (Vertex::Input::IsKeyPressed(VX_KEY_W))
-            m_CameraPosition.y -= m_CameraSpeed * delta_time.GetSeconds();
+            m_CameraPosition.y -= m_CameraSpeed * delta_time.TotalSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_S))
-            m_CameraPosition.y += m_CameraSpeed * delta_time.GetSeconds();
+            m_CameraPosition.y += m_CameraSpeed * delta_time.TotalSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_A))
-            m_CameraPosition.x -= m_CameraSpeed * delta_time.GetSeconds();
+            m_CameraPosition.x -= m_CameraSpeed * delta_time.TotalSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_D))
-            m_CameraPosition.x += m_CameraSpeed * delta_time.GetSeconds();
+            m_CameraPosition.x += m_CameraSpeed * delta_time.TotalSeconds();
 
         if (Vertex::Input::IsKeyPressed(VX_KEY_Q))
-            m_CameraRotation += m_CameraRotationSpeed * delta_time.GetSeconds();
+            m_CameraRotation += m_CameraRotationSpeed * delta_time.TotalSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_E))
-            m_CameraRotation -= m_CameraRotationSpeed * delta_time.GetSeconds();
+            m_CameraRotation -= m_CameraRotationSpeed * delta_time.TotalSeconds();
 
         m_Camera.SetPosition(m_CameraPosition);
         m_Camera.SetRotation(m_CameraRotation);
@@ -126,16 +125,14 @@ namespace SandBox
         Vertex::Renderer::EndScene();
     }
 
-    void ExampleLayer::OnEvent(Vertex::Event& event) { }
-
     void ExampleLayer::OnGUIRender()
     {
         ImGui::Begin("Renderer");
         ImGui::Text(Vertex::Renderer::GetRendererInfo().c_str());
         ImGui::End();
-    }
 
-    bool ExampleLayer::OnKeyPressEvent(Vertex::KeyPressEvent& event) { return false; }
+        ImGui::ShowDemoWindow();
+    }
 }
 
 Vertex::Application* Vertex::CreateApplication()

@@ -35,7 +35,6 @@
 #include <variant>
 #include <vector>
 
-
 #include <spdlog/fmt/fmt.h>
 
 #include <glad/glad.h>
@@ -48,6 +47,8 @@
 #include "Logger/Logger.h"
 
 // --------------------------------------
+
+#define FLAG_ID(x) 1 << x
 
 #define VX_BIND_FUNC_0(x) std::bind(&x, this)
 #define VX_BIND_FUNC_1(x) std::bind(&x, this, std::placeholders::_1)
