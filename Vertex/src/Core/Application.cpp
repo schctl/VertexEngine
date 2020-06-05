@@ -6,11 +6,11 @@ namespace Vertex
 {
     Application* Application::s_AppInstance = nullptr;
 
-    Application::Application() : m_Running(true)
+    Application::Application(const char* name) : m_Running(true)
     {
         VX_CORE_ASSERT((!s_AppInstance), "Application cannot be instantiated twice!");
 
-        m_Window.reset(Window::Create());
+        m_Window.reset(Window::Create({ name }));
 
         m_Window->SetEventCallback(VX_BIND_FUNC_1(Application::OnEvent));
 
@@ -24,11 +24,9 @@ namespace Vertex
 
     void Application::OnEvent(Event& event)
     {
-        EventHandler<event.GetEventType()> handler(event);
+        EventHandler handler(event);
 
         handler.Dispatch<WindowCloseEvent>(VX_BIND_FUNC_1(Application::OnWindowCloseEvent));
-
-        m_Window->OnEvent(event);
 
         for (std::vector<Layer*>::iterator it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {

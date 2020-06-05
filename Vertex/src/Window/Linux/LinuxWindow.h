@@ -8,7 +8,6 @@
 
 namespace Vertex
 {
-
     class LinuxWindow : public Window
     {
     public:
@@ -16,7 +15,6 @@ namespace Vertex
         ~LinuxWindow();
 
         void OnUpdate(TimeDelta delta_time) override;
-        void OnEvent(Event& event) override;
 
         unsigned int GetWidth() const override { return m_Data.width; }
         unsigned int GetHeight() const override { return m_Data.height; }
@@ -44,9 +42,6 @@ namespace Vertex
 
     private:
         void ShutDown();
-
-        // event callbacks
-        bool OnWindowResizeEvent(WindowResizeEvent& event);
     };
 
 }

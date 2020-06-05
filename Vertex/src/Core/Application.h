@@ -27,7 +27,7 @@ namespace Vertex
     class VX_PUBLIC_API Application
     {
     public:
-        Application();
+        Application(const char* name = "VertexEngine");
         ~Application();
 
         inline Window& GetWindow() { return *m_Window; }
@@ -65,21 +65,19 @@ namespace Vertex
     private:
         std::shared_ptr<Window> m_Window;
 
-        /// We want this variable since the application might close for multiple reasons
-        bool m_Running;
-
         LayerStack m_LayerStack;
-
-        GUILayer* m_GUILayer;
+        GUILayer*  m_GUILayer;
 
         TimeDelta m_DeltaTime     = 0.0f;
         float     m_LastFrameTime = 0.0f;
 
-        /// Application is a singleton class
-        static Application* s_AppInstance;
+        bool m_Running;
 
     private:
         // Application specific event callbacks
         bool OnWindowCloseEvent(WindowCloseEvent& event);
+
+    private:
+        static Application* s_AppInstance;
     };
 }

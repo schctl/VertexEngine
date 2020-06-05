@@ -137,5 +137,5 @@ namespace SandBox
 
 Vertex::Application* Vertex::CreateApplication()
 {
-    return new SandBox::SandBoxApp();
+    return new SandBox::SandBoxApp("SandBoxApp");
 }

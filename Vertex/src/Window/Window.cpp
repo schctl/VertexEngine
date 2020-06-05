@@ -8,12 +8,12 @@
 
 namespace Vertex
 {
-    Window* Window::Create()
+    Window* Window::Create(const WindowProperties properties)
     {
 #if defined(_WIN32)
-        return new WindowsWindow();
+        return new WindowsWindow(properties);
 #elif defined(__linux__)
-        return new LinuxWindow();
+        return new LinuxWindow(properties);
 #endif
     }
 }

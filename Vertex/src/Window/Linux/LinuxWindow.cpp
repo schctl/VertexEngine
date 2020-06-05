@@ -6,7 +6,6 @@
 
 namespace Vertex
 {
-
     static bool s_GLFW_Initialized = false;
 
     static void GLFWErrorCallback(int error, const char* description)
@@ -214,18 +213,4 @@ namespace Vertex
         glfwPollEvents();
         m_Context->SwapBuffers();
     }
-
-    void LinuxWindow::OnEvent(Event& event)
-    {
-        EventHandler handler(event);
-        handler.Dispatch<EventTypes::WindowResize, WindowResizeEvent>(VX_BIND_FUNC_1(LinuxWindow::OnWindowResizeEvent));
-    }
-
-    // event callbacks
-    bool LinuxWindow::OnWindowResizeEvent(WindowResizeEvent& event)
-    {
-        m_Context->NotifyResize(event.GetWidth(), event.GetHeight());
-        return false; // <- for now
-    }
-
 }

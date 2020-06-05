@@ -37,7 +37,7 @@ namespace SandBox
     class SandBoxApp : public Vertex::Application
     {
     public:
-        SandBoxApp()
+        SandBoxApp(const char* name) : Vertex::Application(name)
         {
             m_ExampleLayer = new ExampleLayer();
             PushLayer(m_ExampleLayer);
