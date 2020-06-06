@@ -50,6 +50,8 @@
 
 #define FLAG_ID(x) 1 << x
 
+#define RAW_TO_STRING(x) #x
+
 #define VX_BIND_FUNC_0(x) std::bind(&x, this)
 #define VX_BIND_FUNC_1(x) std::bind(&x, this, std::placeholders::_1)
 

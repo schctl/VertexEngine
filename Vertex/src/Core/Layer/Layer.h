@@ -19,7 +19,7 @@ namespace Vertex
         virtual void OnUpdate(TimeDelta delta_time) { }
         virtual void OnEvent(Event& event) { }
 
-        virtual void OnGUIRender() { }
+        virtual void OnGUIRender(TimeDelta delta_time) { }
 
         inline const char* GetName() { return m_Name; }
 

@@ -12,7 +12,7 @@ namespace SandBox
         ExampleLayer(const char* name = "Example Layer");
 
         void OnUpdate(Vertex::TimeDelta delta_time) override;
-        void OnGUIRender() override;
+        void OnGUIRender(Vertex::TimeDelta delta_time) override;
 
     private:
         std::shared_ptr<Vertex::Shader> m_Shader;

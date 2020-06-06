@@ -51,12 +51,12 @@ namespace Vertex
     public:
         EventHandler(Event& event) : m_Event(event) { }
 
-        template <typename EventTypeName, typename F>
+        template <class EventType, typename F>
         void Dispatch(F&& func)
         {
             try
             {
-                m_Event.m_Handled = func(dynamic_cast<EventTypeName&>(m_Event));
+                m_Event.m_Handled = func(dynamic_cast<EventType&>(m_Event));
             }
             catch (...)
             {

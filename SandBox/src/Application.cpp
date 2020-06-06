@@ -125,13 +125,12 @@ namespace SandBox
         Vertex::Renderer::EndScene();
     }
 
-    void ExampleLayer::OnGUIRender()
+    void ExampleLayer::OnGUIRender(Vertex::TimeDelta delta_time)
     {
         ImGui::Begin("Renderer");
         ImGui::Text(Vertex::Renderer::GetRendererInfo().c_str());
+        ImGui::Text("\n %.0f", (1.0f / delta_time.TotalSeconds()));
         ImGui::End();
-
-        ImGui::ShowDemoWindow();
     }
 }
 
