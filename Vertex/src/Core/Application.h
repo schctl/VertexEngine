@@ -11,9 +11,9 @@ class GUILayer; // <- forward declare it to be accessible from application
 
 #include "GUI/GUILayer.h"
 
-#include "Platforms/Common/GLFW/Time/Time.h"
+#include "Time/Time.h"
 
-#include "Window.h"
+#include "Window/Window.h"
 
 #include "GL/Buffer.h"
 #include "GL/Shader.h"
@@ -27,7 +27,7 @@ namespace Vertex
     class VX_PUBLIC_API Application
     {
     public:
-        Application();
+        Application(const char* name = "VertexEngine");
         ~Application();
 
         inline Window& GetWindow() { return *m_Window; }
@@ -65,21 +65,21 @@ namespace Vertex
     private:
         std::shared_ptr<Window> m_Window;
 
-        /// We want this variable since the application might close for multiple reasons
-        bool m_Running;
-
         LayerStack m_LayerStack;
-
-        GUILayer* m_GUILayer;
+        GUILayer*  m_GUILayer;
 
         TimeDelta m_DeltaTime     = 0.0f;
         float     m_LastFrameTime = 0.0f;
 
-        /// Application is a singleton class
-        static Application* s_AppInstance;
+        bool m_Running;
+        bool m_Minimized;
 
     private:
         // Application specific event callbacks
-        bool OnWindowCloseEvent(WindowCloseEvent& event);
+        bool OnWindowClose(WindowCloseEvent& event);
+        bool OnWindowResize(WindowResizeEvent& event);
+
+    private:
+        static Application* s_AppInstance;
     };
 }

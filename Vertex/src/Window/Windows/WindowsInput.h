@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Input.h"
+#include "Window/Input.h"
 
 #include "Core/Application.h"
 

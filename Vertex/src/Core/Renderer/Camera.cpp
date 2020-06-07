@@ -13,9 +13,18 @@ namespace Vertex
 
     void OrthographicCamera2D::UpdateViewMatrix()
     {
-        m_ViewMatrix = glm::inverse(glm::rotate(glm::translate(glm::mat4(1.0f), m_Position), glm::radians(m_Rotation),
-                                                glm::vec3(0.0f, 0.0f, 1.0f)));
+        // clang-format off
+
+        m_ViewMatrix = glm::inverse(
+                            glm::rotate(
+                                glm::translate (glm::mat4(1.0f), m_Position),
+                                glm::radians   (m_Rotation),
+                                glm::vec3      (0.0f, 0.0f, 1.0f)
+                            )
+                        );
 
         m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
+
+        // clang-format on
     }
 } // namespace Vertex

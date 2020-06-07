@@ -2,7 +2,6 @@
 
 namespace SandBox
 {
-
     ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */)
         : Layer(name), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
@@ -100,18 +99,18 @@ namespace SandBox
     void ExampleLayer::OnUpdate(Vertex::TimeDelta delta_time)
     {
         if (Vertex::Input::IsKeyPressed(VX_KEY_W))
-            m_CameraPosition.y -= m_CameraSpeed * delta_time.GetSeconds();
+            m_CameraPosition.y -= m_CameraSpeed * delta_time.TotalSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_S))
-            m_CameraPosition.y += m_CameraSpeed * delta_time.GetSeconds();
+            m_CameraPosition.y += m_CameraSpeed * delta_time.TotalSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_A))
-            m_CameraPosition.x -= m_CameraSpeed * delta_time.GetSeconds();
+            m_CameraPosition.x -= m_CameraSpeed * delta_time.TotalSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_D))
-            m_CameraPosition.x += m_CameraSpeed * delta_time.GetSeconds();
+            m_CameraPosition.x += m_CameraSpeed * delta_time.TotalSeconds();
 
         if (Vertex::Input::IsKeyPressed(VX_KEY_Q))
-            m_CameraRotation += m_CameraRotationSpeed * delta_time.GetSeconds();
+            m_CameraRotation += m_CameraRotationSpeed * delta_time.TotalSeconds();
         if (Vertex::Input::IsKeyPressed(VX_KEY_E))
-            m_CameraRotation -= m_CameraRotationSpeed * delta_time.GetSeconds();
+            m_CameraRotation -= m_CameraRotationSpeed * delta_time.TotalSeconds();
 
         m_Camera.SetPosition(m_CameraPosition);
         m_Camera.SetRotation(m_CameraRotation);
@@ -124,14 +123,21 @@ namespace SandBox
         Vertex::Renderer::Submit(m_VertexArray2, m_Shader);
 
         Vertex::Renderer::EndScene();
+
+        m_AvgFrameRate = (m_AvgFrameRate == 0) ? (1.0f / delta_time.TotalSeconds())
+                                               : (m_AvgFrameRate + (1.0f / delta_time.TotalSeconds())) / 2;
     }
 
-    void ExampleLayer::OnEvent(Vertex::Event& event) { }
-
-    bool ExampleLayer::OnKeyPressEvent(Vertex::KeyPressEvent& event) { return false; }
+    void ExampleLayer::OnGUIRender(Vertex::TimeDelta delta_time)
+    {
+        ImGui::Begin("Renderer");
+        ImGui::Text(Vertex::Renderer::GetRendererInfo().c_str());
+        ImGui::Text("\n %.2f", m_AvgFrameRate);
+        ImGui::End();
+    }
 }
 
 Vertex::Application* Vertex::CreateApplication()
 {
-    return new SandBox::SandBoxApp();
+    return new SandBox::SandBoxApp("SandBoxApp");
 }

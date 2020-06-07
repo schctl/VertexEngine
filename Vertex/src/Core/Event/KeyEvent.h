@@ -24,8 +24,9 @@ namespace Vertex
 
         inline int GetRepeatCount() { return m_RepeatCount; }
 
-        inline EventTypes  GetEventType() override { return EventTypes::KeyPress; }
-        inline const char* GetEventName() override { return "EventTypes::KeyPress"; }
+        inline EventTypes        GetEventType() override { return EventTypes::KeyPress; }
+        inline static EventTypes StaticEventType() { return EventTypes::KeyPress; }
+        inline const char*       GetEventName() override { return "EventTypes::KeyPress"; }
 
         inline std::string GetDetails() override
         {
@@ -41,8 +42,9 @@ namespace Vertex
     public:
         KeyReleaseEvent(int key) : KeyEvent(key) { }
 
-        inline EventTypes  GetEventType() override { return EventTypes::KeyRelease; }
-        inline const char* GetEventName() override { return "EventTypes::KeyRelease"; }
+        inline EventTypes        GetEventType() override { return EventTypes::KeyRelease; }
+        inline static EventTypes StaticEventType() { return EventTypes::KeyRelease; }
+        inline const char*       GetEventName() override { return "EventTypes::KeyRelease"; }
 
         inline std::string GetDetails() override { return fmt::format("KeyReleaseEvent : Key<{0}>", m_Key); }
     };
@@ -52,8 +54,9 @@ namespace Vertex
     public:
         KeyCharInputEvent(int key) : KeyEvent(key) { }
 
-        inline EventTypes  GetEventType() override { return EventTypes::KeyCharInput; }
-        inline const char* GetEventName() override { return "EventTypes::KeyCharInput"; }
+        inline EventTypes        GetEventType() override { return EventTypes::KeyCharInput; }
+        inline static EventTypes StaticEventType() { return EventTypes::KeyCharInput; }
+        inline const char*       GetEventName() override { return "EventTypes::KeyCharInput"; }
 
         inline std::string GetDetails() override { return fmt::format("EventTypes::KeyCharInput : Key<{0}>", m_Key); }
     };

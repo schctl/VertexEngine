@@ -4,6 +4,13 @@
 
 namespace Vertex
 {
+    enum class EventCategories
+    {
+        WindowEvent,
+        KeyEvent,
+        MouseEvent
+    };
+
     enum class EventTypes
     {
         WindowResize,
@@ -21,13 +28,6 @@ namespace Vertex
         MouseRelease,
         MouseScroll,
         MouseMove
-    };
-
-    enum class EventCategories
-    {
-        WindowEvent,
-        KeyEvent,
-        MouseEvent
     };
 
     class VX_PUBLIC_API Event
@@ -51,12 +51,17 @@ namespace Vertex
     public:
         EventHandler(Event& event) : m_Event(event) { }
 
-        template <EventTypes T, typename EventTypeName, typename F>
+        template <class EventType, typename F>
         void Dispatch(F&& func)
         {
-            if (m_Event.GetEventType() == T && !m_Event.m_Handled)
+            // if (m_Event.GetEventType() == EventType::StaticEventType())
+            //     m_Event.m_Handled = func((EventType&)(m_Event));
+            try
             {
-                m_Event.m_Handled = func((EventTypeName&)m_Event);
+                m_Event.m_Handled = func(dynamic_cast<EventType&>(m_Event));
+            }
+            catch (...)
+            {
             }
         }
 

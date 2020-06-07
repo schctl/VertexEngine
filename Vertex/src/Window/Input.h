@@ -28,6 +28,3 @@ namespace Vertex
         static Input* s_Instance;
     };
 }
-
-#include "Platforms/Linux/LinuxInput.h"
-#include "Platforms/Windows/WindowsInput.h"

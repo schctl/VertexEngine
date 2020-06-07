@@ -37,15 +37,14 @@
 #include "Core/Event/MouseEvent.h"
 #include "Core/Event/WindowEvent.h"
 
-#include "Core/Input.h"
-#include "Platforms/Common/GLFW/Time/Time.h"
+#include "Window/Input.h"
 
-#include "Core/Logger.h"
+#include "Core/Time/Time.h"
+
+#include "Logger/Logger.h"
 
 #include <imgui.h>
 
-#include "GUI/GUILayer.h"
-
-#include "Renderer/Renderer.h"
+#include "Core/Renderer/Renderer.h"
 
 #include "GL/OpenGL/OpenGLShader.h" // very temporary

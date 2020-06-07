@@ -6,17 +6,13 @@
 
 namespace SandBox
 {
-
     class ExampleLayer : public Vertex::Layer
     {
     public:
         ExampleLayer(const char* name = "Example Layer");
 
         void OnUpdate(Vertex::TimeDelta delta_time) override;
-        void OnEvent(Vertex::Event& event) override;
-        void OnGUIRender() override
-        { /* Vertex::ImGuiLayer::ShowRendererInfo(&m_ShowRendererInfo); */
-        }
+        void OnGUIRender(Vertex::TimeDelta delta_time) override;
 
     private:
         std::shared_ptr<Vertex::Shader> m_Shader;
@@ -37,18 +33,24 @@ namespace SandBox
         const float m_CameraSpeed         = 0.5f;
         const float m_CameraRotationSpeed = 30.0f;
 
-        bool m_ShowRendererInfo = true;
-
-    private:
-        // event callbacks
-        bool OnKeyPressEvent(Vertex::KeyPressEvent& event);
+        float m_AvgFrameRate;
     };
 
     class SandBoxApp : public Vertex::Application
     {
     public:
-        SandBoxApp() { PushLayer(new ExampleLayer()); }
-        ~SandBoxApp() { }
-    };
+        SandBoxApp(const char* name) : Vertex::Application(name)
+        {
+            m_ExampleLayer = new ExampleLayer();
+            PushLayer(m_ExampleLayer);
+        }
+        ~SandBoxApp()
+        {
+            delete m_ExampleLayer;
+            Vertex::ClientLogger::Info("Terminated application.");
+        }
 
+    private:
+        ExampleLayer* m_ExampleLayer;
+    };
 }

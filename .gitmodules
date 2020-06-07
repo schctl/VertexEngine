@@ -9,4 +9,4 @@
 	url = https://github.com/g-truc/glm
 [submodule "Vertex/deps/glfw"]
 	path = Vertex/deps/glfw
-	url = https://github.com/VertexEngine/glfw
+	url = https://github.com/glfw/glfw

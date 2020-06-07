@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Core/Window.h"
+#include "Window/Window.h"
 
-#include "Core/Input.h"
+#include "Window/Input.h"
+
 #include "WindowsInput.h"
 
 namespace Vertex
@@ -15,7 +16,6 @@ namespace Vertex
         ~WindowsWindow();
 
         void OnUpdate(TimeDelta delta_time) override;
-        void OnEvent(Event& event) override;
 
         unsigned int GetWidth() const override { return m_Data.width; }
         unsigned int GetHeight() const override { return m_Data.height; }
@@ -43,9 +43,6 @@ namespace Vertex
 
     private:
         void ShutDown();
-
-        // event callbacks
-        bool OnWindowResizeEvent(WindowResizeEvent& event);
     };
 
 }

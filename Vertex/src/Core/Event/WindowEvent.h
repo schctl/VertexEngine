@@ -18,8 +18,9 @@ namespace Vertex
         inline unsigned int GetWidth() { return m_Width; }
         inline unsigned int GetHeight() { return m_Height; }
 
-        inline EventTypes  GetEventType() override { return EventTypes::WindowResize; }
-        inline const char* GetEventName() override { return "EventTypes::WindowResize"; }
+        inline EventTypes        GetEventType() override { return EventTypes::WindowResize; }
+        inline static EventTypes StaticEventType() { return EventTypes::WindowResize; }
+        inline const char*       GetEventName() override { return "EventTypes::WindowResize"; }
 
         inline std::string GetDetails() override
         {
@@ -35,8 +36,9 @@ namespace Vertex
     public:
         WindowCloseEvent() { }
 
-        inline EventTypes  GetEventType() override { return EventTypes::WindowClose; }
-        inline const char* GetEventName() override { return "EventTypes::WindowClose"; }
+        inline EventTypes        GetEventType() override { return EventTypes::WindowClose; }
+        inline static EventTypes StaticEventType() { return EventTypes::WindowClose; }
+        inline const char*       GetEventName() override { return "EventTypes::WindowClose"; }
 
         inline std::string GetDetails() override { return "WindowCloseEvent"; }
     };
@@ -46,8 +48,9 @@ namespace Vertex
     public:
         WindowGainedFocusEvent() { }
 
-        inline EventTypes  GetEventType() override { return EventTypes::WindowGainedFocus; }
-        inline const char* GetEventName() override { return "EventTypes::WindowGainedFocus"; }
+        inline EventTypes        GetEventType() override { return EventTypes::WindowGainedFocus; }
+        inline static EventTypes StaticEventType() { return EventTypes::WindowGainedFocus; }
+        inline const char*       GetEventName() override { return "EventTypes::WindowGainedFocus"; }
 
         inline std::string GetDetails() override { return "WindowGainedFocusEvent"; }
     };
@@ -57,8 +60,9 @@ namespace Vertex
     public:
         WindowLostFocusEvent() { }
 
-        inline EventTypes  GetEventType() override { return EventTypes::WindowLostFocus; }
-        inline const char* GetEventName() override { return "EventTypes::WindowLostFocus"; }
+        inline EventTypes        GetEventType() override { return EventTypes::WindowLostFocus; }
+        inline static EventTypes StaticEventType() { return EventTypes::WindowLostFocus; }
+        inline const char*       GetEventName() override { return "EventTypes::WindowLostFocus"; }
 
         inline std::string GetDetails() override { return "WindowLostFocusEvent"; }
     };
@@ -68,8 +72,9 @@ namespace Vertex
     public:
         WindowCursorEnteredEvent() { }
 
-        inline EventTypes  GetEventType() override { return EventTypes::WindowCursorEntered; }
-        inline const char* GetEventName() override { return "EventTypes::WindowCursorEntered"; }
+        inline EventTypes        GetEventType() override { return EventTypes::WindowCursorEntered; }
+        inline static EventTypes StaticEventType() { return EventTypes::WindowCursorEntered; }
+        inline const char*       GetEventName() override { return "EventTypes::WindowCursorEntered"; }
 
         inline std::string GetDetails() override { return "WindowCursorEnteredEvent"; }
     };
@@ -79,8 +84,9 @@ namespace Vertex
     public:
         WindowCursorLeftEvent() { }
 
-        inline EventTypes  GetEventType() override { return EventTypes::WindowCursorLeft; }
-        inline const char* GetEventName() override { return "EventTypes::WindowCursorLeft"; }
+        inline EventTypes        GetEventType() override { return EventTypes::WindowCursorLeft; }
+        inline static EventTypes StaticEventType() { return EventTypes::WindowCursorLeft; }
+        inline const char*       GetEventName() override { return "EventTypes::WindowCursorLeft"; }
 
         inline std::string GetDetails() override { return "WindowCursorLeftEvent"; }
     };

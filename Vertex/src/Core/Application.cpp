@@ -6,11 +6,11 @@ namespace Vertex
 {
     Application* Application::s_AppInstance = nullptr;
 
-    Application::Application() : m_Running(true)
+    Application::Application(const char* name) : m_Running(true), m_Minimized(false)
     {
         VX_CORE_ASSERT((!s_AppInstance), "Application cannot be instantiated twice!");
 
-        m_Window.reset(Window::Create());
+        m_Window.reset(Window::Create({ name }));
 
         m_Window->SetEventCallback(VX_BIND_FUNC_1(Application::OnEvent));
 
@@ -20,14 +20,14 @@ namespace Vertex
         PushOverlay(m_GUILayer);
     }
 
-    Application::~Application() { CoreLogger::Debug("Application terminated successfully."); }
+    Application::~Application() { delete m_GUILayer; }
 
     void Application::OnEvent(Event& event)
     {
         EventHandler handler(event);
-        handler.Dispatch<EventTypes::WindowClose, WindowCloseEvent>(VX_BIND_FUNC_1(Application::OnWindowCloseEvent));
 
-        m_Window->OnEvent(event);
+        handler.Dispatch<WindowCloseEvent>(VX_BIND_FUNC_1(Application::OnWindowClose));
+        handler.Dispatch<WindowResizeEvent>(VX_BIND_FUNC_1(Application::OnWindowResize));
 
         for (std::vector<Layer*>::iterator it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {
@@ -43,7 +43,7 @@ namespace Vertex
         while (m_Running)
         {
             m_DeltaTime = Time::GetTime() - m_LastFrameTime;
-            m_LastFrameTime += m_DeltaTime.GetSeconds();
+            m_LastFrameTime += m_DeltaTime.TotalSeconds();
 
             for (Layer* layer : m_LayerStack)
                 layer->OnUpdate(m_DeltaTime);
@@ -51,7 +51,7 @@ namespace Vertex
             m_GUILayer->Begin();
 
             for (Layer* layer : m_LayerStack)
-                layer->OnGUIRender();
+                layer->OnGUIRender(m_DeltaTime);
 
             m_GUILayer->End();
 
@@ -63,9 +63,24 @@ namespace Vertex
     }
 
     // Application specific event callbacks
-    bool Application::OnWindowCloseEvent(WindowCloseEvent& event)
+    bool Application::OnWindowClose(WindowCloseEvent& event)
     {
         m_Running = false;
         return true;
+    }
+
+    bool Application::OnWindowResize(WindowResizeEvent& event)
+    {
+        if (event.GetWidth() == 0 || event.GetHeight() == 0)
+        {
+            m_Minimized = true;
+            return false;
+        }
+
+        m_Minimized = false;
+
+        Renderer::NotifyResize(event.GetWidth(), event.GetHeight());
+
+        return false;
     }
 }

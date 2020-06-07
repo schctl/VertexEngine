@@ -24,10 +24,22 @@ namespace Vertex
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
+        inline void SetViewport(uint32_t x, uint32_t y, uint32_t w, uint32_t h) const override
+        {
+            glViewport(x, y, w, h);
+        }
+
         inline std::string GetRendererInfo() const override
         {
-            return fmt::format("Rendering API: OpenGL {0}\nRenderer: {1}\nVendored by: {2}", glGetString(GL_VERSION),
-                               glGetString(GL_RENDERER), glGetString(GL_VENDOR));
+            // clang-format off
+
+            return fmt::format("Rendering API: OpenGL {0}\nRenderer: {1}\nVendored by: {2}",
+                                glGetString ( GL_VERSION  ),
+                                glGetString ( GL_RENDERER ),
+                                glGetString (  GL_VENDOR  )
+            );
+
+            // clang-format on
         }
 
         inline void DrawIndexed(std::shared_ptr<VertexArray> vertex_array) override

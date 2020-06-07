@@ -6,16 +6,33 @@
 
 #include "GL/GraphicsContext.h"
 
-#include "Platforms/Common/GLFW/Time/Time.h"
+#include "Core/Time/Time.h"
+
+#include "Input.h"
 
 namespace Vertex
 {
+    // utility class
+    struct WindowProperties
+    {
+        bool         v_sync;
+        const char*  title;
+        unsigned int width, height;
+
+        std::function<void(Event&)> event_callback;
+
+        WindowProperties(const char* _title = "VertexEngine", unsigned int _width = 1024, unsigned int _height = 576,
+                         bool _v_sync = true)
+            : title(_title), width(_width), height(_height), v_sync(_v_sync)
+        {
+        }
+    };
+
     class Window
     {
     public:
         virtual ~Window()                           = default;
         virtual void OnUpdate(TimeDelta delta_time) = 0;
-        virtual void OnEvent(Event& event)          = 0;
 
         virtual unsigned int GetWidth() const  = 0;
         virtual unsigned int GetHeight() const = 0;
@@ -31,22 +48,6 @@ namespace Vertex
 
         virtual GraphicsContext& GetGraphicsContext() const = 0;
 
-        static Window* Create();
-    };
-
-    // utility class
-    struct WindowProperties
-    {
-        bool         v_sync;
-        const char*  title;
-        unsigned int width, height;
-
-        std::function<void(Event&)> event_callback;
-
-        WindowProperties(const char* _title = "Vertex", unsigned int _width = 1024, unsigned int _height = 576,
-                         bool _v_sync = true)
-            : title(_title), width(_width), height(_height), v_sync(_v_sync)
-        {
-        }
+        static Window* Create(const WindowProperties properties = WindowProperties());
     };
 }
