@@ -72,10 +72,12 @@ namespace Vertex
         float     m_LastFrameTime = 0.0f;
 
         bool m_Running;
+        bool m_Minimized;
 
     private:
         // Application specific event callbacks
-        bool OnWindowCloseEvent(WindowCloseEvent& event);
+        bool OnWindowClose(WindowCloseEvent& event);
+        bool OnWindowResize(WindowResizeEvent& event);
 
     private:
         static Application* s_AppInstance;

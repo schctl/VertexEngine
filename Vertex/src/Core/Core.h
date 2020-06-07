@@ -100,6 +100,7 @@
 // --------------------------------------
 
 #if defined(VX_WINDOWING_GLFW)
+
 // Key IDs
 // From glfw3.h
 
