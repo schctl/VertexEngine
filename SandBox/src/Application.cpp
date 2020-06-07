@@ -123,13 +123,16 @@ namespace SandBox
         Vertex::Renderer::Submit(m_VertexArray2, m_Shader);
 
         Vertex::Renderer::EndScene();
+
+        m_AvgFrameRate = (m_AvgFrameRate == 0) ? (1.0f / delta_time.TotalSeconds())
+                                               : (m_AvgFrameRate + (1.0f / delta_time.TotalSeconds())) / 2;
     }
 
     void ExampleLayer::OnGUIRender(Vertex::TimeDelta delta_time)
     {
         ImGui::Begin("Renderer");
         ImGui::Text(Vertex::Renderer::GetRendererInfo().c_str());
-        ImGui::Text("\n %.0f", (1.0f / delta_time.TotalSeconds()));
+        ImGui::Text("\n %.2f", m_AvgFrameRate);
         ImGui::End();
     }
 }

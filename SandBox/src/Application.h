@@ -32,6 +32,8 @@ namespace SandBox
 
         const float m_CameraSpeed         = 0.5f;
         const float m_CameraRotationSpeed = 30.0f;
+
+        float m_AvgFrameRate;
     };
 
     class SandBoxApp : public Vertex::Application

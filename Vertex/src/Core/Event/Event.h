@@ -54,6 +54,8 @@ namespace Vertex
         template <class EventType, typename F>
         void Dispatch(F&& func)
         {
+            // if (m_Event.GetEventType() == EventType::StaticEventType())
+            //     m_Event.m_Handled = func((EventType&)(m_Event));
             try
             {
                 m_Event.m_Handled = func(dynamic_cast<EventType&>(m_Event));
