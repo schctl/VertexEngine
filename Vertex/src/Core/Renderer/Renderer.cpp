@@ -9,12 +9,15 @@ namespace Vertex
 
     void Renderer::BeginScene(Camera& camera) { s_Scene = new Scene(camera); }
 
-    void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader)
+    void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader,
+                          const glm::mat4& transform)
     {
         shader->Bind();
 
         (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"]
             = s_Scene->camera.GetProjectionViewMatrix();
+
+        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_Transform"] = transform;
 
         vertex_array->Bind();
 

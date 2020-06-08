@@ -41,7 +41,8 @@ namespace Vertex
     public:
         static void BeginScene(Camera& camera);
 
-        static void Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader);
+        static void Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader,
+                           const glm::mat4& transform = glm::mat4(1.0f));
 
         static void EndScene();
 

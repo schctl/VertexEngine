@@ -10,15 +10,19 @@ namespace SandBox
 
         // clang-format off
 
-        float vertices[21] = {
+        float vertices[28] = {
             -0.5f, -0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f,
              0.5f, -0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f,
+             0.5f,  0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f,
             -0.5f,  0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f
         };
 
-        // clang-format on
+        uint32_t indices[6] = {
+            0, 1, 3,
+            1, 2, 3 
+        };
 
-        uint32_t indices[3] = { 0, 1, 2 };
+        // clang-format on
 
         Vertex::BufferLayout layout = { { Vertex::ShaderDataType::Float3 }, { Vertex::ShaderDataType::Float4 } };
 
@@ -65,12 +69,13 @@ namespace SandBox
             layout(location = 1) in vec4 a_Color;
 
             uniform mat4 u_ProjectionViewMatrix;
+            uniform mat4 u_Transform;
 
             out vec4 v_Color;
 
             void main()
             {
-                gl_Position = u_ProjectionViewMatrix * vec4(a_Position, 1.0);
+                gl_Position = u_ProjectionViewMatrix * u_Transform * vec4(a_Position, 1.0);
                 v_Color = a_Color;
             }
         )";
@@ -116,7 +121,23 @@ namespace SandBox
 
         Vertex::Renderer::BeginScene(m_Camera);
 
-        Vertex::Renderer::Submit(m_VertexArray, m_Shader);
+        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+        for (float x = 0.0f; x < 20.0f; x++)
+        {
+            for (float y = 0.0f; y < 20.0f; y++)
+            {
+                // clang-format off
+
+                Vertex::Renderer::Submit(m_VertexArray, m_Shader,
+                                         glm::translate(
+                                            glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)
+                                         ) * scale);
+
+                // clang-format on
+            }
+        }
+
         Vertex::Renderer::Submit(m_VertexArray2, m_Shader);
 
         Vertex::Renderer::EndScene();
