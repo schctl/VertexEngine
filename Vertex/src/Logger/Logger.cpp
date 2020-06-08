@@ -11,10 +11,10 @@ namespace Vertex
         s_Logger->set_level(vx_log_level_debug);
     }
 
-    ClientLogger                    ClientLogger::s_Instance;
-    std::shared_ptr<spdlog::logger> ClientLogger::s_Logger;
+    Logger                          Logger::s_Instance;
+    std::shared_ptr<spdlog::logger> Logger::s_Logger;
 
-    void ClientLogger::Init()
+    void Logger::Init()
     {
         s_Logger = spdlog::stdout_color_mt("VX_CLIENT");
         s_Logger->set_level(vx_log_level_info);

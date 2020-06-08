@@ -82,10 +82,10 @@ namespace Vertex
         static std::shared_ptr<spdlog::logger> s_Logger;
     };
 
-    class VX_PUBLIC_API ClientLogger
+    class VX_PUBLIC_API Logger
     {
     public:
-        ClientLogger(const ClientLogger&) = delete;
+        Logger(const Logger&) = delete;
 
         inline static void SetLevel(const spdlog::level::level_enum level) { s_Logger->set_level(level); }
 
@@ -130,9 +130,9 @@ namespace Vertex
         }
 
     private:
-        ClientLogger() { Init(); }
+        Logger() { Init(); }
 
-        static ClientLogger s_Instance;
+        static Logger s_Instance;
 
         static void Init();
 

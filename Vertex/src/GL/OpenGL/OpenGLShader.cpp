@@ -144,6 +144,17 @@ namespace Vertex
         m_UniformPack.LoadUniformLocation(uniform_var_name);
     }
 
-    OpenGLUniform& OpenGLShader::operator[](const char* name) { return m_UniformPack[name]; }
+    OpenGLUniform& OpenGLShader::operator[](const char* name)
+    {
+        try
+        {
+            return m_UniformPack[name];
+        }
+        catch (...)
+        {
+            m_UniformPack.LoadUniformLocation(name);
+            return m_UniformPack[name];
+        }
+    }
 
 }

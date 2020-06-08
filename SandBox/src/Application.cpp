@@ -90,10 +90,7 @@ namespace SandBox
 
         m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source));
 
-        // for now
-        std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader)->LoadUniform("u_ProjectionViewMatrix");
-
-        Vertex::ClientLogger::Info("Initialized test layer");
+        Vertex::Logger::Info("Initialized test layer");
     }
 
     void ExampleLayer::OnUpdate(Vertex::TimeDelta delta_time)

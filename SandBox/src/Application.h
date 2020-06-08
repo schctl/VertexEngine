@@ -47,7 +47,7 @@ namespace SandBox
         ~SandBoxApp()
         {
             delete m_ExampleLayer;
-            Vertex::ClientLogger::Info("Terminated application.");
+            Vertex::Logger::Info("Terminated application.");
         }
 
     private:
