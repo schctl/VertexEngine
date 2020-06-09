@@ -25,6 +25,7 @@
 #include <any>
 #include <cassert>
 #include <chrono>
+#include <cmath>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -34,6 +35,7 @@
 #include <tuple>
 #include <variant>
 #include <vector>
+
 
 #include <spdlog/fmt/fmt.h>
 

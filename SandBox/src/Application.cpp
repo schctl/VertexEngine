@@ -11,10 +11,10 @@ namespace SandBox
         // clang-format off
 
         float vertices[28] = {
-            -0.5f, -0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f,
-             0.5f, -0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f,
-             0.5f,  0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f,
-            -0.5f,  0.5f, 0.0f,  0.4f, 0.8f, 0.4f, 1.0f
+            -0.5f, -0.5f, 0.0f,
+             0.5f, -0.5f, 0.0f,
+             0.5f,  0.5f, 0.0f,
+            -0.5f,  0.5f, 0.0f
         };
 
         uint32_t indices[6] = {
@@ -24,7 +24,7 @@ namespace SandBox
 
         // clang-format on
 
-        Vertex::BufferLayout layout = { { Vertex::ShaderDataType::Float3 }, { Vertex::ShaderDataType::Float4 } };
+        Vertex::BufferLayout layout = { Vertex::ShaderDataType::Float3 };
 
         m_VertexArray.reset(Vertex::VertexArray::Create());
         m_VertexBuffer.reset(Vertex::VertexBuffer::Create(vertices, sizeof(vertices), layout));
@@ -40,16 +40,16 @@ namespace SandBox
         // clang-format off
 
         float vertices2[21] = {
-             0.5f, -0.5f, 0.0f,  0.8f, 0.4f, 0.4f, 1.0f,
-             0.5f,  0.5f, 0.0f,  0.8f, 0.4f, 0.4f, 1.0f, 
-            -0.5f,  0.5f, 0.0f,  0.8f, 0.4f, 0.4f, 1.0f
+             0.5f, -0.5f, 0.0f,
+             0.5f,  0.5f, 0.0f,
+            -0.5f,  0.5f, 0.0f
         };
 
         // clang-format on
 
         uint32_t indices2[3] = { 0, 1, 2 };
 
-        Vertex::BufferLayout layout2 = { { Vertex::ShaderDataType::Float3 }, { Vertex::ShaderDataType::Float4 } };
+        Vertex::BufferLayout layout2 = { Vertex::ShaderDataType::Float3 };
 
         m_VertexArray2.reset(Vertex::VertexArray::Create());
         m_VertexBuffer2.reset(Vertex::VertexBuffer::Create(vertices2, sizeof(vertices2), layout2));
@@ -66,30 +66,26 @@ namespace SandBox
             #version 330 core
 
             layout(location = 0) in vec3 a_Position;
-            layout(location = 1) in vec4 a_Color;
 
             uniform mat4 u_ProjectionViewMatrix;
             uniform mat4 u_Transform;
 
-            out vec4 v_Color;
-
             void main()
             {
                 gl_Position = u_ProjectionViewMatrix * u_Transform * vec4(a_Position, 1.0);
-                v_Color = a_Color;
             }
         )";
 
         const char* fragment_source = R"(
             #version 330 core
 
-            in vec4 v_Color;
+            uniform vec4 u_Color;
 
             out vec4 o_Color;
 
             void main()
             {
-                o_Color = v_Color;
+                o_Color = u_Color;
             }
         )";
 
@@ -129,6 +125,11 @@ namespace SandBox
             {
                 // clang-format off
 
+                if (std::fmod(x, 2.0f) == 0)
+                    (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Color"] = glm::vec4(1.0f, 0.4f, 0.5f, 1.0f);
+                else
+                    (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Color"] = glm::vec4(0.4f, 1.0f, 0.5f, 1.0f);
+
                 Vertex::Renderer::Submit(m_VertexArray, m_Shader,
                                          glm::translate(
                                             glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)
@@ -137,6 +138,8 @@ namespace SandBox
                 // clang-format on
             }
         }
+
+        (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Color"] = glm::vec4(0.5f, 0.4f, 1.0f, 1.0f);
 
         Vertex::Renderer::Submit(m_VertexArray2, m_Shader);
 
