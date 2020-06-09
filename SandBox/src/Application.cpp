@@ -141,7 +141,7 @@ namespace SandBox
 
         (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Color"] = glm::vec4(0.5f, 0.4f, 1.0f, 1.0f);
 
-        Vertex::Renderer::Submit(m_VertexArray2, m_Shader);
+        Vertex::Renderer::Submit(m_VertexArray2, m_Shader, glm::vec3(1.0f, 1.0f, 0.0f));
 
         Vertex::Renderer::EndScene();
 

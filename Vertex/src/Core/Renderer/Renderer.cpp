@@ -24,6 +24,21 @@ namespace Vertex
         s_GraphicsAPI->DrawIndexed(vertex_array);
     }
 
+    void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader,
+                          const glm::vec3 position)
+    {
+        shader->Bind();
+
+        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"]
+            = s_Scene->camera.GetProjectionViewMatrix();
+
+        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_Transform"] = glm::translate(glm::mat4(1.0f), position);
+
+        vertex_array->Bind();
+
+        s_GraphicsAPI->DrawIndexed(vertex_array);
+    }
+
     void Renderer::EndScene() { }
 
     RenderAPI Renderer::GetAPI()

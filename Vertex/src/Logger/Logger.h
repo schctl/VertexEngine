@@ -13,6 +13,64 @@
 
 namespace Vertex
 {
+    class VX_PUBLIC_API Logger
+    {
+    public:
+        Logger(const Logger&) = delete;
+
+        inline static void SetLevel(const spdlog::level::level_enum level) { s_Logger->set_level(level); }
+
+        inline static void Debug(const char* message) { s_Logger->debug(message); }
+
+        inline static void Info(const char* message) { s_Logger->info(message); }
+
+        inline static void Warn(const char* message) { s_Logger->warn(message); }
+
+        inline static void Error(const char* message) { s_Logger->error(message); }
+
+        inline static void Critical(const char* message) { s_Logger->critical(message); }
+
+        template <typename First, typename... Rest>
+        inline static void Debug(First message, Rest... params)
+        {
+            s_Logger->debug(message, params...);
+        }
+
+        template <typename First, typename... Rest>
+        inline static void Info(First message, Rest... params)
+        {
+            s_Logger->info(message, params...);
+        }
+
+        template <typename First, typename... Rest>
+        inline static void Warn(First message, Rest... params)
+        {
+            s_Logger->warn(message, params...);
+        }
+
+        template <typename First, typename... Rest>
+        inline static void Error(First message, Rest... params)
+        {
+            s_Logger->error(message, params...);
+        }
+
+        template <typename First, typename... Rest>
+        inline static void Critical(First message, Rest... params)
+        {
+            s_Logger->critical(message, params...);
+        }
+
+    private:
+        Logger() { Init(); }
+
+        static Logger s_Instance;
+
+        static void Init();
+
+    private:
+        static std::shared_ptr<spdlog::logger> s_Logger;
+    };
+
     class CoreLogger
     {
     public:
@@ -75,64 +133,6 @@ namespace Vertex
         CoreLogger() { Init(); }
 
         static CoreLogger s_Instance;
-
-        static void Init();
-
-    private:
-        static std::shared_ptr<spdlog::logger> s_Logger;
-    };
-
-    class VX_PUBLIC_API Logger
-    {
-    public:
-        Logger(const Logger&) = delete;
-
-        inline static void SetLevel(const spdlog::level::level_enum level) { s_Logger->set_level(level); }
-
-        inline static void Debug(const char* message) { s_Logger->debug(message); }
-
-        inline static void Info(const char* message) { s_Logger->info(message); }
-
-        inline static void Warn(const char* message) { s_Logger->warn(message); }
-
-        inline static void Error(const char* message) { s_Logger->error(message); }
-
-        inline static void Critical(const char* message) { s_Logger->critical(message); }
-
-        template <typename First, typename... Rest>
-        inline static void Debug(First message, Rest... params)
-        {
-            s_Logger->debug(message, params...);
-        }
-
-        template <typename First, typename... Rest>
-        inline static void Info(First message, Rest... params)
-        {
-            s_Logger->info(message, params...);
-        }
-
-        template <typename First, typename... Rest>
-        inline static void Warn(First message, Rest... params)
-        {
-            s_Logger->warn(message, params...);
-        }
-
-        template <typename First, typename... Rest>
-        inline static void Error(First message, Rest... params)
-        {
-            s_Logger->error(message, params...);
-        }
-
-        template <typename First, typename... Rest>
-        inline static void Critical(First message, Rest... params)
-        {
-            s_Logger->critical(message, params...);
-        }
-
-    private:
-        Logger() { Init(); }
-
-        static Logger s_Instance;
 
         static void Init();
 
