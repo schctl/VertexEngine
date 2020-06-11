@@ -152,7 +152,7 @@ namespace SandBox
     void ExampleLayer::OnGUIRender(Vertex::TimeDelta delta_time)
     {
         ImGui::Begin("Renderer");
-        ImGui::Text(Vertex::Renderer::GetRendererInfo().c_str());
+        ImGui::Text("%s", Vertex::Renderer::GetRendererInfo().c_str());
         ImGui::Text("\n %.2f", m_AvgFrameRate);
         ImGui::End();
     }

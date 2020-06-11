@@ -44,11 +44,8 @@ namespace SandBox
             m_ExampleLayer = new ExampleLayer();
             PushLayer(m_ExampleLayer);
         }
-        ~SandBoxApp()
-        {
-            delete m_ExampleLayer;
-            Vertex::Logger::Info("Terminated application.");
-        }
+
+        ~SandBoxApp() { delete m_ExampleLayer; }
 
     private:
         ExampleLayer* m_ExampleLayer;

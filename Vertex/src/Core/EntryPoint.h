@@ -12,4 +12,5 @@ int main()
     auto app = Vertex::CreateApplication();
     app->Run();
     delete app;
+    Vertex::Logger::Info("Terminated application.");
 }
