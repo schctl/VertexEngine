@@ -199,6 +199,8 @@ namespace Vertex
         glfwSetMouseButtonCallback(m_Window, GLFWInputCallbacks::MouseButtonCallback);
         glfwSetScrollCallback(m_Window, GLFWInputCallbacks::MouseScrollCallback);
         glfwSetCursorPosCallback(m_Window, GLFWInputCallbacks::CursorPositionCallback);
+
+        SetVSync(properties.v_sync);
     }
 
     LinuxWindow::~LinuxWindow() { ShutDown(); }
