@@ -27,7 +27,7 @@ namespace Vertex
 
         virtual std::string GetRendererInfo() const = 0;
 
-        virtual void DrawIndexed(std::shared_ptr<VertexArray> vertex_array) = 0;
+        virtual void DrawIndexed(Ref<VertexArray> vertex_array) = 0;
 
         static GraphicsAPI* Create();
     };

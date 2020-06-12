@@ -16,10 +16,10 @@ namespace Vertex
         virtual void OnAttach() { }
         virtual void OnDetach() { }
 
-        virtual void OnUpdate(TimeDelta delta_time) { }
+        virtual void OnUpdate(const TimeDelta delta_time) { }
         virtual void OnEvent(Event& event) { }
 
-        virtual void OnGUIRender(TimeDelta delta_time) { }
+        virtual void OnGUIUpdate(const TimeDelta delta_time) { }
 
         inline const char* GetName() { return m_Name; }
 

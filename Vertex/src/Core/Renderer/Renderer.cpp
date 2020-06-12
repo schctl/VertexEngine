@@ -5,17 +5,15 @@
 namespace Vertex
 {
     GraphicsAPI* Renderer::s_GraphicsAPI = GraphicsAPI::Create();
-    Scene*       Renderer::s_Scene       = nullptr;
+    Scene*       Renderer::s_Scene       = new Scene;
 
-    void Renderer::BeginScene(Camera& camera) { s_Scene = new Scene(camera); }
+    void Renderer::BeginScene(Camera& camera) { s_Scene->ProjectionViewMatrix = camera.GetProjectionViewMatrix(); }
 
-    void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader,
-                          const glm::mat4& transform)
+    void Renderer::Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader, const glm::mat4& transform)
     {
         shader->Bind();
 
-        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"]
-            = s_Scene->camera.GetProjectionViewMatrix();
+        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"] = s_Scene->ProjectionViewMatrix;
 
         (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_Transform"] = transform;
 
@@ -24,13 +22,11 @@ namespace Vertex
         s_GraphicsAPI->DrawIndexed(vertex_array);
     }
 
-    void Renderer::Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader,
-                          const glm::vec3 position)
+    void Renderer::Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader, const glm::vec3& position)
     {
         shader->Bind();
 
-        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"]
-            = s_Scene->camera.GetProjectionViewMatrix();
+        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"] = s_Scene->ProjectionViewMatrix;
 
         (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_Transform"] = glm::translate(glm::mat4(1.0f), position);
 
@@ -47,8 +43,6 @@ namespace Vertex
         return RenderAPI::OpenGL;
 #elif defined(VX_RENDER_API_VULKAN)
         return RenderAPI::Vulkan;
-#else
-        return nullptr;
 #endif
     }
 }

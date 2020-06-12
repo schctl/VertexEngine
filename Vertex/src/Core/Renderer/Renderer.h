@@ -18,9 +18,7 @@ namespace Vertex
 
     struct Scene
     {
-        Camera& camera;
-
-        Scene(Camera& _camera) : camera(_camera) { }
+        glm::mat4 ProjectionViewMatrix;
     };
 
     class VX_PUBLIC_API Renderer
@@ -41,11 +39,10 @@ namespace Vertex
     public:
         static void BeginScene(Camera& camera);
 
-        static void Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader,
+        static void Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader,
                            const glm::mat4& transform = glm::mat4(1.0f));
 
-        static void Submit(std::shared_ptr<VertexArray>& vertex_array, const std::shared_ptr<Shader>& shader,
-                           const glm::vec3 position);
+        static void Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader, const glm::vec3& position);
 
         static void EndScene();
 

@@ -51,7 +51,7 @@ namespace Vertex
             m_GUILayer->Begin();
 
             for (Layer* layer : m_LayerStack)
-                layer->OnGUIRender(m_DeltaTime);
+                layer->OnGUIUpdate(m_DeltaTime);
 
             m_GUILayer->End();
 

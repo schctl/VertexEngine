@@ -9,7 +9,7 @@ namespace Vertex
     public:
         TimeDelta(float seconds) : m_Seconds(seconds) { }
 
-        const float TotalSeconds() { return m_Seconds; }
+        const float TotalSeconds() const { return m_Seconds; }
 
     private:
         float m_Seconds;

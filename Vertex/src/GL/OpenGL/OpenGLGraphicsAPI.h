@@ -42,7 +42,7 @@ namespace Vertex
             // clang-format on
         }
 
-        inline void DrawIndexed(std::shared_ptr<VertexArray> vertex_array) override
+        inline void DrawIndexed(Ref<VertexArray> vertex_array) override
         {
             // clang-format off
 

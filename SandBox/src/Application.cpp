@@ -94,7 +94,7 @@ namespace SandBox
         Vertex::Logger::Info("Initialized test layer");
     }
 
-    void ExampleLayer::OnUpdate(Vertex::TimeDelta delta_time)
+    void ExampleLayer::OnUpdate(const Vertex::TimeDelta delta_time)
     {
         if (Vertex::Input::IsKeyPressed(VX_KEY_W))
             m_CameraPosition.y -= m_CameraSpeed * delta_time.TotalSeconds();
@@ -149,7 +149,7 @@ namespace SandBox
                                                : (m_AvgFrameRate + (1.0f / delta_time.TotalSeconds())) / 2;
     }
 
-    void ExampleLayer::OnGUIRender(Vertex::TimeDelta delta_time)
+    void ExampleLayer::OnGUIUpdate(const Vertex::TimeDelta delta_time)
     {
         ImGui::Begin("Renderer");
         ImGui::Text("%s", Vertex::Renderer::GetRendererInfo().c_str());

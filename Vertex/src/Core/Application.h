@@ -63,16 +63,16 @@ namespace Vertex
         void Run();
 
     private:
-        std::shared_ptr<Window> m_Window;
+        std::unique_ptr<Window> m_Window;
 
         LayerStack m_LayerStack;
         GUILayer*  m_GUILayer;
 
-        TimeDelta m_DeltaTime     = 0.0f;
-        float     m_LastFrameTime = 0.0f;
-
         bool m_Running;
         bool m_Minimized;
+
+        TimeDelta m_DeltaTime     = 0.0f;
+        float     m_LastFrameTime = 0.0f;
 
     private:
         // Application specific event callbacks

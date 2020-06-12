@@ -13,7 +13,7 @@ namespace Vertex
 
     void OpenGLVertexArray::Unbind() const { glBindVertexArray(0); }
 
-    void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer> vbo)
+    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> vbo)
     {
         Bind();
 
@@ -34,7 +34,7 @@ namespace Vertex
         m_VBOs.emplace_back(vbo);
     }
 
-    void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer> ibo)
+    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer> ibo)
     {
         Bind();
         ibo->Bind();

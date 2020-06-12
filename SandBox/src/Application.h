@@ -11,19 +11,19 @@ namespace SandBox
     public:
         ExampleLayer(const char* name = "Example Layer");
 
-        void OnUpdate(Vertex::TimeDelta delta_time) override;
-        void OnGUIRender(Vertex::TimeDelta delta_time) override;
+        void OnUpdate(const Vertex::TimeDelta delta_time) override;
+        void OnGUIUpdate(const Vertex::TimeDelta delta_time) override;
 
     private:
-        std::shared_ptr<Vertex::Shader> m_Shader;
+        Vertex::Ref<Vertex::Shader> m_Shader;
 
-        std::shared_ptr<Vertex::VertexArray>  m_VertexArray;
-        std::shared_ptr<Vertex::VertexBuffer> m_VertexBuffer;
-        std::shared_ptr<Vertex::IndexBuffer>  m_IndexBuffer;
+        Vertex::Ref<Vertex::VertexArray>  m_VertexArray;
+        Vertex::Ref<Vertex::VertexBuffer> m_VertexBuffer;
+        Vertex::Ref<Vertex::IndexBuffer>  m_IndexBuffer;
 
-        std::shared_ptr<Vertex::VertexArray>  m_VertexArray2;
-        std::shared_ptr<Vertex::VertexBuffer> m_VertexBuffer2;
-        std::shared_ptr<Vertex::IndexBuffer>  m_IndexBuffer2;
+        Vertex::Ref<Vertex::VertexArray>  m_VertexArray2;
+        Vertex::Ref<Vertex::VertexBuffer> m_VertexBuffer2;
+        Vertex::Ref<Vertex::IndexBuffer>  m_IndexBuffer2;
 
         Vertex::OrthographicCamera2D m_Camera;
 
