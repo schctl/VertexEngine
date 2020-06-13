@@ -5,7 +5,7 @@
 namespace Vertex
 {
 
-    typedef std::variant<float, double, glm::vec2, glm::vec3, glm::vec4, glm::mat4> OpenGLUniformValue;
+    using OpenGLUniformValue = std::variant<int, float, double, glm::vec2, glm::vec3, glm::vec4, glm::mat4>;
 
     class OpenGLUniform
     {

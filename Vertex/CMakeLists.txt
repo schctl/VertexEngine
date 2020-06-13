@@ -14,6 +14,8 @@ file(GLOB VX_SOURCES
     src/GUI/*.cpp
     src/Logger/*.cpp
     src/Window/*.cpp
+
+    deps/stb_image/stb_image.cpp
 )
 
 file(GLOB VX_HEADERS
@@ -26,7 +28,9 @@ file(GLOB VX_HEADERS
     src/GUI/*.h
     src/Logger/*.h
     src/Window/*.h
+
     deps/glm/glm/*.hpp
+    deps/stb_image/stb_image.h
 )
 
 file(GLOB VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
@@ -98,6 +102,7 @@ target_include_directories(Vertex PUBLIC
     deps/spdlog/include
     deps/imgui
     deps/glm
+    deps/stb_image
     ${PLATFORM_SPECIFIC_INCLUDES}
 )
 

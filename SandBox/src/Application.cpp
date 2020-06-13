@@ -11,20 +11,20 @@ namespace SandBox
         // clang-format off
 
         float vertices[28] = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.5f,  0.5f, 0.0f,
-            -0.5f,  0.5f, 0.0f
+            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,
+             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,
+             0.5f,  0.5f, 0.0f,  1.0f, 1.0f,
+            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,
         };
 
         uint32_t indices[6] = {
-            0, 1, 3,
-            1, 2, 3 
+            0, 1, 2,
+            2, 3, 0,
         };
 
         // clang-format on
 
-        Vertex::BufferLayout layout = { Vertex::ShaderDataType::Float3 };
+        Vertex::BufferLayout layout = { Vertex::ShaderDataType::Float3, Vertex::ShaderDataType::Float2 };
 
         m_VertexArray.reset(Vertex::VertexArray::Create());
         m_VertexBuffer.reset(Vertex::VertexBuffer::Create(vertices, sizeof(vertices), layout));
@@ -37,59 +37,46 @@ namespace SandBox
 
         // --------------------------------------
 
-        // clang-format off
-
-        float vertices2[21] = {
-             0.5f, -0.5f, 0.0f,
-             0.5f,  0.5f, 0.0f,
-            -0.5f,  0.5f, 0.0f
-        };
-
-        // clang-format on
-
-        uint32_t indices2[3] = { 0, 1, 2 };
-
-        Vertex::BufferLayout layout2 = { Vertex::ShaderDataType::Float3 };
-
-        m_VertexArray2.reset(Vertex::VertexArray::Create());
-        m_VertexBuffer2.reset(Vertex::VertexBuffer::Create(vertices2, sizeof(vertices2), layout2));
-
-        m_VertexArray2->AddVertexBuffer(m_VertexBuffer2);
-
-        m_IndexBuffer2.reset(Vertex::IndexBuffer::Create(indices2, sizeof(indices2)));
-
-        m_VertexArray2->SetIndexBuffer(m_IndexBuffer2);
-
-        // --------------------------------------
-
         const char* vertex_source = R"(
             #version 330 core
 
             layout(location = 0) in vec3 a_Position;
+            layout(location = 1) in vec2 a_TexCoord;
 
             uniform mat4 u_ProjectionViewMatrix;
             uniform mat4 u_Transform;
 
+            out vec2 v_TexCoord;
+
             void main()
             {
                 gl_Position = u_ProjectionViewMatrix * u_Transform * vec4(a_Position, 1.0);
+
+                v_TexCoord = a_TexCoord;
             }
         )";
 
         const char* fragment_source = R"(
             #version 330 core
 
-            uniform vec4 u_Color;
+            uniform sampler2D u_Texture;
+
+            in vec2 v_TexCoord;
 
             out vec4 o_Color;
 
             void main()
             {
-                o_Color = u_Color;
+                o_Color = texture(u_Texture, v_TexCoord);
             }
         )";
 
         m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source));
+
+        m_Texture = Vertex::Texture2D::Create("res/WhiteLeather.png");
+
+        m_Shader->Bind();
+        (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Texture"] = 0;
 
         Vertex::Logger::Info("Initialized test layer");
     }
@@ -119,16 +106,13 @@ namespace SandBox
 
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+        m_Texture->Bind();
+
         for (float x = 0.0f; x < 20.0f; x++)
         {
             for (float y = 0.0f; y < 20.0f; y++)
             {
                 // clang-format off
-
-                if (std::fmod(x, 2.0f) == 0)
-                    (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Color"] = glm::vec4(1.0f, 0.4f, 0.5f, 1.0f);
-                else
-                    (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Color"] = glm::vec4(0.4f, 1.0f, 0.5f, 1.0f);
 
                 Vertex::Renderer::Submit(m_VertexArray, m_Shader,
                                          glm::translate(
@@ -139,9 +123,7 @@ namespace SandBox
             }
         }
 
-        (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Color"] = glm::vec4(0.5f, 0.4f, 1.0f, 1.0f);
-
-        Vertex::Renderer::Submit(m_VertexArray2, m_Shader, glm::vec3(1.0f, 1.0f, 0.0f));
+        Vertex::Renderer::Submit(m_VertexArray, m_Shader, glm::vec3(1.0f, 1.0f, 0.0f));
 
         Vertex::Renderer::EndScene();
 

@@ -11,6 +11,12 @@ namespace Vertex
     bool operator<(OpenGLUniform a, OpenGLUniform b) { return a.m_UniformName < b.m_UniformName; }
 
     template <>
+    void OpenGLUniform::operator()(int value)
+    {
+        glUniform1i(m_Location, value);
+    }
+
+    template <>
     void OpenGLUniform::operator()(float value)
     {
         glUniform1f(m_Location, value);

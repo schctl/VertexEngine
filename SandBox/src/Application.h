@@ -20,10 +20,7 @@ namespace SandBox
         Vertex::Ref<Vertex::VertexArray>  m_VertexArray;
         Vertex::Ref<Vertex::VertexBuffer> m_VertexBuffer;
         Vertex::Ref<Vertex::IndexBuffer>  m_IndexBuffer;
-
-        Vertex::Ref<Vertex::VertexArray>  m_VertexArray2;
-        Vertex::Ref<Vertex::VertexBuffer> m_VertexBuffer2;
-        Vertex::Ref<Vertex::IndexBuffer>  m_IndexBuffer2;
+        Vertex::Ref<Vertex::Texture2D>    m_Texture;
 
         Vertex::OrthographicCamera2D m_Camera;
 

@@ -4,6 +4,7 @@
 
 #include "GL/GraphicsAPI.h"
 #include "GL/Shader.h"
+#include "GL/Texture.h"
 #include "GL/VertexArray.h"
 
 #include "Camera.h"
