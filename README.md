@@ -22,7 +22,7 @@ Well, this project is mainly for learning purposes. Also, I want to make a power
 | Linux    | OpenGL 4.5+   |
 
 <sup>
-*For Vulkan support, see [this fork](https://github.com/NonNullDinu/VkVertexEngine).*
+For Vulkan support, see [this fork](https://github.com/NonNullDinu/VkVertexEngine) .
 </sup>
 
 ## Support
