@@ -18,6 +18,6 @@ namespace Vertex
     class Texture2D : public Texture
     {
     public:
-        static Ref<Texture2D> Create(const char* path);
+        static Texture2D* Create(const char* path);
     };
 } // namespace Vertex
