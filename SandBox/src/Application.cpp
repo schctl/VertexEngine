@@ -73,7 +73,7 @@ namespace SandBox
 
         m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source));
 
-        m_Texture.reset(Vertex::Texture2D::Create("res/VertexEngine.png"));
+        m_Texture.reset(Vertex::Texture2D::Create("res/arch.png"));
 
         m_Shader->Bind();
         (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Texture"] = 0;

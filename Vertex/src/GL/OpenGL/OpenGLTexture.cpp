@@ -13,14 +13,31 @@ namespace Vertex
         m_Width  = _w;
         m_Height = _h;
 
+        uint32_t internal_format = 0, /* internal format represents the format the texture must be interpreted in */
+            data_format          = 0; /* data format represents the actual format of the texture */
+
+        if (_c == 4)
+        {
+            internal_format = GL_RGBA8;
+            data_format     = GL_RGBA;
+        }
+        else if (_c == 3)
+        {
+            internal_format = GL_RGB8;
+            data_format     = GL_RGB;
+        }
+        else
+        {
+            VX_CORE_ASSERT(false, "Unsupported texture format.");
+        }
+
         glCreateTextures(GL_TEXTURE_2D, 1, &m_ID);
-        glBindTexture(GL_TEXTURE_2D, m_ID);
+        glTextureStorage2D(m_ID, 1, internal_format, m_Width, m_Height);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTextureParameteri(m_ID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(m_ID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, data_format, GL_UNSIGNED_BYTE, data);
 
         stbi_image_free(data);
     }
