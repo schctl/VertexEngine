@@ -18,6 +18,8 @@ namespace Vertex
 
         m_GUILayer = new GUILayer();
         PushOverlay(m_GUILayer);
+
+        Renderer::Init();
     }
 
     Application::~Application() { delete m_GUILayer; }

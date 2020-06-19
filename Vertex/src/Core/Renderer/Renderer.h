@@ -25,6 +25,8 @@ namespace Vertex
     class VX_PUBLIC_API Renderer
     {
     public:
+        inline static void Init() { s_GraphicsAPI->Init(); }
+
         inline static void Clear() { s_GraphicsAPI->Clear(); }
         inline static void Clear(const glm::vec3& color) { s_GraphicsAPI->Clear(color); }
         inline static void Clear(const glm::vec4& color) { s_GraphicsAPI->Clear(color); }

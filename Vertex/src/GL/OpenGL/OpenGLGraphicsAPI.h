@@ -7,6 +7,12 @@ namespace Vertex
     class OpenGLGraphicsAPI : public GraphicsAPI
     {
     public:
+        inline void Init() override
+        {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        }
+
         inline void Clear() override
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // for now

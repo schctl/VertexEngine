@@ -73,7 +73,8 @@ namespace SandBox
 
         m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source));
 
-        m_Texture.reset(Vertex::Texture2D::Create("res/arch.png"));
+        m_ArchTexture.reset(Vertex::Texture2D::Create("res/arch.png"));
+        m_VETexture.reset(Vertex::Texture2D::Create("res/VertexEngine.png"));
 
         m_Shader->Bind();
         (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Texture"] = 0;
@@ -106,7 +107,7 @@ namespace SandBox
 
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-        m_Texture->Bind();
+        m_VETexture->Bind();
 
         for (float x = 0.0f; x < 20.0f; x++)
         {
@@ -122,6 +123,8 @@ namespace SandBox
                 // clang-format on
             }
         }
+
+        m_ArchTexture->Bind();
 
         Vertex::Renderer::Submit(m_VertexArray, m_Shader, glm::vec3(1.0f, 1.0f, 0.0f));
 
