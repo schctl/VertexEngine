@@ -26,7 +26,8 @@ For Vulkan support, see [this fork](https://github.com/NonNullDinu/VkVertexEngin
 </sup>
 
 ## Support
-You can join the official Vertex Engine [Discord Server](https://discord.gg/hA5kHnK), to ask for help or make a feature request.
+You can join the official Vertex Engine Discord Server, to ask for help or make a feature request.
+[![Vertex Engine discord server](https://discord.com/api/guilds/698193704032141402/embed.png?style=banner2)](https://discord.gg/hA5kHnK)
 
 ## Build
 Pre-made build scripts are provided for Windows and Linux in the `scripts` directory. The build scripts **must be run from within that directory.**
