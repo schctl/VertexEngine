@@ -5,14 +5,5 @@
 
 namespace Vertex
 {
-    VertexArray* VertexArray::Create()
-    {
-#if defined(VX_RENDER_API_OPENGL)
-        return new OpenGLVertexArray();
-#elif defined(VX_RENDER_API_VULKAN)
-        return new VulkanVertexArray();
-#else
-        return nullptr;
-#endif
-    }
+    VertexArray* VertexArray::Create() { return new OpenGLVertexArray(); }
 }

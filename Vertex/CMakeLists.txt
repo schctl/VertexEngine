@@ -33,17 +33,33 @@ file(GLOB VX_HEADERS
     deps/stb_image/stb_image.h
 )
 
-file(GLOB VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
-file(GLOB VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
+if ($ENV{VE_USE_VK})
+    file(GLOB VX_GRAPHICS_SOURCES src/GL/Vulkan/*.cpp)
+    file(GLOB VX_GRAPHICS_HEADERS src/GL/Vulkan/*.h)
+else ()
+    file(GLOB VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
+    file(GLOB VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
+endif ()
 
-set(IMGUI_IMPL_HEADERS
-    deps/imgui/examples/imgui_impl_glfw.h
-    deps/imgui/examples/imgui_impl_opengl3.h
-)
-set(IMGUI_IMPL_SOURCES
-    deps/imgui/examples/imgui_impl_glfw.cpp
-    deps/imgui/examples/imgui_impl_opengl3.cpp
-)
+if ($ENV{VE_USE_VK})
+    set(IMGUI_IMPL_HEADERS
+        deps/imgui/examples/imgui_impl_glfw.h
+        deps/imgui/examples/imgui_impl_vulkan.h
+    )
+    set(IMGUI_IMPL_SOURCES
+        deps/imgui/examples/imgui_impl_glfw.cpp
+        deps/imgui/examples/imgui_impl_vulkan.cpp
+    )
+else ()
+    set(IMGUI_IMPL_HEADERS
+        deps/imgui/examples/imgui_impl_glfw.h
+        deps/imgui/examples/imgui_impl_opengl3.h
+    )
+    set(IMGUI_IMPL_SOURCES
+        deps/imgui/examples/imgui_impl_glfw.cpp
+        deps/imgui/examples/imgui_impl_opengl3.cpp
+    )
+endif ()
 
 add_subdirectory(deps/glad)
 add_subdirectory(deps/imgui)
@@ -52,9 +68,15 @@ if (WIN32)
     file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Window/Windows/*.h)
     file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Window/Windows/*.cpp)
     
-    find_package(OpenGL REQUIRED) # OpenGL
-    set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
-    set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
+    if ($ENV{VE_USE_VK})
+        find_package(Vulkan REQUIRED) # OpenGL
+        set(GRAPHICS_LIB_INCLUDES ${Vulkan_INCLUDE_DIRS})
+        set(GRAPHICS_LIBS ${Vulkan_LIBRARIES})
+    else ()
+        find_package(OpenGL REQUIRED) # OpenGL
+        set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
+        set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
+    endif ()
 
     add_subdirectory(deps/glfw)
 
@@ -65,9 +87,15 @@ elseif (UNIX AND NOT APPLE)
     file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Window/Linux/*.h)
     file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Window/Linux/*.cpp)
 
-    find_package(OpenGL REQUIRED) # OpenGL
-    set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR})
-    set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
+    if ($ENV{VE_USE_VK})
+        find_package(Vulkan REQUIRED) # OpenGL
+        set(GRAPHICS_LIB_INCLUDES ${Vulkan_INCLUDE_DIRS})
+        set(GRAPHICS_LIBS ${Vulkan_LIBRARIES})
+    else ()
+        find_package(OpenGL REQUIRED) # OpenGL
+        set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
+        set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
+    endif ()
 
     find_package(glfw3 REQUIRED)
     set(GLFW_LIBRARY glfw) # FindGLFW.cmake does not set this so we need to do it
@@ -94,7 +122,11 @@ add_library(Vertex STATIC
     ${IMGUI_IMPL_SOURCES}
 )
 
-target_compile_definitions(Vertex PUBLIC VX_RENDER_API_OPENGL)
+if ($ENV{VE_USE_VK})
+    target_compile_definitions(Vertex PUBLIC VX_RENDER_API_VULKAN)
+else ()
+    target_compile_definitions(Vertex PUBLIC VX_RENDER_API_OPENGL)
+endif ()
 
 # add the paths in PLATFORM_SPECIFIC_INCLUDES to Vertex's include directories
 target_include_directories(Vertex PUBLIC
