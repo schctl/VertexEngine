@@ -220,4 +220,16 @@ namespace Vertex
         glfwPollEvents();
         m_Context->SwapBuffers();
     }
+
+    void WindowsWindow::OnEvent(Event& event)
+    {
+        EventHandler handler(event);
+        handler.Dispatch<WindowResizeEvent>(VX_BIND_FUNC_1(WindowsWindow::OnWindowResizeEvent));
+    }
+
+    bool WindowsWindow::OnWindowResizeEvent(WindowResizeEvent& event)
+    {
+        m_Context->SetViewPort(0, 0, event.GetWidth(), event.GetHeight());
+        return false; // for now
+    }
 }

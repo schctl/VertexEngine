@@ -31,6 +31,9 @@ namespace Vertex
         handler.Dispatch<WindowCloseEvent>(VX_BIND_FUNC_1(Application::OnWindowClose));
         handler.Dispatch<WindowResizeEvent>(VX_BIND_FUNC_1(Application::OnWindowResize));
 
+        if (event.GetEventCategory() == EventCategories::WindowEvent)
+            m_Window->OnEvent(event);
+
         for (std::vector<Layer*>::iterator it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {
             (*--it)->OnEvent(event);
@@ -81,7 +84,7 @@ namespace Vertex
 
         m_Minimized = false;
 
-        Renderer::NotifyResize(event.GetWidth(), event.GetHeight());
+        // Renderer::NotifyResize(event.GetWidth(), event.GetHeight());
 
         return false;
     }

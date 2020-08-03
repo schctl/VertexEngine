@@ -31,10 +31,10 @@ namespace Vertex
         inline static void Clear(const glm::vec3& color) { s_GraphicsAPI->Clear(color); }
         inline static void Clear(const glm::vec4& color) { s_GraphicsAPI->Clear(color); }
 
-        inline static void NotifyResize(uint32_t width, uint32_t height)
-        {
-            s_GraphicsAPI->SetViewport(0, 0, width, height);
-        }
+        // inline static void NotifyResize(uint32_t width, uint32_t height)
+        // {
+        //     s_GraphicsAPI->SetViewport(0, 0, width, height);
+        // }
 
         static RenderAPI   GetAPI();
         static std::string GetRendererInfo() { return s_GraphicsAPI->GetRendererInfo(); }
