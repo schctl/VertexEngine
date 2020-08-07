@@ -6,6 +6,18 @@
 
 namespace SandBox
 {
+#if defined(VX_RENDER_API_VULKAN)
+    class ExampleLayer : public Vertex::Layer
+    {
+    public:
+        ExampleLayer(const char* name = "Example Layer");
+
+        void OnUpdate(const Vertex::TimeDelta delta_time) override;
+
+        void OnGUIUpdate(const Vertex::TimeDelta delta_time) override {};
+    };
+
+#else
     class ExampleLayer : public Vertex::Layer
     {
     public:
@@ -34,6 +46,8 @@ namespace SandBox
 
         float m_AvgFrameRate;
     };
+
+#endif
 
     class SandBoxApp : public Vertex::Application
     {

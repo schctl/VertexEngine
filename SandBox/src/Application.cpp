@@ -2,6 +2,14 @@
 
 namespace SandBox
 {
+#if defined(VX_RENDER_API_VULKAN)
+
+    ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */) : Layer(name) { }
+
+    void ExampleLayer::OnUpdate(const Vertex::TimeDelta delta_time) { }
+
+#else
+
     ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */)
         : Layer(name), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
@@ -141,6 +149,8 @@ namespace SandBox
         ImGui::Text("\n %.2f", m_AvgFrameRate);
         ImGui::End();
     }
+
+#endif
 }
 
 Vertex::Application* Vertex::CreateApplication()

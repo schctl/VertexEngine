@@ -1,11 +1,28 @@
 #include "Buffer.h"
 
-#include "OpenGL/OpenGLBuffer.h"
+#if defined(VX_RENDER_API_VULKAN)
+#else
+    #include "OpenGL/OpenGLBuffer.h"
 // ... per rendering API
+#endif
 
 namespace Vertex
 {
     // clang-format off
+
+#if defined(VX_RENDER_API_VULKAN)
+
+    VertexBuffer* VertexBuffer::Create(float* vertices, size_t size, const BufferLayout& layout)
+    {
+        return nullptr;
+    }
+
+    IndexBuffer* IndexBuffer::Create(uint32_t* indices, size_t size)
+    {
+        return nullptr;
+    }
+
+#else
 
     VertexBuffer* VertexBuffer::Create(float* vertices, size_t size, const BufferLayout& layout)
     {
@@ -16,6 +33,8 @@ namespace Vertex
     {
         return new OpenGLIndexBuffer(indices, size);
     }
+
+#endif
 
     // clang-format on
 }

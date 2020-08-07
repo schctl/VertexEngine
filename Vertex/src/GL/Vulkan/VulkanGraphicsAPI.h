@@ -13,7 +13,7 @@ namespace Vertex
         void Clear(const glm::vec3& color) override {};
         void Clear(const glm::vec4& color) override {};
 
-        std::string GetRendererInfo() const override {};
+        std::string GetRendererInfo() const override { return "temp"; };
 
         virtual void DrawIndexed(Ref<VertexArray> vertex_array) override {};
     };

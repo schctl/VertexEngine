@@ -1,6 +1,10 @@
 #include "Renderer.h"
 
-#include "GL/OpenGL/OpenGLShader.h"
+#if defined(VX_RENDER_API_VULKAN)
+#else
+    #include "GL/OpenGL/OpenGLShader.h"
+// .. per rendering api
+#endif
 
 namespace Vertex
 {
@@ -13,9 +17,15 @@ namespace Vertex
     {
         shader->Bind();
 
+#if defined(VX_RENDER_API_VULKAN)
+
+#else
+
         (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"] = s_Scene->ProjectionViewMatrix;
 
         (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_Transform"] = transform;
+
+#endif
 
         vertex_array->Bind();
 
@@ -26,9 +36,15 @@ namespace Vertex
     {
         shader->Bind();
 
+#if defined(VX_RENDER_API_VULKAN)
+
+#else
+
         (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"] = s_Scene->ProjectionViewMatrix;
 
         (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_Transform"] = glm::translate(glm::mat4(1.0f), position);
+
+#endif
 
         vertex_array->Bind();
 
@@ -40,8 +56,11 @@ namespace Vertex
     RenderAPI Renderer::GetAPI()
     {
 #if defined(VX_RENDER_API_OPENGL)
+
         return RenderAPI::OpenGL;
+
 #elif defined(VX_RENDER_API_VULKAN)
+
         return RenderAPI::Vulkan;
 #endif
     }

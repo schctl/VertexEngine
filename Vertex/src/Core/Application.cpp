@@ -16,8 +16,11 @@ namespace Vertex
 
         s_AppInstance = this;
 
+#if defined(VX_RENDER_API_VULKAN)
+#else
         m_GUILayer = new GUILayer();
         PushOverlay(m_GUILayer);
+#endif
 
         Renderer::Init();
     }
@@ -47,6 +50,20 @@ namespace Vertex
     {
         while (m_Running)
         {
+#if defined(VX_RENDER_API_VULKAN)
+
+            m_DeltaTime = Time::GetTime() - m_LastFrameTime;
+            m_LastFrameTime += m_DeltaTime.TotalSeconds();
+
+            for (Layer* layer : m_LayerStack)
+                layer->OnUpdate(m_DeltaTime);
+
+            for (Layer* layer : m_LayerStack)
+                layer->OnGUIUpdate(m_DeltaTime);
+
+            m_Window->OnUpdate(m_DeltaTime);
+
+#else
             m_DeltaTime = Time::GetTime() - m_LastFrameTime;
             m_LastFrameTime += m_DeltaTime.TotalSeconds();
 
@@ -61,6 +78,8 @@ namespace Vertex
             m_GUILayer->End();
 
             m_Window->OnUpdate(m_DeltaTime);
+
+#endif
         }
 
         for (Layer* layer : m_LayerStack)

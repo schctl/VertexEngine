@@ -23,5 +23,8 @@ namespace Vertex
         GLFWwindow* m_WindowHandle;
 
         bool m_NeedSwapChainRecreate = false;
+
+    private:
+        void InitVulkan();
     };
 } // namespace Vertex

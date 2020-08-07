@@ -1,7 +1,10 @@
 #include "Shader.h"
 
-#include "OpenGL/OpenGLShader.h"
+#if defined(VX_RENDER_API_VULKAN)
+#else
+    #include "OpenGL/OpenGLShader.h"
 // ... per rendering API
+#endif
 
 namespace Vertex
 {
@@ -34,7 +37,7 @@ namespace Vertex
             return 16;
         }
 
-        CoreLogger::Get()->error("Unknown shader data type, cancelling...");
+        CoreLogger::Error("Unknown shader data type, cancelling...");
         return 0;
     };
 
@@ -66,12 +69,27 @@ namespace Vertex
             return 4;
         }
 
-        CoreLogger::Get()->error("Unknown shader data type, cancelling...");
+        CoreLogger::Error("Unknown shader data type, cancelling...");
         return 0;
     }
+
+    // clang-format off
+
+#if defined(VX_RENDER_API_VULKAN)
+
+    Shader* Shader::Create(const char* vertex_src, const char* fragment_src)
+    {
+        return nullptr;
+    }
+
+#else
 
     Shader* Shader::Create(const char* vertex_src, const char* fragment_src)
     {
         return new OpenGLShader(vertex_src, fragment_src);
     }
+
+#endif
+
+    // clang-format on
 }

@@ -36,10 +36,13 @@
 #include <variant>
 #include <vector>
 
-
 #include <spdlog/fmt/fmt.h>
 
 #include <glad/glad.h>
+
+#if defined(VX_RENDER_API_VULKAN)
+    #define GLFW_INCLUDE_VULKAN
+#endif
 
 #include <GLFW/glfw3.h>
 
@@ -73,11 +76,13 @@
 
 namespace Vertex
 {
-    template<typename T>
-    using Ref = std::shared_ptr<T>;   // this renaming is done explicity in order to define objects that can be handled as "assets" and are Vertex only.
+    template <typename T>
+    using Ref = std::shared_ptr<T>; // this renaming is done explicity in order to define objects that can be handled as
+                                    // "assets" and are Vertex only.
 
-    template<typename T>
-    using Scope = std::unique_ptr<T>; // this renaming is done explicity in order to define objects that can be handled as "assets" and are Vertex only.
+    template <typename T>
+    using Scope = std::unique_ptr<T>; // this renaming is done explicity in order to define objects that can be handled
+                                      // as "assets" and are Vertex only.
 }
 
 // --------------------------------------
