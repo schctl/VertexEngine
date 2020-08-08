@@ -104,10 +104,10 @@ namespace Vertex
         CreateSwapChain();
 
         CreateImageViews();
-        //
-        // CreateRenderPass();
-        //
-        // CreateDescriptorSetLayout();
+
+        CreateRenderPass();
+
+        CreateDescriptorSetLayout();
         //
         // CreateGraphicsPipeline();
         //
@@ -594,13 +594,77 @@ namespace Vertex
         CleanupSwapchain();
 
         CreateSwapChain();
-        // CreateImageViews();
+        CreateImageViews();
         // CreateRenderPass();
         // CreateGraphicsPipeline();
         // CreateFramebuffers();
         // CreateUniformBuffers();
         // CreateDescriptorSets();
         // CreateCommandBuffers();
+    }
+
+    void VulkanContext::CreateRenderPass()
+    {
+        VkAttachmentDescription color_attachment {};
+        color_attachment.format         = m_SwapChainImageFormat;
+        color_attachment.samples        = VK_SAMPLE_COUNT_1_BIT;
+        color_attachment.loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        color_attachment.storeOp        = VK_ATTACHMENT_STORE_OP_STORE;
+        color_attachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        color_attachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
+        color_attachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+        VkAttachmentReference color_attachment_ref {};
+        color_attachment_ref.attachment = 0;
+        color_attachment_ref.layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        VkSubpassDescription sub_pass {};
+        sub_pass.pipelineBindPoint    = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        sub_pass.colorAttachmentCount = 1;
+        sub_pass.pColorAttachments    = &color_attachment_ref;
+
+        VkSubpassDependency dependency {};
+        dependency.srcSubpass    = VK_SUBPASS_EXTERNAL;
+        dependency.dstSubpass    = 0;
+        dependency.srcStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcAccessMask = 0;
+        dependency.dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+        VkRenderPassCreateInfo render_pass_info {};
+        render_pass_info.sType           = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+        render_pass_info.attachmentCount = 1;
+        render_pass_info.pAttachments    = &color_attachment;
+        render_pass_info.subpassCount    = 1;
+        render_pass_info.pSubpasses      = &sub_pass;
+        render_pass_info.dependencyCount = 1;
+        render_pass_info.pDependencies   = &dependency;
+
+        if (vkCreateRenderPass(m_LogicalDevice, &render_pass_info, nullptr, &m_RenderPass) != VK_SUCCESS)
+            throw std::runtime_error("Unable to create render pass");
+    }
+
+    void VulkanContext::CreateDescriptorSetLayout()
+    {
+        VkDescriptorSetLayoutBinding ubo_layout_binding {};
+        ubo_layout_binding.binding         = 0;
+        ubo_layout_binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        ubo_layout_binding.descriptorCount = 1;
+        ubo_layout_binding.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;
+
+        VkDescriptorSetLayoutCreateInfo layout_info {};
+        layout_info.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+        layout_info.bindingCount = 1;
+        layout_info.pBindings    = &ubo_layout_binding;
+
+        if (vkCreateDescriptorSetLayout(m_LogicalDevice, &layout_info, nullptr, &m_DescriptorSetLayout) != VK_SUCCESS)
+            throw std::runtime_error("failed to create descriptor set layout!");
+
+        VkPipelineLayoutCreateInfo pipeline_layout_info {};
+        pipeline_layout_info.sType          = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+        pipeline_layout_info.setLayoutCount = 1;
+        pipeline_layout_info.pSetLayouts    = &m_DescriptorSetLayout;
     }
 
     // ------------------------------------------------------

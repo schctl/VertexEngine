@@ -33,8 +33,10 @@ file(GLOB VX_HEADERS
     deps/stb_image/stb_image.h
 )
 
-if ($ENV{USE_VK} AND WIN32)
-    message(WARNING "Vulkan has not been tested for Windows yet, and may be broken.")
+if ($ENV{USE_VK})
+    if (WIN32)
+        message(WARNING "Vulkan has not been tested for Windows yet, and may be broken.")
+    endif ()
 endif ()
 
 if ($ENV{VX_USE_VK})

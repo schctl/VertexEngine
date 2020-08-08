@@ -48,10 +48,6 @@ namespace Vertex
 
         void CreateLogicalDevice();
 
-        void InitDebugMessenger();
-
-        std::vector<const char*> GetRequiredExtensions();
-
         // ------------------------------------------------------
         // ------------------- Physical Device ------------------
 
@@ -82,8 +78,19 @@ namespace Vertex
 
         void RecreateSwapchain();
 
+        // ----------------- Graphics Pipeline ------------------
+        // ------------------------------------------------------
+
+        void CreateRenderPass();
+
+        void CreateDescriptorSetLayout();
+
         // ------------------------------------------------------
         // ------------------------------------------------------
+
+        void InitDebugMessenger();
+
+        std::vector<const char*> GetRequiredExtensions();
 
     private:
         VkInstance m_Instance;
@@ -106,6 +113,12 @@ namespace Vertex
         VkExtent2D m_SwapChainExtent;
 
         std::vector<VkImageView> m_SwapChainImageViews;
+
+        // ---------------- Graphics Pipeline -------------------
+
+        VkRenderPass m_RenderPass;
+
+        VkDescriptorSetLayout m_DescriptorSetLayout;
 
         // ------------------------------------------------------
 
