@@ -1,6 +1,7 @@
 #include "GraphicsContext.h"
 
 #if defined(VX_RENDER_API_VULKAN)
+    #include "Vulkan/VulkanContext.h"
 #else
     #include "OpenGL/OpenGLContext.h"
 // ... per rendering API
@@ -14,7 +15,7 @@ namespace Vertex
 
     GraphicsContext* GraphicsContext::Create(GLFWwindow* window_handle)
     {
-        return nullptr;
+        return new VulkanContext(window_handle);
     }
 
 #else

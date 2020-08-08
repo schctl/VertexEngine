@@ -17,14 +17,24 @@ namespace Vertex
 
         void SwapBuffers() override;
 
-        void SetViewPort(uint32_t x, uint32_t y, uint32_t w, uint32_t h) const override;
+        void SetViewPort(uint32_t x, uint32_t y, uint32_t w, uint32_t h) const override {};
 
     private:
         GLFWwindow* m_WindowHandle;
 
-        bool m_NeedSwapChainRecreate = false;
-
     private:
         void InitVulkan();
+
+    private:
+        void CreateInstance();
+
+        bool CheckValidationLayerSupport();
+
+        std::vector<const char*> GetRequiredExtensions();
+
+    private:
+        VkInstance m_Instance;
+
+        bool m_NeedSwapChainRecreate = false;
     };
 } // namespace Vertex
