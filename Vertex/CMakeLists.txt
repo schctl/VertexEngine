@@ -33,7 +33,7 @@ file(GLOB VX_HEADERS
     deps/stb_image/stb_image.h
 )
 
-if ($ENV{VE_USE_VK})
+if ($ENV{VX_USE_VK})
     file(GLOB VX_GRAPHICS_SOURCES src/GL/Vulkan/*.cpp)
     file(GLOB VX_GRAPHICS_HEADERS src/GL/Vulkan/*.h)
 else ()
@@ -41,7 +41,7 @@ else ()
     file(GLOB VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
 endif ()
 
-if ($ENV{VE_USE_VK})
+if ($ENV{VX_USE_VK})
     set(IMGUI_IMPL_HEADERS
         deps/imgui/examples/imgui_impl_glfw.h
         deps/imgui/examples/imgui_impl_vulkan.h
@@ -68,7 +68,7 @@ if (WIN32)
     file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Window/Windows/*.h)
     file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Window/Windows/*.cpp)
     
-    if ($ENV{VE_USE_VK})
+    if ($ENV{VX_USE_VK})
         find_package(Vulkan REQUIRED) # OpenGL
         set(GRAPHICS_LIB_INCLUDES ${Vulkan_INCLUDE_DIRS})
         set(GRAPHICS_LIBS ${Vulkan_LIBRARIES})
@@ -87,7 +87,7 @@ elseif (UNIX AND NOT APPLE)
     file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Window/Linux/*.h)
     file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Window/Linux/*.cpp)
 
-    if ($ENV{VE_USE_VK})
+    if ($ENV{VX_USE_VK})
         find_package(Vulkan REQUIRED) # OpenGL
         set(GRAPHICS_LIB_INCLUDES ${Vulkan_INCLUDE_DIRS})
         set(GRAPHICS_LIBS ${Vulkan_LIBRARIES})
@@ -122,7 +122,7 @@ add_library(Vertex STATIC
     ${IMGUI_IMPL_SOURCES}
 )
 
-if ($ENV{VE_USE_VK})
+if ($ENV{VX_USE_VK})
     target_compile_definitions(Vertex PUBLIC VX_RENDER_API_VULKAN)
 else ()
     target_compile_definitions(Vertex PUBLIC VX_RENDER_API_OPENGL)
