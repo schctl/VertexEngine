@@ -16,10 +16,13 @@ This README file is split into multiple sections:
 Well, this project is mainly for learning purposes. Also, I want to make a powerful, flexible and lightweight game engine, since I haven't really found any game engine's that I like...
 
 ## Supported platforms and rendering APIs
-| Platform | Rendering API |
-|----------|---------------|
-| Windows  | OpenGL 4.5+   |
-| Linux    | OpenGL 4.5+   |
+| Platform | Rendering API                   |
+|----------|---------------------------------|
+| Windows  | OpenGL 4.5+                     |
+| Linux    | OpenGL 4.5+, Vulkan (partial)   |
+
+*Vulkan is still being added to VertexEngine, hence all OpenGL features may not be supported*
+*Windows support for Vulkan will be added once Linux fully supports it*
 
 <sup>
 We are currently merging [this fork](https://github.com/NonNullDinu/VkVertexEngine) of VertexEngine manually, this might take a while and new features will be added slowly until this is done
