@@ -10,7 +10,7 @@ namespace Vertex
 
     static void GLFWErrorCallback(int error, const char* description)
     {
-        CoreLogger::Get()->error("GLFW error {0} : {1}", error, description);
+        CoreLogger::Error("GLFW error {0} : {1}", error, description);
     }
 
     namespace GLFWInputCallbacks
@@ -39,7 +39,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -115,7 +115,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -128,7 +128,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -149,7 +149,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -175,16 +175,24 @@ namespace Vertex
             int success = glfwInit();
 
             if (!success)
-                CoreLogger::Get()->error("Could not initialize GLFW");
+                CoreLogger::Error("Could not initialize GLFW");
 
             s_GLFW_Initialized = true;
         }
 
         glfwSetErrorCallback(GLFWErrorCallback);
 
+#if defined(VX_RENDER_API_VULKAN)
+
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+#else
+
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+
+#endif
 
         m_Window = glfwCreateWindow((int)m_Data.width, (int)m_Data.height, m_Data.title, nullptr, nullptr);
         m_Context.reset(GraphicsContext::Create(m_Window));

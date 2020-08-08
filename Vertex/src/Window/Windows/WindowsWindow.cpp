@@ -10,7 +10,7 @@ namespace Vertex
 
     static void GLFWErrorCallback(int error, const char* description)
     {
-        CoreLogger::Get()->error("GLFW error {0} : {1}", error, description);
+        CoreLogger::Error("GLFW error {0} : {1}", error, description);
     }
 
     namespace GLFWInputCallbacks
@@ -39,7 +39,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -115,7 +115,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -128,7 +128,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -149,7 +149,7 @@ namespace Vertex
 
             if (properties == nullptr)
             {
-                CoreLogger::Get()->error("Null window properties");
+                CoreLogger::Error("Null window properties");
                 return;
             }
 
@@ -175,7 +175,7 @@ namespace Vertex
             int success = glfwInit();
 
             if (!success)
-                CoreLogger::Get()->error("Could not initialize GLFW");
+                CoreLogger::Error("Could not initialize GLFW");
 
             s_GLFW_Initialized = true;
         }

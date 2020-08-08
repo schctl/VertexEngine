@@ -31,7 +31,7 @@ namespace Vertex
             return GL_FLOAT;
         }
 
-        CoreLogger::Get()->error("Unknown shader data type, cancelling...");
+        CoreLogger::Error("Unknown shader data type, cancelling...");
         return 0;
     }
 
@@ -62,7 +62,7 @@ namespace Vertex
             // We don't need the shader anymore.
             glDeleteShader(vertex_shader);
 
-            CoreLogger::Get()->error("{0}", infoLog.data());
+            CoreLogger::Error("{0}", infoLog.data());
             VX_CORE_ASSERT(false, "Vertex Shader compilation failed");
         }
 
@@ -90,7 +90,7 @@ namespace Vertex
             // Either of them. Don't leak shaders.
             glDeleteShader(vertex_shader);
 
-            CoreLogger::Get()->error("{0}", infoLog.data());
+            CoreLogger::Error("{0}", infoLog.data());
             VX_CORE_ASSERT(false, "Fragment Shader compilation failed");
         }
 
@@ -124,7 +124,7 @@ namespace Vertex
             glDeleteShader(vertex_shader);
             glDeleteShader(fragment_shader);
 
-            CoreLogger::Get()->error("{0}", infoLog.data());
+            CoreLogger::Error("{0}", infoLog.data());
             VX_CORE_ASSERT(false, "Shader linking failed");
         }
 
