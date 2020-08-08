@@ -30,10 +30,18 @@ namespace Vertex
 
         bool CheckValidationLayerSupport();
 
+        void CreateSurface();
+
+        void InitDebugMessenger();
+
         std::vector<const char*> GetRequiredExtensions();
 
     private:
         VkInstance m_Instance;
+
+        VkSurfaceKHR m_Surface;
+
+        VkDebugUtilsMessengerEXT m_DebugMessenger;
 
         bool m_NeedSwapChainRecreate = false;
     };

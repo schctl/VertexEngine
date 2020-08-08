@@ -2,6 +2,8 @@
 
 namespace Vertex
 {
+    // -----------------------------------------------------------------
+
     // clang-format off
 
     static VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugCallback
@@ -14,6 +16,31 @@ namespace Vertex
     {
         CoreLogger::Debug("Validation Layer: {}", p_callback_data->pMessage);
         return VK_FALSE;
+    }
+
+    static void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& create_info)
+    {
+        create_info = {};
+        create_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+        create_info.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT
+            | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+        create_info.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT
+            | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+        create_info.pfnUserCallback = VulkanDebugCallback;
+    }
+
+    static VkResult CreateDebugUtilsMessengerEXT(VkInstance                         instance,
+                                                     const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
+                                                     const VkAllocationCallbacks*              pAllocator,
+                                                     VkDebugUtilsMessengerEXT*                 pDebugMessenger)
+    {
+        auto func
+            = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+
+        if (func != nullptr)
+            return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
+
+        return VK_ERROR_EXTENSION_NOT_PRESENT;
     }
 
     // clang-format on
@@ -30,6 +57,8 @@ namespace Vertex
 
     const std::vector<const char*> ValidationLayers = { "VK_LAYER_KHRONOS_validation" };
 
+    // -----------------------------------------------------------------
+
     VulkanContext::VulkanContext(GLFWwindow* window) : m_WindowHandle(window)
     {
         VX_CORE_ASSERT(m_WindowHandle, "Window handle is null");
@@ -43,6 +72,11 @@ namespace Vertex
     {
 
         CreateInstance();
+
+        if constexpr (EnableValidationLayers)
+            InitDebugMessenger();
+
+        CreateSurface();
 
         CoreLogger::Debug("Vulkan ready");
     }
@@ -89,13 +123,7 @@ namespace Vertex
                 instance_info.enabledLayerCount   = (uint32_t)(ValidationLayers.size());
                 instance_info.ppEnabledLayerNames = ValidationLayers.data();
 
-                debug_messenger_info.sType           = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-                debug_messenger_info.flags           = 0;
-                debug_messenger_info.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT
-                    | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-                debug_messenger_info.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT
-                    | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-                debug_messenger_info.pfnUserCallback = VulkanDebugCallback;
+                PopulateDebugMessengerCreateInfo(debug_messenger_info);
 
                 instance_info.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)(&debug_messenger_info);
             }
@@ -136,6 +164,22 @@ namespace Vertex
         }
 
         return true;
+    }
+
+    void VulkanContext::InitDebugMessenger()
+    {
+        VkDebugUtilsMessengerCreateInfoEXT create_info;
+
+        PopulateDebugMessengerCreateInfo(create_info);
+
+        if (CreateDebugUtilsMessengerEXT(m_Instance, &create_info, nullptr, &m_DebugMessenger) != VK_SUCCESS)
+            throw std::runtime_error("failed to set up debug messenger!");
+    }
+
+    void VulkanContext::CreateSurface()
+    {
+        if (glfwCreateWindowSurface(m_Instance, m_WindowHandle, nullptr, &m_Surface) != VK_SUCCESS)
+            throw std::runtime_error("Unable to create window surface");
     }
 
     std::vector<const char*> VulkanContext::GetRequiredExtensions()
