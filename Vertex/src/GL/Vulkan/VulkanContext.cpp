@@ -2,6 +2,11 @@
 
 namespace Vertex
 {
+    struct UniformBufferObject
+    {
+        glm::mat4 view_mat;
+    };
+
     // -----------------------------------------------------------------
 
     // clang-format off
@@ -99,8 +104,6 @@ namespace Vertex
 
         CreateLogicalDevice();
 
-        // ------------- swapchain -------------
-
         CreateSwapChain();
 
         CreateImageViews();
@@ -108,28 +111,22 @@ namespace Vertex
         CreateRenderPass();
 
         CreateDescriptorSetLayout();
-        //
-        // CreateGraphicsPipeline();
-        //
-        // CreateFramebuffers();
-        //
-        // CreateCommandPool();
-        //
-        // CreateVertexBuffer();
-        //
-        // CreateIndexBuffer();
-        //
-        // CreateUniformBuffers();
+
+        CreateGraphicsPipelineLayout();
+
+        CreateFramebuffers();
+
+        CreateCommandPool();
+
+        CreateCommandBuffers();
+
+        CreateUniformBuffers();
         //
         // CreateDescriptorPool();
         //
         // CreateDescriptorSets();
         //
-        // CreateCommandBuffers();
-        //
         // CreateSyncObjects();
-
-        // -------------------------------------
 
         CoreLogger::Debug("Vulkan ready");
     }
@@ -568,18 +565,16 @@ namespace Vertex
         //
         // vkFreeCommandBuffers(m_LogicalDevice, m_CommandPool, (uint32_t)(m_CommandBuffers.size()),
         //                      m_CommandBuffers.data());
-        //
-        // vkDestroyPipeline(m_LogicalDevice, m_GraphicsPipeline, nullptr);
-        //
-        // vkDestroyPipelineLayout(m_LogicalDevice, m_PipelineLayout, nullptr);
-        //
-        // vkDestroyRenderPass(m_LogicalDevice, m_RenderPass, nullptr);
-        //
+
+        vkDestroyPipelineLayout(m_LogicalDevice, m_PipelineLayout, nullptr);
+
+        vkDestroyRenderPass(m_LogicalDevice, m_RenderPass, nullptr);
+
         for (size_t i = 0; i < m_SwapChainImageViews.size(); i++)
             vkDestroyImageView(m_LogicalDevice, m_SwapChainImageViews[i], nullptr);
-        //
-        // vkDestroySwapchainKHR(m_LogicalDevice, m_SwapChain, nullptr);
-        //
+
+        vkDestroySwapchainKHR(m_LogicalDevice, m_SwapChain, nullptr);
+
         // for (size_t i = 0; i < m_SwapChainImages.size(); i++)
         // {
         //     vkDestroyBuffer(m_LogicalDevice, m_UniformBuffers[i], nullptr);
@@ -595,13 +590,15 @@ namespace Vertex
 
         CreateSwapChain();
         CreateImageViews();
-        // CreateRenderPass();
-        // CreateGraphicsPipeline();
-        // CreateFramebuffers();
-        // CreateUniformBuffers();
+        CreateRenderPass();
+        CreateGraphicsPipelineLayout();
+        CreateFramebuffers();
+        CreateCommandBuffers();
         // CreateDescriptorSets();
-        // CreateCommandBuffers();
     }
+
+    // ----------------- Graphics Pipeline ------------------
+    // ------------------------------------------------------
 
     void VulkanContext::CreateRenderPass()
     {
@@ -667,8 +664,173 @@ namespace Vertex
         pipeline_layout_info.pSetLayouts    = &m_DescriptorSetLayout;
     }
 
+    void VulkanContext::CreateGraphicsPipelineLayout()
+    {
+        VkPipelineLayoutCreateInfo pipeline_layout_info {};
+        pipeline_layout_info.sType                  = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+        pipeline_layout_info.setLayoutCount         = 1;
+        pipeline_layout_info.pSetLayouts            = &m_DescriptorSetLayout;
+        pipeline_layout_info.pushConstantRangeCount = 0;       // Optional
+        pipeline_layout_info.pPushConstantRanges    = nullptr; // Optional
+
+        if (vkCreatePipelineLayout(m_LogicalDevice, &pipeline_layout_info, nullptr, &m_PipelineLayout) != VK_SUCCESS)
+        {
+            VX_CORE_ASSERT(false, "vkCreatePipelineLayout failed");
+        }
+    }
+
     // ------------------------------------------------------
     // ------------------------------------------------------
+
+    void VulkanContext::CreateFramebuffers()
+    {
+        m_SwapChainFramebuffers.resize(m_SwapChainImageViews.size());
+
+        for (size_t i = 0; i < m_SwapChainImageViews.size(); i++)
+        {
+            VkImageView attachments[] = { m_SwapChainImageViews[i] };
+
+            VkFramebufferCreateInfo framebuffer_info {};
+            framebuffer_info.sType           = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+            framebuffer_info.renderPass      = m_RenderPass;
+            framebuffer_info.attachmentCount = 1;
+            framebuffer_info.pAttachments    = attachments;
+            framebuffer_info.width           = m_SwapChainExtent.width;
+            framebuffer_info.height          = m_SwapChainExtent.height;
+            framebuffer_info.layers          = 1;
+
+            if (vkCreateFramebuffer(m_LogicalDevice, &framebuffer_info, nullptr, &m_SwapChainFramebuffers[i])
+                != VK_SUCCESS)
+                VX_CORE_ASSERT(false, "vkCreateFramebuffer failed");
+        }
+    }
+
+    void VulkanContext::CreateCommandPool()
+    {
+        QueueFamilyIndices queue_family_indices = FindQueueFamilies(m_PhysicalDevice);
+
+        VkCommandPoolCreateInfo pool_info {};
+        pool_info.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+        pool_info.queueFamilyIndex = queue_family_indices.graphics_family.value();
+        pool_info.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT; // Optional
+
+        if (vkCreateCommandPool(m_LogicalDevice, &pool_info, nullptr, &m_CommandPool) != VK_SUCCESS)
+            VX_CORE_ASSERT(false, "vkCreateCommandPool failed");
+    }
+
+    void VulkanContext::CreateCommandBuffers()
+    {
+        {
+            m_CommandBuffers.resize(m_SwapChainFramebuffers.size());
+
+            VkCommandBufferAllocateInfo alloc_info {};
+            alloc_info.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+            alloc_info.commandPool        = m_CommandPool;
+            alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+            alloc_info.commandBufferCount = (uint32_t)m_CommandBuffers.size();
+
+            if (vkAllocateCommandBuffers(m_LogicalDevice, &alloc_info, m_CommandBuffers.data()) != VK_SUCCESS)
+                VX_CORE_ASSERT(false, "vkAllocateCommandBuffers failed");
+        }
+        {
+            // allocate the load command buffer
+            VkCommandBufferAllocateInfo alloc_info {};
+            alloc_info.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+            alloc_info.commandPool        = m_CommandPool;
+            alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+            alloc_info.commandBufferCount = (uint32_t)1;
+
+            if (vkAllocateCommandBuffers(m_LogicalDevice, &alloc_info, &m_LoadCommandBuffer) != VK_SUCCESS)
+                VX_CORE_ASSERT(false, "vkAllocateCommandBuffers failed");
+        }
+    }
+
+    void VulkanContext::CreateUniformBuffers()
+    {
+        VkDeviceSize bufferSize = sizeof(UniformBufferObject); // for now the ubo is just a mat4
+
+        m_UniformBuffers.resize(m_SwapChainImages.size());
+        m_UniformBuffersMemory.resize(m_SwapChainImages.size());
+
+        for (size_t i = 0; i < m_SwapChainImages.size(); i++)
+        {
+            CreateBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+                         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                         m_UniformBuffers[i], m_UniformBuffersMemory[i]);
+        }
+    }
+
+    // clang-format off
+    // ---------------------- Helpers -----------------------
+
+    uint32_t VulkanContext::FindMemoryType(uint32_t type_filter, VkMemoryPropertyFlags properties)
+    {
+        VkPhysicalDeviceMemoryProperties mem_properties;
+        vkGetPhysicalDeviceMemoryProperties(m_PhysicalDevice, &mem_properties);
+
+        for (uint32_t i = 0; i < mem_properties.memoryTypeCount; i++)
+            if ((type_filter & (1 << i)) && (mem_properties.memoryTypes[i].propertyFlags & properties) == properties)
+                return i;
+
+        VX_CORE_ASSERT(false, "failed to find suitable memory type");
+    }
+
+    void VulkanContext::CreateBuffer(VkDeviceSize          size,
+                                     VkBufferUsageFlags    usage,
+                                     VkMemoryPropertyFlags properties,
+                                     VkBuffer&             buffer,
+                                     VkDeviceMemory&       buffer_memory)
+    {
+        VkBufferCreateInfo buffer_info {};
+        buffer_info.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        buffer_info.size        = size;
+        buffer_info.usage       = usage;
+        buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+        if (vkCreateBuffer(m_LogicalDevice, &buffer_info, nullptr, &buffer) != VK_SUCCESS)
+            VX_CORE_ASSERT(false, "vkCreateBuffer failed");
+
+        VkMemoryRequirements mem_requirements;
+        vkGetBufferMemoryRequirements(m_LogicalDevice, buffer, &mem_requirements);
+
+        VkMemoryAllocateInfo alloc_info {};
+        alloc_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+        alloc_info.allocationSize  = mem_requirements.size;
+        alloc_info.memoryTypeIndex = FindMemoryType(mem_requirements.memoryTypeBits, properties);
+
+        if (vkAllocateMemory(m_LogicalDevice, &alloc_info, nullptr, &buffer_memory) != VK_SUCCESS)
+            VX_CORE_ASSERT(false, "vkAllocateMemory failed");
+
+        vkBindBufferMemory(m_LogicalDevice, buffer, buffer_memory, 0);
+    }
+
+    void VulkanContext::CopyBuffer(VkBuffer src_buffer, VkBuffer dst_buffer, VkDeviceSize size)
+    {
+        VkCommandBufferBeginInfo begin_info {};
+        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+        vkBeginCommandBuffer(m_LoadCommandBuffer, &begin_info);
+
+        VkBufferCopy copy_region {};
+        copy_region.srcOffset = 0; // Optional
+        copy_region.dstOffset = 0; // Optional
+        copy_region.size      = size;
+        vkCmdCopyBuffer(m_LoadCommandBuffer, src_buffer, dst_buffer, 1, &copy_region);
+
+        vkEndCommandBuffer(m_LoadCommandBuffer);
+
+        VkSubmitInfo submit_info {};
+        submit_info.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submit_info.commandBufferCount = 1;
+        submit_info.pCommandBuffers    = &m_LoadCommandBuffer;
+
+        vkQueueSubmit(m_GraphicsQueue, 1, &submit_info, VK_NULL_HANDLE);
+        vkQueueWaitIdle(m_GraphicsQueue);
+    }
+
+    // ------------------------------------------------------
+    // clang-format on
 
     // -----------------------------------------------------------------
 
