@@ -47,4 +47,4 @@ Please read [CONTRIBUTING](https://github.com/VertexEngine/VertexEngine/blob/mas
 
 ## Authors
 * [schctl](https://github.com/schctl) - Initial work
-* [NonNullDinu](https://github.com/NonNullDinu)
+* [Dinu Blanovschi](https://github.com/dblanovschi)
