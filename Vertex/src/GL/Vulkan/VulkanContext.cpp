@@ -121,10 +121,10 @@ namespace Vertex
         CreateCommandBuffers();
 
         CreateUniformBuffers();
-        //
-        // CreateDescriptorPool();
-        //
-        // CreateDescriptorSets();
+
+        CreateDescriptorPool();
+
+        CreateDescriptorSets();
         //
         // CreateSyncObjects();
 
@@ -757,6 +757,68 @@ namespace Vertex
             CreateBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
                          VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
                          m_UniformBuffers[i], m_UniformBuffersMemory[i]);
+        }
+    }
+
+    void VulkanContext::CreateDescriptorPool()
+    {
+        std::vector<VkDescriptorPoolSize> pool_sizes = { { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
+                                                         { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 } };
+
+        VkDescriptorPoolCreateInfo pool_info = {};
+        pool_info.sType                      = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+        pool_info.flags                      = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+        pool_info.maxSets                    = 1000 * pool_sizes.size();
+        pool_info.poolSizeCount              = (uint32_t)pool_sizes.size();
+        pool_info.pPoolSizes                 = pool_sizes.data();
+
+        if (vkCreateDescriptorPool(m_LogicalDevice, &pool_info, nullptr, &m_DescriptorPool) != VK_SUCCESS)
+            VX_CORE_ASSERT(false, "vkCreateDescriptorPool failed");
+    }
+
+    void VulkanContext::CreateDescriptorSets()
+    {
+        std::vector<VkDescriptorSetLayout> layouts(m_SwapChainImages.size(), m_DescriptorSetLayout);
+        VkDescriptorSetAllocateInfo        allocInfo {};
+        allocInfo.sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+        allocInfo.descriptorPool     = m_DescriptorPool;
+        allocInfo.descriptorSetCount = static_cast<uint32_t>(m_SwapChainImages.size());
+        allocInfo.pSetLayouts        = layouts.data();
+
+        m_DescriptorSets.resize(m_SwapChainImages.size());
+        if (vkAllocateDescriptorSets(m_LogicalDevice, &allocInfo, m_DescriptorSets.data()) != VK_SUCCESS)
+            VX_CORE_ASSERT(false, "vkAllocateDescriptorSets failed");
+
+        for (size_t i = 0; i < m_SwapChainImages.size(); i++)
+        {
+            VkDescriptorBufferInfo bufferInfo {};
+            bufferInfo.buffer = m_UniformBuffers[i];
+            bufferInfo.offset = 0;
+            bufferInfo.range  = sizeof(UniformBufferObject);
+
+            VkWriteDescriptorSet descriptorWrite {};
+            descriptorWrite.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            descriptorWrite.dstSet          = m_DescriptorSets[i];
+            descriptorWrite.dstBinding      = 0;
+            descriptorWrite.dstArrayElement = 0;
+
+            descriptorWrite.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+            descriptorWrite.descriptorCount = 1;
+
+            descriptorWrite.pBufferInfo      = &bufferInfo;
+            descriptorWrite.pImageInfo       = nullptr; // Optional
+            descriptorWrite.pTexelBufferView = nullptr; // Optional
+
+            vkUpdateDescriptorSets(m_LogicalDevice, 1, &descriptorWrite, 0, nullptr);
         }
     }
 

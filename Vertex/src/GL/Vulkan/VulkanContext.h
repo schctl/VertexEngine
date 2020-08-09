@@ -87,6 +87,9 @@ namespace Vertex
 
         void CreateUniformBuffers();
 
+        void CreateDescriptorPool();
+        void CreateDescriptorSets();
+
         void InitDebugMessenger();
 
         std::vector<const char*> GetRequiredExtensions();
@@ -113,20 +116,25 @@ namespace Vertex
 
         // ---------------- Graphics Pipeline -------------------
 
-        VkDescriptorSetLayout m_DescriptorSetLayout;
-        VkPipelineLayout      m_PipelineLayout;
-        VkRenderPass          m_RenderPass;
+        VkPipelineLayout m_PipelineLayout;
+        VkRenderPass     m_RenderPass;
 
         // std::vector<std::reference_wrapper<VulkanShaderPipeline>> m_Pipelines;
 
-        // ------------------------------------------------------
-
-        VkCommandPool                m_CommandPool;
         VkCommandBuffer              m_LoadCommandBuffer;
+        VkCommandPool                m_CommandPool;
         std::vector<VkCommandBuffer> m_CommandBuffers;
+        VkCommandBuffer              m_CurrentCommandBuffer;
+
+        VkDescriptorSetLayout        m_DescriptorSetLayout;
+        VkDescriptorPool             m_DescriptorPool;
+        std::vector<VkDescriptorSet> m_DescriptorSets;
+        VkDescriptorSet              m_CurrentDescriptorSet;
 
         std::vector<VkBuffer>       m_UniformBuffers;
         std::vector<VkDeviceMemory> m_UniformBuffersMemory;
+
+        // ------------------------------------------------------
 
         VkDebugUtilsMessengerEXT m_DebugMessenger;
 
