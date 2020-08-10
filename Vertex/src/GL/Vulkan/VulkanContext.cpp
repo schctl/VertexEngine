@@ -81,11 +81,15 @@ namespace Vertex
 
     // -----------------------------------------------------------------
 
+    VulkanContext* VulkanContext::s_Context = nullptr;
+
     VulkanContext::VulkanContext(GLFWwindow* window) : m_WindowHandle(window)
     {
         VX_CORE_ASSERT(m_WindowHandle, "Window handle is null");
 
         InitVulkan();
+
+        s_Context = this;
     }
 
     void VulkanContext::SwapBuffers() { }
@@ -101,23 +105,17 @@ namespace Vertex
         CreateSurface();
 
         PickPhysicalDevice();
-
         CreateLogicalDevice();
 
         CreateSwapChain();
-
         CreateImageViews();
-
         CreateRenderPass();
-
         CreateDescriptorSetLayout();
-
         CreateGraphicsPipelineLayout();
 
         CreateFramebuffers();
 
         CreateCommandPool();
-
         CreateCommandBuffers();
 
         CreateUniformBuffers();
@@ -125,7 +123,6 @@ namespace Vertex
         CreateSyncObjects();
 
         CreateDescriptorPool();
-
         CreateDescriptorSets();
 
         CoreLogger::Debug("Vulkan ready");

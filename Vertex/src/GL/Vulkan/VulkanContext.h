@@ -17,6 +17,8 @@ namespace Vertex
 
         void SetViewPort(uint32_t x, uint32_t y, uint32_t w, uint32_t h) const override {};
 
+        inline static VulkanContext* Get() { return s_Context; }
+
     public:
         struct QueueFamilyIndices
         {
@@ -164,5 +166,8 @@ namespace Vertex
 
         // ------------------------------------------------------
         // clang-format on
+
+    private:
+        static VulkanContext* s_Context;
     };
 } // namespace Vertex
