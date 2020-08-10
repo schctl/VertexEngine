@@ -1,6 +1,7 @@
 #include "GraphicsAPI.h"
 
 #if defined(VX_RENDER_API_VULKAN)
+    #include "Vulkan/VulkanGraphicsAPI.h"
 #else
     #include "OpenGL/OpenGLGraphicsAPI.h"
 // ... per rendering API
@@ -14,7 +15,7 @@ namespace Vertex
 
     GraphicsAPI* GraphicsAPI::Create()
     {
-        return nullptr;
+        return new VulkanGraphicsAPI();
     }
 
 #else
