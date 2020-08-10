@@ -87,6 +87,8 @@ namespace Vertex
 
         void CreateUniformBuffers();
 
+        void CreateSyncObjects();
+
         void CreateDescriptorPool();
         void CreateDescriptorSets();
 
@@ -135,6 +137,12 @@ namespace Vertex
         std::vector<VkDeviceMemory> m_UniformBuffersMemory;
 
         // ------------------------------------------------------
+
+        std::vector<VkSemaphore> m_ImageAvailableSemaphores;
+        std::vector<VkSemaphore> m_RenderFinishedSemaphores;
+        std::vector<VkFence>     m_InFlightFences;
+        std::vector<VkFence>     m_ImagesInFlight;
+        size_t                   m_CurrentFrame = 0;
 
         VkDebugUtilsMessengerEXT m_DebugMessenger;
 
