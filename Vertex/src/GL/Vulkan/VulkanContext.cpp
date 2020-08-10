@@ -92,8 +92,6 @@ namespace Vertex
         s_Context = this;
     }
 
-    void VulkanContext::SwapBuffers() { }
-
     void VulkanContext::InitVulkan()
     {
 

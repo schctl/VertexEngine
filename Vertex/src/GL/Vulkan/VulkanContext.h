@@ -13,9 +13,25 @@ namespace Vertex
     public:
         VulkanContext(GLFWwindow* window);
 
-        void SwapBuffers() override;
+        void SwapBuffers() override {};
 
         void SetViewPort(uint32_t x, uint32_t y, uint32_t w, uint32_t h) const override {};
+
+        inline VkInstance           GetInstance() { return m_Instance; }
+        inline VkDevice             GetLogicalDevice() { return m_LogicalDevice; }
+        inline VkExtent2D           GetSwapChainExtent() { return m_SwapChainExtent; }
+        inline VkRenderPass         GetRenderPass() { return m_RenderPass; }
+        inline VkCommandBuffer      GetCurrentCommandBuffer() { return m_CurrentCommandBuffer; }
+        inline VkDescriptorSet*     GetCurrentDescriptorSet() { return &m_CurrentDescriptorSet; }
+        inline VkPhysicalDevice     GetPhysicalDevice() { return m_PhysicalDevice; }
+        inline VkQueue              GetQueue() { return m_GraphicsQueue; }
+        inline VkDescriptorPool     GetDescriptorPool() { return m_DescriptorPool; }
+        inline std::vector<VkImage> GetSwapChainImages() { return m_SwapChainImages; }
+        inline VkPipelineLayout     GetPipelineLayout() { return m_PipelineLayout; }
+        inline uint32_t        GetQueueFamily() { return FindQueueFamilies(m_PhysicalDevice).graphics_family.value(); }
+        inline VkSurfaceKHR    GetSurface() { return m_Surface; }
+        inline VkCommandPool   GetCommandPool() { return m_CommandPool; }
+        inline VkCommandBuffer GetLoadCommandBuffer() { return m_LoadCommandBuffer; }
 
         inline static VulkanContext* Get() { return s_Context; }
 
@@ -34,6 +50,23 @@ namespace Vertex
             std::vector<VkSurfaceFormatKHR> formats;
             std::vector<VkPresentModeKHR>   present_modes;
         };
+
+    public:
+        // clang-format off
+        // ---------------------- Helpers -----------------------
+
+        uint32_t FindMemoryType(uint32_t type_filter, VkMemoryPropertyFlags properties);
+
+        void CreateBuffer(VkDeviceSize          size,
+                          VkBufferUsageFlags    usage,
+                          VkMemoryPropertyFlags properties,
+                          VkBuffer&             buffer,
+                          VkDeviceMemory&       buffer_memory);
+
+        void CopyBuffer(VkBuffer src_buffer, VkBuffer dst_buffer, VkDeviceSize size);
+
+        // ------------------------------------------------------
+        // clang-format on
 
     private:
         GLFWwindow* m_WindowHandle;
@@ -149,23 +182,6 @@ namespace Vertex
         VkDebugUtilsMessengerEXT m_DebugMessenger;
 
         bool m_NeedSwapChainRecreate = false;
-
-    private:
-        // clang-format off
-        // ---------------------- Helpers -----------------------
-
-        uint32_t FindMemoryType(uint32_t type_filter, VkMemoryPropertyFlags properties);
-
-        void CreateBuffer(VkDeviceSize          size,
-                          VkBufferUsageFlags    usage,
-                          VkMemoryPropertyFlags properties,
-                          VkBuffer&             buffer,
-                          VkDeviceMemory&       buffer_memory);
-
-        void CopyBuffer(VkBuffer src_buffer, VkBuffer dst_buffer, VkDeviceSize size);
-
-        // ------------------------------------------------------
-        // clang-format on
 
     private:
         static VulkanContext* s_Context;

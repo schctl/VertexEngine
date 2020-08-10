@@ -19,8 +19,8 @@ namespace Vertex
 
         inline const BufferLayout& GetLayout() const override { return m_Layout; }
 
-        virtual void BeforeRender() override;
-        virtual void AfterRender() override;
+        // virtual void BeforeRender() override;
+        // virtual void AfterRender() override;
 
     private:
         uint32_t     m_ID;
@@ -42,8 +42,8 @@ namespace Vertex
 
         uint32_t GetCount() const override { return m_Count; }
 
-        virtual void BeforeRender() override;
-        virtual void AfterRender() override;
+        // virtual void BeforeRender() override;
+        // virtual void AfterRender() override;
 
     private:
         uint32_t m_ID;

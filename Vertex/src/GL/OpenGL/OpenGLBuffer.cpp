@@ -19,10 +19,6 @@ namespace Vertex
 
     void OpenGLVertexBuffer::Unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
-    void OpenGLVertexBuffer::BeforeRender() { }
-
-    void OpenGLVertexBuffer::AfterRender() { }
-
     // ----------------------------------
     // ---------- Index Buffer ----------
     // ----------------------------------
@@ -39,8 +35,4 @@ namespace Vertex
     void OpenGLIndexBuffer::Bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID); }
 
     void OpenGLIndexBuffer::Unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
-
-    void OpenGLIndexBuffer::BeforeRender() { }
-
-    void OpenGLIndexBuffer::AfterRender() { }
 }

@@ -13,8 +13,10 @@ namespace SandBox
         ExampleLayer(const char* name = "Example Layer");
 
         void OnUpdate(const Vertex::TimeDelta delta_time) override;
-
         void OnGUIUpdate(const Vertex::TimeDelta delta_time) override {};
+
+    private:
+        Vertex::Ref<Vertex::VertexBuffer> m_VertexBuffer;
     };
 
 #else

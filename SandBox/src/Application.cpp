@@ -4,7 +4,23 @@ namespace SandBox
 {
 #if defined(VX_RENDER_API_VULKAN)
 
-    ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */) : Layer(name) { }
+    ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */) : Layer(name)
+    {
+        // clang-format off
+
+        float vertices[28] = {
+            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,
+             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,
+             0.5f,  0.5f, 0.0f,  1.0f, 1.0f,
+            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,
+        };
+
+        // clang-format on
+
+        Vertex::BufferLayout layout = { Vertex::ShaderDataType::Float3, Vertex::ShaderDataType::Float2 };
+
+        m_VertexBuffer.reset(Vertex::VertexBuffer::Create(vertices, sizeof(vertices), layout));
+    }
 
     void ExampleLayer::OnUpdate(const Vertex::TimeDelta delta_time) { }
 
