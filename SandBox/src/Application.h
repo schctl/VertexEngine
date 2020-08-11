@@ -17,6 +17,7 @@ namespace SandBox
 
     private:
         Vertex::Ref<Vertex::VertexBuffer> m_VertexBuffer;
+        Vertex::Ref<Vertex::IndexBuffer>  m_IndexBuffer;
     };
 
 #else

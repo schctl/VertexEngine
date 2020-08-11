@@ -15,11 +15,17 @@ namespace SandBox
             -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,
         };
 
+        uint32_t indices[6] = {
+            0, 1, 2,
+            2, 3, 0,
+        };
+
         // clang-format on
 
         Vertex::BufferLayout layout = { Vertex::ShaderDataType::Float3, Vertex::ShaderDataType::Float2 };
 
         m_VertexBuffer.reset(Vertex::VertexBuffer::Create(vertices, sizeof(vertices), layout));
+        m_IndexBuffer.reset(Vertex::IndexBuffer::Create(indices, sizeof(indices)));
     }
 
     void ExampleLayer::OnUpdate(const Vertex::TimeDelta delta_time) { }
