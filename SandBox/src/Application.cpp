@@ -26,6 +26,11 @@ namespace SandBox
 
         m_VertexBuffer.reset(Vertex::VertexBuffer::Create(vertices, sizeof(vertices), layout));
         m_IndexBuffer.reset(Vertex::IndexBuffer::Create(indices, sizeof(indices)));
+
+        m_VertexArray.reset(Vertex::VertexArray::Create());
+
+        m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+        m_VertexArray->SetIndexBuffer(m_IndexBuffer);
     }
 
     void ExampleLayer::OnUpdate(const Vertex::TimeDelta delta_time) { }

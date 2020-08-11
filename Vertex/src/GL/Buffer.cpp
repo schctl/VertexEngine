@@ -20,7 +20,7 @@ namespace Vertex
 
     IndexBuffer* IndexBuffer::Create(uint32_t* indices, size_t size)
     {
-        return nullptr;
+        return new VulkanIndexBuffer(indices, size);
     }
 
 #else

@@ -1,6 +1,7 @@
 #include "VertexArray.h"
 
 #if defined(VX_RENDER_API_VULKAN)
+    #include "Vulkan/VulkanVertexArray.h"
 #else
     #include "OpenGL/OpenGLVertexArray.h"
 // .. per rendering api
@@ -12,7 +13,7 @@ namespace Vertex
 
 #if defined(VX_RENDER_API_VULKAN)
 
-    VertexArray* VertexArray::Create() { return nullptr; }
+    VertexArray* VertexArray::Create() { return new VulkanVertexArray(); }
 
 #else
 
