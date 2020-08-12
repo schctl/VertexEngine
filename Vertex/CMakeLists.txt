@@ -125,8 +125,7 @@ add_library(Vertex STATIC
 
 
         ${IMGUI_IMPL_HEADERS}
-        ${IMGUI_IMPL_SOURCES}
-        src/GL/Vulkan/VulkanVertexArray.cpp src/GL/Vulkan/VulkanVertexArray.h)
+        ${IMGUI_IMPL_SOURCES})
 
 if ($ENV{VX_USE_VK})
     target_compile_definitions(Vertex PUBLIC VX_RENDER_API_VULKAN)
@@ -161,8 +160,7 @@ target_precompile_headers(Vertex PUBLIC src/Core/Core.h)
 
 target_compile_definitions(Vertex PRIVATE
         VX_BUILD_SHARED
-        IMGUI_IMPL_OPENGL_LOADER_GLAD=1
-        )
+        IMGUI_IMPL_OPENGL_LOADER_GLAD=1)
 
 if ($ENV{VX_RELEASE})
     add_compile_definitions(NDEBUG)

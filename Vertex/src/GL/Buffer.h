@@ -41,7 +41,7 @@ namespace Vertex
             }
         }
 
-        inline const size_t GetStride() { return m_Stride; }
+        inline const size_t GetStride() const { return m_Stride; }
 
         inline const std::vector<BufferElement>& GetElements() { return m_Elements; }
 

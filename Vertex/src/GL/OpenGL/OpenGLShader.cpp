@@ -35,22 +35,19 @@ namespace Vertex
         return 0;
     }
 
-    OpenGLShader::OpenGLShader(const char* vertex_src, const char* fragment_src) : m_UniformPack(&m_ID)
+    OpenGLShader::OpenGLShader(std::vector<char> vertex_src, std::vector<char> fragment_src) : m_UniformPack(&m_ID)
     {
-        // from khronos.org
-
-        // Create an empty vertex shader handle
         GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
-        glShaderSource(vertex_shader, 1, &vertex_src, 0);
-
-        // Compile the vertex shader
-        glCompileShader(vertex_shader);
+        // Load using glShaderBinary
+        glShaderBinary(1, &vertex_shader, GL_SHADER_BINARY_FORMAT_SPIR_V, vertex_src.data(), vertex_src.size());
+        // Specialize the shader (specify the entry point)
+        glSpecializeShader(vertex_shader, "main", 0, 0, 0);
 
         GLint compile_success = 0;
         glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &compile_success);
 
-        if (compile_success == GL_FALSE)
+        if (GL_FALSE == compile_success)
         {
             GLint maxLength = 0;
             glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &maxLength);
@@ -66,17 +63,17 @@ namespace Vertex
             VX_CORE_ASSERT(false, "Vertex Shader compilation failed");
         }
 
-        // Create an empty fragment shader handle
         GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-        glShaderSource(fragment_shader, 1, &fragment_src, 0);
+        // Load using glShaderBinary
+        glShaderBinary(1, &fragment_shader, GL_SHADER_BINARY_FORMAT_SPIR_V, fragment_src.data(), fragment_src.size());
+        // Specialize the shader (specify the entry point)
+        glSpecializeShader(fragment_shader, "main", 0, 0, 0);
 
-        // Compile the fragment shader
-        glCompileShader(fragment_shader);
-
+        compile_success = 0;
         glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &compile_success);
 
-        if (compile_success == GL_FALSE)
+        if (GL_FALSE == compile_success)
         {
             GLint maxLength = 0;
             glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &maxLength);
@@ -87,8 +84,6 @@ namespace Vertex
 
             // We don't need the shader anymore.
             glDeleteShader(fragment_shader);
-            // Either of them. Don't leak shaders.
-            glDeleteShader(vertex_shader);
 
             CoreLogger::Error("{0}", infoLog.data());
             VX_CORE_ASSERT(false, "Fragment Shader compilation failed");

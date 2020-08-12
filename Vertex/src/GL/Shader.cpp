@@ -1,10 +1,13 @@
 #include "Shader.h"
 
 #if defined(VX_RENDER_API_VULKAN)
+    #include "Vulkan/VulkanShader.h"
 #else
     #include "OpenGL/OpenGLShader.h"
 // ... per rendering API
 #endif
+
+#include <fstream>
 
 namespace Vertex
 {
@@ -73,18 +76,37 @@ namespace Vertex
         return 0;
     }
 
+    std::vector<char> Shader::ReadSPIRVFromFile(const char* file_path)
+    {
+        std::ifstream file(file_path, std::ios::ate | std::ios::binary);
+
+        if (!file.is_open())
+            throw std::runtime_error("Failed to open file!");
+
+        size_t file_size = (size_t)file.tellg();
+
+        std::vector<char> buffer(file_size);
+
+        file.seekg(0);
+        file.read(buffer.data(), file_size);
+
+        file.close();
+
+        return buffer;
+    }
+
     // clang-format off
 
 #if defined(VX_RENDER_API_VULKAN)
 
     Shader* Shader::Create(const char* vertex_src, const char* fragment_src)
     {
-        return nullptr;
+        return new VulkanShader(vertex_src, fragment_src);
     }
 
 #else
 
-    Shader* Shader::Create(const char* vertex_src, const char* fragment_src)
+    Shader* Shader::Create(std::vector<char> vertex_src, std::vector<char> fragment_src)
     {
         return new OpenGLShader(vertex_src, fragment_src);
     }

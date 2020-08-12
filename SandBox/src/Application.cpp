@@ -72,39 +72,8 @@ namespace SandBox
 
         // --------------------------------------
 
-        const char* vertex_source = R"(
-            #version 330 core
-
-            layout(location = 0) in vec3 a_Position;
-            layout(location = 1) in vec2 a_TexCoord;
-
-            uniform mat4 u_ProjectionViewMatrix;
-            uniform mat4 u_Transform;
-
-            out vec2 v_TexCoord;
-
-            void main()
-            {
-                gl_Position = u_ProjectionViewMatrix * u_Transform * vec4(a_Position, 1.0);
-
-                v_TexCoord = a_TexCoord;
-            }
-        )";
-
-        const char* fragment_source = R"(
-            #version 330 core
-
-            uniform sampler2D u_Texture;
-
-            in vec2 v_TexCoord;
-
-            out vec4 o_Color;
-
-            void main()
-            {
-                o_Color = texture(u_Texture, v_TexCoord);
-            }
-        )";
+        auto vertex_source   = Vertex::Shader::ReadSPIRVFromFile("./res/shaders/vertex.spv");
+        auto fragment_source = Vertex::Shader::ReadSPIRVFromFile("./res/shaders/fragment.spv");
 
         m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source));
 
