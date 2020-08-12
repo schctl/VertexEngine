@@ -106,7 +106,7 @@ namespace Vertex
 
 #else
 
-    Shader* Shader::Create(std::vector<char> vertex_src, std::vector<char> fragment_src)
+    Shader* Shader::Create(std::vector<char>& vertex_src, std::vector<char>& fragment_src)
     {
         return new OpenGLShader(vertex_src, fragment_src);
     }

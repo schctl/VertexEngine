@@ -32,7 +32,7 @@ namespace Vertex
         virtual void Bind() const   = 0;
         virtual void Unbind() const = 0;
 
-        static Shader* Create(std::vector<char> vertex_src, std::vector<char> fragment_src);
+        static Shader* Create(std::vector<char>& vertex_src, std::vector<char>& fragment_src);
 
         static std::vector<char> ReadSPIRVFromFile(const char* file_path);
     };

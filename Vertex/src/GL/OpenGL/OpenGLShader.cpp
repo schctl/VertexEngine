@@ -35,7 +35,7 @@ namespace Vertex
         return 0;
     }
 
-    OpenGLShader::OpenGLShader(std::vector<char> vertex_src, std::vector<char> fragment_src) : m_UniformPack(&m_ID)
+    OpenGLShader::OpenGLShader(std::vector<char>& vertex_src, std::vector<char>& fragment_src) : m_UniformPack(&m_ID)
     {
         GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
