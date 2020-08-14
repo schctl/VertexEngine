@@ -99,7 +99,7 @@ namespace Vertex
 
 #if defined(VX_RENDER_API_VULKAN)
 
-    Shader* Shader::Create(const char* vertex_src, const char* fragment_src)
+    Shader* Shader::Create(std::vector<char>& vertex_src, std::vector<char>& fragment_src)
     {
         return new VulkanShader(vertex_src, fragment_src);
     }

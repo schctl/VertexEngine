@@ -35,6 +35,11 @@ namespace Vertex
         return new OpenGLIndexBuffer(indices, size);
     }
 
+    UniformBuffer* UniformBuffer::Create(const BufferLayout layout, uint32_t bind_point)
+    {
+        return new OpenGLUniformBuffer(layout, bind_point);
+    }
+
 #endif
 
     // clang-format on

@@ -13,39 +13,11 @@ namespace Vertex
 
     void Renderer::BeginScene(Camera& camera) { s_Scene->ProjectionViewMatrix = camera.GetProjectionViewMatrix(); }
 
-    void Renderer::Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader, const glm::mat4& transform)
+    void Renderer::Submit(const Ref<VertexArray>& vertex_array, const Ref<UniformBuffer>& uniform_buffer,
+                          const Ref<Shader>& shader)
     {
         shader->Bind();
-
-#if defined(VX_RENDER_API_VULKAN)
-
-#else
-
-        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"] = s_Scene->ProjectionViewMatrix;
-
-        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_Transform"] = transform;
-
-#endif
-
-        vertex_array->Bind();
-
-        s_GraphicsAPI->DrawIndexed(vertex_array);
-    }
-
-    void Renderer::Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader, const glm::vec3& position)
-    {
-        shader->Bind();
-
-#if defined(VX_RENDER_API_VULKAN)
-
-#else
-
-        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_ProjectionViewMatrix"] = s_Scene->ProjectionViewMatrix;
-
-        (*std::dynamic_pointer_cast<OpenGLShader>(shader))["u_Transform"] = glm::translate(glm::mat4(1.0f), position);
-
-#endif
-
+        uniform_buffer->Bind();
         vertex_array->Bind();
 
         s_GraphicsAPI->DrawIndexed(vertex_array);

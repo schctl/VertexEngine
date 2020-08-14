@@ -41,9 +41,7 @@ namespace Vertex
     class VulkanShaderModule
     {
     public:
-        VulkanShaderModule(const std::vector<unsigned char>& source,
-                           VkPipelineShaderStageCreateInfo&  shader_stage_info);
-
+        VulkanShaderModule(std::vector<char>& source, VkPipelineShaderStageCreateInfo& shader_stage_info);
         ~VulkanShaderModule();
 
     private:
@@ -53,7 +51,7 @@ namespace Vertex
     class VulkanShader : public Shader
     {
     public:
-        VulkanShader(const char* vertex_src, const char* fragment_src);
+        VulkanShader(std::vector<char>& vertex_src, std::vector<char>& fragment_src);
         ~VulkanShader();
 
         void Bind() const override;

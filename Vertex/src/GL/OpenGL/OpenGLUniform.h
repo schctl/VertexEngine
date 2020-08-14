@@ -4,7 +4,6 @@
 
 namespace Vertex
 {
-
     using OpenGLUniformValue = std::variant<int, float, double, glm::vec2, glm::vec3, glm::vec4, glm::mat4>;
 
     class OpenGLUniform
@@ -47,5 +46,4 @@ namespace Vertex
         std::map<const char*, OpenGLUniform, OpenGLUniformPackMapKeyCompFunctor> m_UniformMap;
         const uint32_t&                                                          m_ProgramId;
     };
-
 }

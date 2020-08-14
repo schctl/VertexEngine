@@ -18,8 +18,6 @@ namespace Vertex
         OpenGLShader(std::vector<char>& vertex_src, std::vector<char>& fragment_src);
         ~OpenGLShader();
 
-        void LoadUniform(const char* uniform_var_name);
-
         OpenGLUniform& operator[](const char* name);
 
         void Bind() const override;

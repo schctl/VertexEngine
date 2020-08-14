@@ -134,11 +134,6 @@ namespace Vertex
 
     void OpenGLShader::Unbind() const { glUseProgram(0); }
 
-    void OpenGLShader::LoadUniform(const char* uniform_var_name)
-    {
-        m_UniformPack.LoadUniformLocation(uniform_var_name);
-    }
-
     OpenGLUniform& OpenGLShader::operator[](const char* name)
     {
         try

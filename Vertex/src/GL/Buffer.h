@@ -43,7 +43,7 @@ namespace Vertex
 
         inline const size_t GetStride() const { return m_Stride; }
 
-        inline const std::vector<BufferElement>& GetElements() { return m_Elements; }
+        inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 
     private:
         std::vector<BufferElement> m_Elements;
@@ -78,9 +78,6 @@ namespace Vertex
 
         virtual const BufferLayout& GetLayout() const = 0;
 
-        // virtual void                BeforeRender()    = 0;
-        // virtual void                AfterRender()     = 0;
-
         static VertexBuffer* Create(float* vertices, size_t size, const BufferLayout& layout);
     };
 
@@ -95,9 +92,32 @@ namespace Vertex
 
         virtual uint32_t GetCount() const = 0;
 
-        // virtual void BeforeRender() = 0;
-        // virtual void AfterRender()  = 0;
-
         static IndexBuffer* Create(uint32_t* indices, size_t size);
+    };
+
+    // ----------------------------------
+    // --------- Uniform Buffer ---------
+    // ----------------------------------
+
+    class VX_PUBLIC_API UniformBuffer : public Buffer
+    {
+    public:
+        virtual ~UniformBuffer() {};
+
+        virtual void SetValue(bool value, uint32_t offset)       = 0;
+        virtual void SetValue(glm::mat3 value, uint32_t offset)  = 0;
+        virtual void SetValue(glm::mat4 value, uint32_t offset)  = 0;
+        virtual void SetValue(int value, uint32_t offset)        = 0;
+        virtual void SetValue(glm::ivec2 value, uint32_t offset) = 0;
+        virtual void SetValue(glm::ivec3 value, uint32_t offset) = 0;
+        virtual void SetValue(glm::ivec4 value, uint32_t offset) = 0;
+        virtual void SetValue(float value, uint32_t offset)      = 0;
+        virtual void SetValue(glm::vec2 value, uint32_t offset)  = 0;
+        virtual void SetValue(glm::vec3 value, uint32_t offset)  = 0;
+        virtual void SetValue(glm::vec4 value, uint32_t offset)  = 0;
+
+        virtual const BufferLayout GetLayout() const = 0;
+
+        static UniformBuffer* Create(const BufferLayout layout, uint32_t bind_point);
     };
 }

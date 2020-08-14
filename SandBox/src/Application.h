@@ -33,9 +33,10 @@ namespace SandBox
     private:
         Vertex::Ref<Vertex::Shader> m_Shader;
 
-        Vertex::Ref<Vertex::VertexArray>  m_VertexArray;
-        Vertex::Ref<Vertex::VertexBuffer> m_VertexBuffer;
-        Vertex::Ref<Vertex::IndexBuffer>  m_IndexBuffer;
+        Vertex::Ref<Vertex::VertexArray>   m_VertexArray;
+        Vertex::Ref<Vertex::VertexBuffer>  m_VertexBuffer;
+        Vertex::Ref<Vertex::IndexBuffer>   m_IndexBuffer;
+        Vertex::Ref<Vertex::UniformBuffer> m_UniformBuffer;
 
         Vertex::Ref<Vertex::Texture2D> m_ArchTexture;
         Vertex::Ref<Vertex::Texture2D> m_VETexture;

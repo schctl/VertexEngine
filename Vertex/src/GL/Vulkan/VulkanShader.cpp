@@ -34,8 +34,8 @@ namespace Vertex
         return 0;
     }
 
-    VulkanShaderModule::VulkanShaderModule(const std::vector<unsigned char>& source,
-                                           VkPipelineShaderStageCreateInfo&  shader_stage_info)
+    VulkanShaderModule::VulkanShaderModule(std::vector<char>&               source,
+                                           VkPipelineShaderStageCreateInfo& shader_stage_info)
     {
         VkShaderModuleCreateInfo create_info {};
         create_info.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -57,7 +57,7 @@ namespace Vertex
         vkDestroyShaderModule(VulkanContext::Get()->GetLogicalDevice(), m_InternalVkShaderModule, nullptr);
     }
 
-    VulkanShader::VulkanShader(const char* vertex_src, const char* fragment_src)
+    VulkanShader::VulkanShader(std::vector<char>& vertex_src, std::vector<char>& fragment_src)
     {
         VkViewport viewport {};
         viewport.x        = 0.0f;

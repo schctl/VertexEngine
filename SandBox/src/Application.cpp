@@ -72,6 +72,8 @@ namespace SandBox
 
         // --------------------------------------
 
+        Vertex::BufferLayout uniform_block_layout = { Vertex::ShaderDataType::Mat4, Vertex::ShaderDataType::Mat4 };
+
         auto vertex_source   = Vertex::Shader::ReadSPIRVFromFile("./res/shaders/vertex.spv");
         auto fragment_source = Vertex::Shader::ReadSPIRVFromFile("./res/shaders/fragment.spv");
 
@@ -81,7 +83,8 @@ namespace SandBox
         m_VETexture.reset(Vertex::Texture2D::Create("res/VertexEngine.png"));
 
         m_Shader->Bind();
-        (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Texture"] = 0;
+
+        m_UniformBuffer.reset(Vertex::UniformBuffer::Create(uniform_block_layout, 0));
 
         Vertex::Logger::Info("Initialized test layer");
     }
@@ -107,6 +110,8 @@ namespace SandBox
 
         Vertex::Renderer::Clear({ 0.1f, 0.1f, 0.1f, 1.0f });
 
+        m_UniformBuffer->Bind();
+
         Vertex::Renderer::BeginScene(m_Camera);
 
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
@@ -119,10 +124,11 @@ namespace SandBox
             {
                 // clang-format off
 
-                Vertex::Renderer::Submit(m_VertexArray, m_Shader,
-                                         glm::translate(
-                                            glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)
-                                         ) * scale);
+                m_UniformBuffer->SetValue(glm::translate(
+                    glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)
+                ) * scale, Vertex::GetSizeOfShaderDataType(Vertex::ShaderDataType::Mat4));
+
+                Vertex::Renderer::Submit(m_VertexArray, m_UniformBuffer, m_Shader);
 
                 // clang-format on
             }
@@ -130,7 +136,10 @@ namespace SandBox
 
         m_ArchTexture->Bind();
 
-        Vertex::Renderer::Submit(m_VertexArray, m_Shader, glm::vec3(1.0f, 1.0f, 0.0f));
+        m_UniformBuffer->SetValue(glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f)) * scale,
+                                  Vertex::GetSizeOfShaderDataType(Vertex::ShaderDataType::Mat4));
+
+        Vertex::Renderer::Submit(m_VertexArray, m_UniformBuffer, m_Shader);
 
         Vertex::Renderer::EndScene();
 
