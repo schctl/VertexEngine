@@ -118,6 +118,8 @@ namespace SandBox
 
         m_VETexture->Bind();
 
+        m_UniformBuffer->SetValue((glm::mat4)m_Camera.GetProjectionViewMatrix(), 0);
+
         for (float x = 0.0f; x < 20.0f; x++)
         {
             for (float y = 0.0f; y < 20.0f; y++)
@@ -136,7 +138,7 @@ namespace SandBox
 
         m_ArchTexture->Bind();
 
-        m_UniformBuffer->SetValue(glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f)) * scale,
+        m_UniformBuffer->SetValue(glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f)),
                                   Vertex::GetSizeOfShaderDataType(Vertex::ShaderDataType::Mat4));
 
         Vertex::Renderer::Submit(m_VertexArray, m_UniformBuffer, m_Shader);
