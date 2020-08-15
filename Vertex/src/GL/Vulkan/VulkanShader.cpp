@@ -188,4 +188,20 @@ namespace Vertex
             VX_CORE_ASSERT(false, "failed to create a graphics pipeline");
         }
     }
+
+    VulkanShader::~VulkanShader() noexcept
+    {
+        vkDestroyPipeline(VulkanContext::Get()->GetLogicalDevice(), m_GraphicsPipeline, nullptr);
+    }
+
+    void VulkanShader::Bind() const
+    {
+        vkCmdBindPipeline(VulkanContext::Get()->GetCurrentCommandBuffer(), VK_PIPELINE_BIND_POINT_GRAPHICS,
+                          m_GraphicsPipeline);
+        vkCmdBindDescriptorSets(VulkanContext::Get()->GetCurrentCommandBuffer(), VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                VulkanContext::Get()->GetPipelineLayout(), 0, 1,
+                                VulkanContext::Get()->GetCurrentDescriptorSet(), 0, nullptr);
+    }
+
+    void VulkanShader::Unbind() const { }
 }
