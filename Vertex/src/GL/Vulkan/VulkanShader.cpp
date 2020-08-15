@@ -31,7 +31,7 @@ namespace Vertex
         }
 
         CoreLogger::Error("Unknown shader data type, cancelling...");
-        return 0;
+        return VK_FORMAT_UNDEFINED;
     }
 
     VulkanShaderModule::VulkanShaderModule(std::vector<char>&               source,
@@ -57,7 +57,8 @@ namespace Vertex
         vkDestroyShaderModule(VulkanContext::Get()->GetLogicalDevice(), m_InternalVkShaderModule, nullptr);
     }
 
-    VulkanShader::VulkanShader(std::vector<char>& vertex_src, std::vector<char>& fragment_src)
+    VulkanShader::VulkanShader(std::vector<char>& vertex_src, std::vector<char>& fragment_src,
+                               const BufferLayout vertex_layout)
     {
         VkViewport viewport {};
         viewport.x        = 0.0f;
@@ -144,12 +145,15 @@ namespace Vertex
 
         VkPipelineShaderStageCreateInfo shader_stages[] = { vert_shader_stage_info, frag_shader_stage_info };
 
+        auto binding_description    = GetBindingDescription(vertex_layout);
+        auto attribute_descriptions = GetAttributeDescriptions(vertex_layout);
+
         VkPipelineVertexInputStateCreateInfo vertex_input_info {};
         vertex_input_info.sType                           = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-        vertex_input_info.vertexBindingDescriptionCount   = InputBindingsLen;
-        vertex_input_info.pVertexBindingDescriptions      = bindings.data();
-        vertex_input_info.vertexAttributeDescriptionCount = InputAttribLen;
-        vertex_input_info.pVertexAttributeDescriptions    = input_attributes.data();
+        vertex_input_info.vertexBindingDescriptionCount   = 1;
+        vertex_input_info.pVertexBindingDescriptions      = &binding_description;
+        vertex_input_info.vertexAttributeDescriptionCount = (uint32_t)(attribute_descriptions.size());
+        vertex_input_info.pVertexAttributeDescriptions    = attribute_descriptions.data();
 
         VkPipelineInputAssemblyStateCreateInfo input_assembly {};
         input_assembly.sType                  = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;

@@ -99,14 +99,14 @@ namespace Vertex
 
 #if defined(VX_RENDER_API_VULKAN)
 
-    Shader* Shader::Create(std::vector<char>& vertex_src, std::vector<char>& fragment_src)
+    Shader* Shader::Create(std::vector<char>& vertex_src, std::vector<char>& fragment_src, const BufferLayout vertex_layout)
     {
-        return new VulkanShader(vertex_src, fragment_src);
+        return new VulkanShader(vertex_src, fragment_src, vertex_layout);
     }
 
 #else
 
-    Shader* Shader::Create(std::vector<char>& vertex_src, std::vector<char>& fragment_src)
+    Shader* Shader::Create(std::vector<char>& vertex_src, std::vector<char>& fragment_src, const BufferLayout vertex_layout)
     {
         return new OpenGLShader(vertex_src, fragment_src);
     }

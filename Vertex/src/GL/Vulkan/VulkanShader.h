@@ -9,7 +9,7 @@ namespace Vertex
 {
     const VkFormat ShaderDataTypeToVulkan(ShaderDataType type);
 
-    static VkVertexInputBindingDescription GetBindingDescription(BufferLayout& layout)
+    static VkVertexInputBindingDescription GetBindingDescription(const BufferLayout& layout)
     {
         VkVertexInputBindingDescription binding_description {};
 
@@ -18,16 +18,15 @@ namespace Vertex
         binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
         return binding_description;
-    };
+    }
 
-    template <size_t Bindings>
-    static std::array<VkVertexInputAttributeDescription, Bindings> GetAttributeDescriptions(BufferLayout& layout)
+    static std::vector<VkVertexInputAttributeDescription> GetAttributeDescriptions(const BufferLayout& layout)
     {
-        std::array<VkVertexInputAttributeDescription, Bindings> attribute_descriptions {};
+        std::vector<VkVertexInputAttributeDescription> attribute_descriptions {};
 
         auto& elements = const_cast<std::vector<BufferElement>&>(layout.GetElements());
 
-        for (uint32_t i = 0; i < Bindings; i++)
+        for (uint32_t i = 0; i < layout.GetElements().size(); i++)
         {
             attribute_descriptions[i].binding  = 0;
             attribute_descriptions[i].location = 0;
@@ -36,7 +35,7 @@ namespace Vertex
         }
 
         return attribute_descriptions;
-    };
+    }
 
     class VulkanShaderModule
     {
@@ -51,7 +50,7 @@ namespace Vertex
     class VulkanShader : public Shader
     {
     public:
-        VulkanShader(std::vector<char>& vertex_src, std::vector<char>& fragment_src);
+        VulkanShader(std::vector<char>& vertex_src, std::vector<char>& fragment_src, const BufferLayout vertex_layout);
         ~VulkanShader();
 
         void Bind() const override;
