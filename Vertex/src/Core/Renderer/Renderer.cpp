@@ -13,6 +13,15 @@ namespace Vertex
 
     void Renderer::BeginScene(Camera& camera) { s_Scene->ProjectionViewMatrix = camera.GetProjectionViewMatrix(); }
 
+#if defined(VX_RENDER_API_VULKAN)
+    void Renderer::Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader)
+    {
+        shader->Bind();
+        vertex_array->Bind();
+
+        s_GraphicsAPI->DrawIndexed(vertex_array);
+    }
+#else
     void Renderer::Submit(const Ref<VertexArray>& vertex_array, const Ref<UniformBuffer>& uniform_buffer,
                           const Ref<Shader>& shader)
     {
@@ -22,6 +31,7 @@ namespace Vertex
 
         s_GraphicsAPI->DrawIndexed(vertex_array);
     }
+#endif
 
     void Renderer::EndScene() { }
 

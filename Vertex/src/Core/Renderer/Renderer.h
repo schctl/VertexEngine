@@ -37,8 +37,12 @@ namespace Vertex
     public:
         static void BeginScene(Camera& camera);
 
+#if defined(VX_RENDER_API_VULKAN)
+        static void Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader);
+#else
         static void Submit(const Ref<VertexArray>& vertex_array, const Ref<UniformBuffer>& uniform_buffer,
                            const Ref<Shader>& shader);
+#endif
 
         static void EndScene();
 

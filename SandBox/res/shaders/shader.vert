@@ -12,6 +12,7 @@ layout(std140, binding = 0) uniform UniformBufferObject
 
 void main()
 {
-    gl_Position = ubo.u_ProjectionViewMatrix * ubo.u_Transform * vec4(a_Position, 1.0);
+    // gl_Position = ubo.u_ProjectionViewMatrix * ubo.u_Transform * vec4(a_Position, 1.0);
+    gl_Position = vec4(a_Position, 1.0);
     v_TexCoord = a_TexCoord;
 }

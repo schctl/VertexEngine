@@ -92,6 +92,113 @@ namespace Vertex
         s_Context = this;
     }
 
+    void VulkanContext::BeginRender()
+    {
+        vkWaitForFences(m_LogicalDevice, 1, &m_InFlightFences[m_CurrentFrame], VK_TRUE, UINT64_MAX);
+
+        VkResult result
+            = vkAcquireNextImageKHR(m_LogicalDevice, m_SwapChain, UINT64_MAX,
+                                    m_ImageAvailableSemaphores[m_CurrentFrame], VK_NULL_HANDLE, &m_CurrentImageIndex);
+
+        if (result == VK_ERROR_OUT_OF_DATE_KHR)
+        {
+            RecreateSwapchain();
+            return;
+        }
+        else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
+        {
+            VX_CORE_ASSERT(false, "cannot acquire next image");
+        }
+
+        // m_PrepareRenderCallback(this);
+
+        if (m_ImagesInFlight[m_CurrentImageIndex] != VK_NULL_HANDLE)
+            vkWaitForFences(m_LogicalDevice, 1, &m_ImagesInFlight[m_CurrentImageIndex], VK_TRUE, UINT64_MAX);
+
+        m_ImagesInFlight[m_CurrentImageIndex] = m_InFlightFences[m_CurrentFrame];
+
+        m_CurrentQueueSubmitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+        VkSemaphore          wait_semaphores[]      = { m_ImageAvailableSemaphores[m_CurrentFrame] };
+        VkPipelineStageFlags wait_stages[]          = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+        m_CurrentQueueSubmitInfo.waitSemaphoreCount = 1;
+        m_CurrentQueueSubmitInfo.pWaitSemaphores    = wait_semaphores;
+        m_CurrentQueueSubmitInfo.pWaitDstStageMask  = wait_stages;
+        m_CurrentQueueSubmitInfo.commandBufferCount = 1;
+        m_CurrentQueueSubmitInfo.pCommandBuffers    = &m_CommandBuffers[m_CurrentImageIndex];
+
+        m_SignalSemaphores[0]                         = { m_RenderFinishedSemaphores[m_CurrentFrame] };
+        m_CurrentQueueSubmitInfo.signalSemaphoreCount = 1;
+        m_CurrentQueueSubmitInfo.pSignalSemaphores    = m_SignalSemaphores;
+
+        VkCommandBufferBeginInfo begin_info {};
+        begin_info.sType            = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        begin_info.flags            = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT; // Optional
+        begin_info.pInheritanceInfo = nullptr;                                     // Optional
+
+        if (vkBeginCommandBuffer(m_CommandBuffers[m_CurrentImageIndex], &begin_info) != VK_SUCCESS)
+            VX_CORE_ASSERT(false, "vkBeginCommandBuffer failed");
+
+        VkRenderPassBeginInfo render_pass_info {};
+        render_pass_info.sType       = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        render_pass_info.renderPass  = m_RenderPass;
+        render_pass_info.framebuffer = m_SwapChainFramebuffers[m_CurrentImageIndex];
+
+        render_pass_info.renderArea.offset = { 0, 0 };
+        render_pass_info.renderArea.extent = m_SwapChainExtent;
+
+        VkClearValue clear_color         = { 0.0f, 0.0f, 0.0f, 1.0f };
+        render_pass_info.clearValueCount = 1;
+        render_pass_info.pClearValues    = &clear_color;
+
+        vkCmdBeginRenderPass(m_CommandBuffers[m_CurrentImageIndex], &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
+
+        m_CurrentCommandBuffer = m_CommandBuffers[m_CurrentImageIndex];
+        m_CurrentDescriptorSet = m_DescriptorSets[m_CurrentImageIndex];
+    }
+
+    void VulkanContext::EndRender()
+    {
+        // m_RenderCallback(this);
+
+        vkCmdEndRenderPass(m_CommandBuffers[m_CurrentImageIndex]);
+
+        if (vkEndCommandBuffer(m_CommandBuffers[m_CurrentImageIndex]) != VK_SUCCESS)
+            VX_CORE_ASSERT(false, "vkEndCommandBuffer failed");
+
+        vkResetFences(m_LogicalDevice, 1, &m_InFlightFences[m_CurrentFrame]);
+
+        if (vkQueueSubmit(m_GraphicsQueue, 1, &m_CurrentQueueSubmitInfo, m_InFlightFences[m_CurrentFrame])
+            != VK_SUCCESS)
+            VX_CORE_ASSERT(false, "vkQueueSubmit failed");
+
+        VkPresentInfoKHR present_info {};
+        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+        present_info.waitSemaphoreCount = 1;
+        present_info.pWaitSemaphores    = m_SignalSemaphores;
+
+        VkSwapchainKHR swap_chains[] = { m_SwapChain };
+        present_info.swapchainCount  = 1;
+        present_info.pSwapchains     = swap_chains;
+        present_info.pImageIndices   = &m_CurrentImageIndex;
+
+        present_info.pResults = nullptr; // Optional
+
+        VkResult result = vkQueuePresentKHR(m_PresentQueue, &present_info);
+        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
+        {
+            RecreateSwapchain();
+        }
+        else if (result != VK_SUCCESS)
+        {
+            VX_CORE_ASSERT(false, "vkQueuePresentKHR failed");
+        }
+        vkQueueWaitIdle(m_PresentQueue);
+
+        m_CurrentFrame = (m_CurrentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+    }
+
     void VulkanContext::InitVulkan()
     {
 

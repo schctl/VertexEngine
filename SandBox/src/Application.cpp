@@ -2,41 +2,6 @@
 
 namespace SandBox
 {
-#if defined(VX_RENDER_API_VULKAN)
-
-    ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */) : Layer(name)
-    {
-        // clang-format off
-
-        float vertices[28] = {
-            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,
-             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,
-             0.5f,  0.5f, 0.0f,  1.0f, 1.0f,
-            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f,
-        };
-
-        uint32_t indices[6] = {
-            0, 1, 2,
-            2, 3, 0,
-        };
-
-        // clang-format on
-
-        Vertex::BufferLayout layout = { Vertex::ShaderDataType::Float3, Vertex::ShaderDataType::Float2 };
-
-        m_VertexBuffer.reset(Vertex::VertexBuffer::Create(vertices, sizeof(vertices), layout));
-        m_IndexBuffer.reset(Vertex::IndexBuffer::Create(indices, sizeof(indices)));
-
-        m_VertexArray.reset(Vertex::VertexArray::Create());
-
-        m_VertexArray->AddVertexBuffer(m_VertexBuffer);
-        m_VertexArray->SetIndexBuffer(m_IndexBuffer);
-    }
-
-    void ExampleLayer::OnUpdate(const Vertex::TimeDelta delta_time) { }
-
-#else
-
     ExampleLayer::ExampleLayer(const char* name /* = "ExampleLayer" */)
         : Layer(name), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
@@ -77,14 +42,16 @@ namespace SandBox
         auto vertex_source   = Vertex::Shader::ReadSPIRVFromFile("./res/shaders/vertex.spv");
         auto fragment_source = Vertex::Shader::ReadSPIRVFromFile("./res/shaders/fragment.spv");
 
-        m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source));
+        m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source, layout));
 
+#ifndef VX_RENDER_API_VULKAN
         m_ArchTexture.reset(Vertex::Texture2D::Create("res/arch.png"));
         m_VETexture.reset(Vertex::Texture2D::Create("res/VertexEngine.png"));
 
         m_Shader->Bind();
 
         m_UniformBuffer.reset(Vertex::UniformBuffer::Create(uniform_block_layout, 0));
+#endif
 
         Vertex::Logger::Info("Initialized test layer");
     }
@@ -110,11 +77,12 @@ namespace SandBox
 
         Vertex::Renderer::Clear({ 0.1f, 0.1f, 0.1f, 1.0f });
 
-        m_UniformBuffer->Bind();
-
         Vertex::Renderer::BeginScene(m_Camera);
 
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+#ifndef VX_RENDER_API_VULKAN
+        m_UniformBuffer->Bind();
 
         m_VETexture->Bind();
 
@@ -142,6 +110,9 @@ namespace SandBox
                                   Vertex::GetSizeOfShaderDataType(Vertex::ShaderDataType::Mat4));
 
         Vertex::Renderer::Submit(m_VertexArray, m_UniformBuffer, m_Shader);
+#endif
+
+        Vertex::Renderer::Submit(m_VertexArray, m_Shader);
 
         Vertex::Renderer::EndScene();
 
@@ -151,13 +122,13 @@ namespace SandBox
 
     void ExampleLayer::OnGUIUpdate(const Vertex::TimeDelta delta_time)
     {
+#ifndef VX_RENDER_API_VULKAN
         ImGui::Begin("Renderer");
         ImGui::Text("%s", Vertex::Renderer::GetRendererInfo().c_str());
         ImGui::Text("\n %.2f", m_AvgFrameRate);
         ImGui::End();
-    }
-
 #endif
+    }
 }
 
 Vertex::Application* Vertex::CreateApplication()

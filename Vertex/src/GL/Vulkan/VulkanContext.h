@@ -33,6 +33,9 @@ namespace Vertex
         inline VkCommandPool   GetCommandPool() { return m_CommandPool; }
         inline VkCommandBuffer GetLoadCommandBuffer() { return m_LoadCommandBuffer; }
 
+        void BeginRender();
+        void EndRender();
+
         inline static VulkanContext* Get() { return s_Context; }
 
     public:
@@ -161,12 +164,10 @@ namespace Vertex
         VkCommandBuffer              m_LoadCommandBuffer;
         VkCommandPool                m_CommandPool;
         std::vector<VkCommandBuffer> m_CommandBuffers;
-        VkCommandBuffer              m_CurrentCommandBuffer;
 
         VkDescriptorSetLayout        m_DescriptorSetLayout;
         VkDescriptorPool             m_DescriptorPool;
         std::vector<VkDescriptorSet> m_DescriptorSets;
-        VkDescriptorSet              m_CurrentDescriptorSet;
 
         std::vector<VkBuffer>       m_UniformBuffers;
         std::vector<VkDeviceMemory> m_UniformBuffersMemory;
@@ -182,6 +183,17 @@ namespace Vertex
         VkDebugUtilsMessengerEXT m_DebugMessenger;
 
         bool m_NeedSwapChainRecreate = false;
+
+    private:
+        // ---- Render information for each frame ----
+        uint32_t m_CurrentImageIndex;
+
+        VkDescriptorSet m_CurrentDescriptorSet;
+        VkCommandBuffer m_CurrentCommandBuffer;
+
+        VkSubmitInfo m_CurrentQueueSubmitInfo {};
+
+        VkSemaphore m_SignalSemaphores[];
 
     private:
         static VulkanContext* s_Context;

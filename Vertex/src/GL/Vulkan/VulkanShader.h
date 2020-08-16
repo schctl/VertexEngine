@@ -22,16 +22,18 @@ namespace Vertex
 
     static std::vector<VkVertexInputAttributeDescription> GetAttributeDescriptions(const BufferLayout& layout)
     {
-        std::vector<VkVertexInputAttributeDescription> attribute_descriptions {};
+        std::vector<VkVertexInputAttributeDescription> attribute_descriptions;
 
         auto& elements = const_cast<std::vector<BufferElement>&>(layout.GetElements());
 
         for (uint32_t i = 0; i < layout.GetElements().size(); i++)
         {
-            attribute_descriptions[i].binding  = 0;
-            attribute_descriptions[i].location = 0;
-            attribute_descriptions[i].format   = ShaderDataTypeToVulkan(elements[i].type);
-            attribute_descriptions[i].offset   = elements[i].offset;
+            VkVertexInputAttributeDescription description {};
+            description.binding  = 0;
+            description.location = 0;
+            description.format   = ShaderDataTypeToVulkan(elements[i].type);
+            description.offset   = elements[i].offset;
+            attribute_descriptions.emplace_back(description);
         }
 
         return attribute_descriptions;

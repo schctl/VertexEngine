@@ -2,6 +2,8 @@
 
 #include "GL/GraphicsAPI.h"
 
+#include "VulkanContext.h"
+
 namespace Vertex
 {
     class VulkanGraphicsAPI : public GraphicsAPI
@@ -15,6 +17,6 @@ namespace Vertex
 
         std::string GetRendererInfo() const override { return "temp"; };
 
-        virtual void DrawIndexed(Ref<VertexArray> vertex_array) override {};
+        virtual void DrawIndexed(Ref<VertexArray> vertex_array) override;
     };
 } // namespace Vertex
