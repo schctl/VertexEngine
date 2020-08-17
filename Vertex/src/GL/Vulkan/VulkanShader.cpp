@@ -23,7 +23,7 @@ namespace Vertex
         case ShaderDataType::Float:
             return VK_FORMAT_R32_SFLOAT;
         case ShaderDataType::Float2:
-            return VK_FORMAT_R32G32_SINT;
+            return VK_FORMAT_R32G32_SFLOAT;
         case ShaderDataType::Float3:
             return VK_FORMAT_R32G32B32_SFLOAT;
         case ShaderDataType::Float4:

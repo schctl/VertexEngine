@@ -30,7 +30,7 @@ namespace Vertex
         {
             VkVertexInputAttributeDescription description {};
             description.binding  = 0;
-            description.location = 0;
+            description.location = i;
             description.format   = ShaderDataTypeToVulkan(elements[i].type);
             description.offset   = elements[i].offset;
             attribute_descriptions.emplace_back(description);
