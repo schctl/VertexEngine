@@ -110,9 +110,11 @@ namespace SandBox
                                   Vertex::GetSizeOfShaderDataType(Vertex::ShaderDataType::Mat4));
 
         Vertex::Renderer::Submit(m_VertexArray, m_UniformBuffer, m_Shader);
-#endif
+#else
 
         Vertex::Renderer::Submit(m_VertexArray, m_Shader);
+
+#endif
 
         Vertex::Renderer::EndScene();
 
