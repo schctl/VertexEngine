@@ -5,6 +5,8 @@
 
 A powerful and modern C++ based game engine, currently in early development.
 
+**Note: ** Development for C++ has paused, as we're trying to port the engine to Rust.
+
 ## Index
 This README file is split into multiple sections:
 * [Support](https://github.com/VertexEngine/VertexEngine#support)
@@ -13,17 +15,13 @@ This README file is split into multiple sections:
 * [Authors and Acknowledgements](https://github.com/VertexEngine/VertexEngine#authors)
 
 ## Why another game engine?
-Well, this project is mainly for learning purposes. Also, I want to make a powerful, flexible and lightweight game engine, since I haven't really found any game engine's that I like...
+Well, this project is mainly for learning purposes. The aim is to make a powerful, flexible and lightweight game engine, since I haven't really found any exisitng Engines that I like.
 
 ## Supported platforms and rendering APIs
 | Platform | Rendering API |
 |----------|---------------|
 | Windows  | OpenGL 4.5+   |
 | Linux    | OpenGL 4.5+   |
-
-<sup>
-We are currently merging [this fork](https://github.com/NonNullDinu/VkVertexEngine) of VertexEngine manually, this might take a while and new features will be added slowly until this is done
-</sup>
 
 ## Support
 You can join the official Vertex Engine Discord Server, to ask for help or make a feature request.
