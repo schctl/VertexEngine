@@ -5,7 +5,7 @@
 
 A powerful and modern C++ based game engine, currently in early development.
 
-**Note: ** Development for C++ has paused, as we're trying to port the engine to Rust.
+**Note:** Development for C++ has paused, as we're trying to port the engine to Rust.
 
 ## Index
 This README file is split into multiple sections:
@@ -42,4 +42,4 @@ Please read [CONTRIBUTING](https://github.com/VertexEngine/VertexEngine/blob/mas
 
 ## Authors
 * [schctl](https://github.com/schctl) - Initial work
-* [NonNullDinu](https://github.com/NonNullDinu)
+* [Dinu Blanovschi](https://github.com/dblanovschi)
