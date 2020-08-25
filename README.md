@@ -5,6 +5,8 @@
 
 A powerful and modern C++ based game engine, currently in early development.
 
+**Note:** Development of this branch has stopped, as we're currently trying to port the engine to Rust.
+
 ## Index
 This README file is split into multiple sections:
 * [Support](https://github.com/VertexEngine/VertexEngine#support)
