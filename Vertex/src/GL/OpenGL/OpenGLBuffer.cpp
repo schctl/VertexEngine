@@ -19,10 +19,6 @@ namespace Vertex
 
     void OpenGLVertexBuffer::Unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
-    void OpenGLVertexBuffer::BeforeRender() { }
-
-    void OpenGLVertexBuffer::AfterRender() { }
-
     // ----------------------------------
     // ---------- Index Buffer ----------
     // ----------------------------------
@@ -40,7 +36,23 @@ namespace Vertex
 
     void OpenGLIndexBuffer::Unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
-    void OpenGLIndexBuffer::BeforeRender() { }
+    // ----------------------------------
+    // --------- Uniform Buffer ---------
+    // ----------------------------------
 
-    void OpenGLIndexBuffer::AfterRender() { }
+    OpenGLUniformBuffer::OpenGLUniformBuffer(const BufferLayout layout, uint32_t bind_point)
+        : m_BindPoint(bind_point), m_Layout(layout)
+    {
+        glCreateBuffers(1, &m_ID);
+        Bind();
+        glBufferData(GL_UNIFORM_BUFFER, 2 * layout.GetStride(), NULL, GL_STATIC_DRAW);
+        Unbind();
+        glBindBufferBase(GL_UNIFORM_BUFFER, bind_point, m_ID);
+    }
+
+    OpenGLUniformBuffer::~OpenGLUniformBuffer() { glDeleteBuffers(1, &m_ID); }
+
+    void OpenGLUniformBuffer::Bind() const { glBindBuffer(GL_UNIFORM_BUFFER, m_ID); }
+
+    void OpenGLUniformBuffer::Unbind() const { glBindBuffer(GL_UNIFORM_BUFFER, 0); }
 }

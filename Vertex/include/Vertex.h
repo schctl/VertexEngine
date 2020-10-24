@@ -46,5 +46,3 @@
 #include <imgui.h>
 
 #include "Core/Renderer/Renderer.h"
-
-#include "GL/OpenGL/OpenGLShader.h" // very temporary

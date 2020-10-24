@@ -15,6 +15,12 @@ namespace Vertex
 
         virtual void SwapBuffers() = 0;
 
+        /**
+         * x, y - lower left corner of the viewport
+         * w, h - width and height of the viewport
+         */
+        virtual void SetViewPort(uint32_t x, uint32_t y, uint32_t w, uint32_t h) const = 0;
+
         static GraphicsContext* Create(GLFWwindow* window_handle);
     };
 }

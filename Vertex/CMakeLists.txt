@@ -5,45 +5,67 @@ project(Vertex CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 file(GLOB VX_SOURCES
-    src/Core/*.cpp
-    src/Core/Event/*.cpp
-    src/Core/Layer/*.cpp
-    src/Core/Renderer/*.cpp
-    src/Core/Time/*.cpp
-    src/GL/*.cpp
-    src/GUI/*.cpp
-    src/Logger/*.cpp
-    src/Window/*.cpp
+        src/Core/*.cpp
+        src/Core/Event/*.cpp
+        src/Core/Layer/*.cpp
+        src/Core/Renderer/*.cpp
+        src/Core/Time/*.cpp
+        src/GL/*.cpp
+        src/GUI/*.cpp
+        src/Logger/*.cpp
+        src/Window/*.cpp
 
-    deps/stb_image/stb_image.cpp
-)
+        deps/stb_image/stb_image.cpp
+        )
 
 file(GLOB VX_HEADERS
-    src/Core/*.h
-    src/Core/Event/*.h
-    src/Core/Layer/*.h
-    src/Core/Renderer/*.h
-    src/Core/Time/*.h
-    src/GL/*.h
-    src/GUI/*.h
-    src/Logger/*.h
-    src/Window/*.h
+        src/Core/*.h
+        src/Core/Event/*.h
+        src/Core/Layer/*.h
+        src/Core/Renderer/*.h
+        src/Core/Time/*.h
+        src/GL/*.h
+        src/GUI/*.h
+        src/Logger/*.h
+        src/Window/*.h
 
-    deps/glm/glm/*.hpp
-    deps/stb_image/stb_image.h
-)
+        deps/glm/glm/*.hpp
+        deps/stb_image/stb_image.h
+        )
 
-file(GLOB VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
-file(GLOB VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
+if ($ENV{VX_USE_VK})
+    if (WIN32)
+        message(WARNING "Vulkan has not been tested for Windows yet, and may be broken.")
+    endif ()
+endif ()
 
-set(IMGUI_IMPL_HEADERS
-    deps/imgui/examples/imgui_impl_glfw.h
-    deps/imgui/examples/imgui_impl_opengl3.h
-)
-set(IMGUI_IMPL_SOURCES
-    deps/imgui/examples/imgui_impl_glfw.cpp
-    deps/imgui/examples/imgui_impl_opengl3.cpp
-)
+if ($ENV{VX_USE_VK})
+    file(GLOB VX_GRAPHICS_SOURCES src/GL/Vulkan/*.cpp)
+    file(GLOB VX_GRAPHICS_HEADERS src/GL/Vulkan/*.h)
+else ()
+    file(GLOB VX_GRAPHICS_SOURCES src/GL/OpenGL/*.cpp)
+    file(GLOB VX_GRAPHICS_HEADERS src/GL/OpenGL/*.h)
+endif ()
+
+if ($ENV{VX_USE_VK})
+    set(IMGUI_IMPL_HEADERS
+            deps/imgui/examples/imgui_impl_glfw.h
+            deps/imgui/examples/imgui_impl_vulkan.h
+            )
+    set(IMGUI_IMPL_SOURCES
+            deps/imgui/examples/imgui_impl_glfw.cpp
+            deps/imgui/examples/imgui_impl_vulkan.cpp
+            )
+else ()
+    set(IMGUI_IMPL_HEADERS
+            deps/imgui/examples/imgui_impl_glfw.h
+            deps/imgui/examples/imgui_impl_opengl3.h
+            )
+    set(IMGUI_IMPL_SOURCES
+            deps/imgui/examples/imgui_impl_glfw.cpp
+            deps/imgui/examples/imgui_impl_opengl3.cpp
+            )
+endif ()
 
 add_subdirectory(deps/glad)
 add_subdirectory(deps/imgui)
@@ -51,10 +73,16 @@ add_subdirectory(deps/imgui)
 if (WIN32)
     file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Window/Windows/*.h)
     file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Window/Windows/*.cpp)
-    
-    find_package(OpenGL REQUIRED) # OpenGL
-    set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
-    set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
+
+    if ($ENV{VX_USE_VK})
+        find_package(Vulkan REQUIRED) # OpenGL
+        set(GRAPHICS_LIB_INCLUDES ${Vulkan_INCLUDE_DIRS})
+        set(GRAPHICS_LIBS ${Vulkan_LIBRARIES})
+    else ()
+        find_package(OpenGL REQUIRED) # OpenGL
+        set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
+        set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
+    endif ()
 
     add_subdirectory(deps/glfw)
 
@@ -65,9 +93,15 @@ elseif (UNIX AND NOT APPLE)
     file(GLOB_RECURSE VX_PLATFORM_HEADERS src/Window/Linux/*.h)
     file(GLOB_RECURSE VX_PLATFORM_SOURCES src/Window/Linux/*.cpp)
 
-    find_package(OpenGL REQUIRED) # OpenGL
-    set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR})
-    set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
+    if ($ENV{VX_USE_VK})
+        find_package(Vulkan REQUIRED) # OpenGL
+        set(GRAPHICS_LIB_INCLUDES ${Vulkan_INCLUDE_DIRS})
+        set(GRAPHICS_LIBS ${Vulkan_LIBRARIES})
+    else ()
+        find_package(OpenGL REQUIRED) # OpenGL
+        set(GRAPHICS_LIB_INCLUDES ${OPENGL_INCLUDE_DIR} deps/glad/include)
+        set(GRAPHICS_LIBS ${OPENGL_LIBRARIES})
+    endif ()
 
     find_package(glfw3 REQUIRED)
     set(GLFW_LIBRARY glfw) # FindGLFW.cmake does not set this so we need to do it
@@ -80,38 +114,41 @@ else ()
 endif ()
 
 add_library(Vertex STATIC
-    ${VX_HEADERS}
-    ${VX_SOURCES}
+        ${VX_HEADERS}
+        ${VX_SOURCES}
 
-    ${VX_GRAPHICS_HEADERS}
-    ${VX_GRAPHICS_SOURCES}
+        ${VX_GRAPHICS_HEADERS}
+        ${VX_GRAPHICS_SOURCES}
 
-    ${VX_PLATFORM_HEADERS}
-    ${VX_PLATFORM_SOURCES}
+        ${VX_PLATFORM_HEADERS}
+        ${VX_PLATFORM_SOURCES}
 
 
-    ${IMGUI_IMPL_HEADERS}
-    ${IMGUI_IMPL_SOURCES}
-)
+        ${IMGUI_IMPL_HEADERS}
+        ${IMGUI_IMPL_SOURCES})
 
-target_compile_definitions(Vertex PUBLIC VX_RENDER_API_OPENGL)
+if ($ENV{VX_USE_VK})
+    target_compile_definitions(Vertex PUBLIC VX_RENDER_API_VULKAN)
+else ()
+    target_compile_definitions(Vertex PUBLIC VX_RENDER_API_OPENGL)
+endif ()
 
 # add the paths in PLATFORM_SPECIFIC_INCLUDES to Vertex's include directories
 target_include_directories(Vertex PUBLIC
-    src
-    deps/spdlog/include
-    deps/imgui
-    deps/glm
-    deps/stb_image
-    ${PLATFORM_SPECIFIC_INCLUDES}
-)
+        src
+        deps/spdlog/include
+        deps/imgui
+        deps/glm
+        deps/stb_image
+        ${PLATFORM_SPECIFIC_INCLUDES}
+        )
 
 # use the libs specified above in PLATFORM_SPECIFIC_LIBS and glad
 target_link_libraries(Vertex PUBLIC
-    ${PLATFORM_SPECIFIC_LIBS}
-    glad 
-    imgui
-)
+        ${PLATFORM_SPECIFIC_LIBS}
+        glad
+        imgui
+        )
 
 set_target_properties(Vertex PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(Vertex PROPERTIES PUBLIC_HEADER include/Vertex.h)
@@ -122,9 +159,8 @@ set(VX_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 target_precompile_headers(Vertex PUBLIC src/Core/Core.h)
 
 target_compile_definitions(Vertex PRIVATE
-    VX_BUILD_SHARED
-    IMGUI_IMPL_OPENGL_LOADER_GLAD=1
-)
+        VX_BUILD_SHARED
+        IMGUI_IMPL_OPENGL_LOADER_GLAD=1)
 
 if ($ENV{VX_RELEASE})
     add_compile_definitions(NDEBUG)

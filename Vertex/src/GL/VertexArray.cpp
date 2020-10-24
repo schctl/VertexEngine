@@ -1,18 +1,25 @@
 #include "VertexArray.h"
 
-#include "OpenGL/OpenGLVertexArray.h"
-// ... per rendering api
+#if defined(VX_RENDER_API_VULKAN)
+    #include "Vulkan/VulkanVertexArray.h"
+#else
+    #include "OpenGL/OpenGLVertexArray.h"
+// .. per rendering api
+#endif
 
 namespace Vertex
 {
-    VertexArray* VertexArray::Create()
-    {
-#if defined(VX_RENDER_API_OPENGL)
-        return new OpenGLVertexArray();
-#elif defined(VX_RENDER_API_VULKAN)
-        return new VulkanVertexArray();
+    // clang-format off
+
+#if defined(VX_RENDER_API_VULKAN)
+
+    VertexArray* VertexArray::Create() { return new VulkanVertexArray(); }
+
 #else
-        return nullptr;
+
+    VertexArray* VertexArray::Create() { return new OpenGLVertexArray(); }
+
 #endif
-    }
+
+    // clang format on
 }

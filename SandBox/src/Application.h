@@ -21,8 +21,12 @@ namespace SandBox
         Vertex::Ref<Vertex::VertexBuffer> m_VertexBuffer;
         Vertex::Ref<Vertex::IndexBuffer>  m_IndexBuffer;
 
+#ifndef VX_RENDER_API_VULKAN
+        Vertex::Ref<Vertex::UniformBuffer> m_UniformBuffer;
+
         Vertex::Ref<Vertex::Texture2D> m_ArchTexture;
         Vertex::Ref<Vertex::Texture2D> m_VETexture;
+#endif
 
         Vertex::OrthographicCamera2D m_Camera;
 

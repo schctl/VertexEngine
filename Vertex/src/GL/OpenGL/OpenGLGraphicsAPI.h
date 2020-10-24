@@ -30,11 +30,6 @@ namespace Vertex
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
-        inline void SetViewport(uint32_t x, uint32_t y, uint32_t w, uint32_t h) const override
-        {
-            glViewport(x, y, w, h);
-        }
-
         inline std::string GetRendererInfo() const override
         {
             // clang-format off

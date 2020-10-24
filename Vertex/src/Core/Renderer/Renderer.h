@@ -31,21 +31,18 @@ namespace Vertex
         inline static void Clear(const glm::vec3& color) { s_GraphicsAPI->Clear(color); }
         inline static void Clear(const glm::vec4& color) { s_GraphicsAPI->Clear(color); }
 
-        inline static void NotifyResize(uint32_t width, uint32_t height)
-        {
-            s_GraphicsAPI->SetViewport(0, 0, width, height);
-        }
-
         static RenderAPI   GetAPI();
         static std::string GetRendererInfo() { return s_GraphicsAPI->GetRendererInfo(); }
 
     public:
         static void BeginScene(Camera& camera);
 
-        static void Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader,
-                           const glm::mat4& transform = glm::mat4(1.0f));
-
-        static void Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader, const glm::vec3& position);
+#if defined(VX_RENDER_API_VULKAN)
+        static void Submit(const Ref<VertexArray>& vertex_array, const Ref<Shader>& shader);
+#else
+        static void Submit(const Ref<VertexArray>& vertex_array, const Ref<UniformBuffer>& uniform_buffer,
+                           const Ref<Shader>& shader);
+#endif
 
         static void EndScene();
 

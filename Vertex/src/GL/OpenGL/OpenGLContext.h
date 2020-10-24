@@ -13,6 +13,11 @@ namespace Vertex
 
         void SwapBuffers() override;
 
+        inline void SetViewPort(uint32_t x, uint32_t y, uint32_t w, uint32_t h) const override
+        {
+            glViewport(x, y, w, h);
+        }
+
     private:
         GLFWwindow* m_WindowHandle;
     };

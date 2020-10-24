@@ -15,6 +15,8 @@ namespace Vertex
         WindowsWindow(const WindowProperties properties = WindowProperties());
         ~WindowsWindow();
 
+        void OnEvent(Event& event) override;
+
         void OnUpdate(TimeDelta delta_time) override;
 
         unsigned int GetWidth() const override { return m_Data.width; }
@@ -35,6 +37,9 @@ namespace Vertex
         inline bool ShouldClose() const override { return glfwWindowShouldClose(m_Window); }
 
         inline GraphicsContext& GetGraphicsContext() const override { return *m_Context; }
+
+    private:
+        bool OnWindowResizeEvent(WindowResizeEvent& event);
 
     private:
         GLFWwindow*                      m_Window;

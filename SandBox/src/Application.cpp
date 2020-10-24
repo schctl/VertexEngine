@@ -37,47 +37,21 @@ namespace SandBox
 
         // --------------------------------------
 
-        const char* vertex_source = R"(
-            #version 330 core
+        Vertex::BufferLayout uniform_block_layout = { Vertex::ShaderDataType::Mat4, Vertex::ShaderDataType::Mat4 };
 
-            layout(location = 0) in vec3 a_Position;
-            layout(location = 1) in vec2 a_TexCoord;
+        auto vertex_source   = Vertex::Shader::ReadSPIRVFromFile("./res/shaders/vertex.spv");
+        auto fragment_source = Vertex::Shader::ReadSPIRVFromFile("./res/shaders/fragment.spv");
 
-            uniform mat4 u_ProjectionViewMatrix;
-            uniform mat4 u_Transform;
+        m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source, layout));
 
-            out vec2 v_TexCoord;
-
-            void main()
-            {
-                gl_Position = u_ProjectionViewMatrix * u_Transform * vec4(a_Position, 1.0);
-
-                v_TexCoord = a_TexCoord;
-            }
-        )";
-
-        const char* fragment_source = R"(
-            #version 330 core
-
-            uniform sampler2D u_Texture;
-
-            in vec2 v_TexCoord;
-
-            out vec4 o_Color;
-
-            void main()
-            {
-                o_Color = texture(u_Texture, v_TexCoord);
-            }
-        )";
-
-        m_Shader.reset(Vertex::Shader::Create(vertex_source, fragment_source));
-
+#ifndef VX_RENDER_API_VULKAN
         m_ArchTexture.reset(Vertex::Texture2D::Create("res/arch.png"));
         m_VETexture.reset(Vertex::Texture2D::Create("res/VertexEngine.png"));
 
         m_Shader->Bind();
-        (*std::dynamic_pointer_cast<Vertex::OpenGLShader>(m_Shader))["u_Texture"] = 0;
+
+        m_UniformBuffer.reset(Vertex::UniformBuffer::Create(uniform_block_layout, 0));
+#endif
 
         Vertex::Logger::Info("Initialized test layer");
     }
@@ -107,7 +81,12 @@ namespace SandBox
 
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+#ifndef VX_RENDER_API_VULKAN
+        m_UniformBuffer->Bind();
+
         m_VETexture->Bind();
+
+        m_UniformBuffer->SetValue((glm::mat4)m_Camera.GetProjectionViewMatrix(), 0);
 
         for (float x = 0.0f; x < 20.0f; x++)
         {
@@ -115,10 +94,11 @@ namespace SandBox
             {
                 // clang-format off
 
-                Vertex::Renderer::Submit(m_VertexArray, m_Shader,
-                                         glm::translate(
-                                            glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)
-                                         ) * scale);
+                m_UniformBuffer->SetValue(glm::translate(
+                    glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)
+                ) * scale, Vertex::GetSizeOfShaderDataType(Vertex::ShaderDataType::Mat4));
+
+                Vertex::Renderer::Submit(m_VertexArray, m_UniformBuffer, m_Shader);
 
                 // clang-format on
             }
@@ -126,7 +106,15 @@ namespace SandBox
 
         m_ArchTexture->Bind();
 
-        Vertex::Renderer::Submit(m_VertexArray, m_Shader, glm::vec3(1.0f, 1.0f, 0.0f));
+        m_UniformBuffer->SetValue(glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f)),
+                                  Vertex::GetSizeOfShaderDataType(Vertex::ShaderDataType::Mat4));
+
+        Vertex::Renderer::Submit(m_VertexArray, m_UniformBuffer, m_Shader);
+#else
+
+        Vertex::Renderer::Submit(m_VertexArray, m_Shader);
+
+#endif
 
         Vertex::Renderer::EndScene();
 
@@ -136,10 +124,12 @@ namespace SandBox
 
     void ExampleLayer::OnGUIUpdate(const Vertex::TimeDelta delta_time)
     {
+#ifndef VX_RENDER_API_VULKAN
         ImGui::Begin("Renderer");
         ImGui::Text("%s", Vertex::Renderer::GetRendererInfo().c_str());
         ImGui::Text("\n %.2f", m_AvgFrameRate);
         ImGui::End();
+#endif
     }
 }
 
